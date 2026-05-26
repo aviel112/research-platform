@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>מנהל תוכן | אביאל</title>
+<style>
+:root{
+  --bg:#0a0a0f;--bg2:#111118;--bg3:#18181f;--bg4:#1e1e28;
+  --border:#242432;--border2:#2e2e3e;
+  --red:#e94560;--red2:#ff6b84;--red-bg:rgba(233,69,96,.1);
+  --green:#25d366;--green-bg:rgba(37,211,102,.08);
+  --gold:#f5a623;--gold-bg:rgba(245,166,35,.08);
+  --purple:#8b5cf6;--purple-bg:rgba(139,92,246,.1);
+  --blue:#3b82f6;--blue-bg:rgba(59,130,246,.08);
+  --text:#f0f0f0;--text2:#aaa;--text3:#666;
+  --radius:14px;--radius-sm:8px;
+  --shadow:0 4px 24px rgba(0,0,0,.4);
+  --transition:.18s ease;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px}
+
+/* ── Scrollbar ──────────────────────────────────── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* ── Header ─────────────────────────────────────── */
+header{
+  background:linear-gradient(135deg,#0f0f1a 0%,#161624 100%);
+  border-bottom:1px solid var(--border);
+  padding:0 28px;
+  height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:200;
+  backdrop-filter:blur(12px);
+}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:32px;height:32px;background:var(--red);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo-text{font-weight:700;font-size:1.05rem;letter-spacing:-.3px}
+.logo-text span{color:var(--red)}
+.header-meta{display:flex;align-items:center;gap:12px}
+.week-pill{background:var(--red-bg);border:1px solid var(--red);color:var(--red);padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:600}
+.live-badge{display:flex;align-items:center;gap:5px;font-size:.72rem;color:var(--text3)}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(37,211,102,.4)}50%{box-shadow:0 0 0 6px transparent}}
+
+/* ── Stats bar ──────────────────────────────────── */
+.stats-bar{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:10px 28px;display:flex;gap:20px;align-items:center;overflow-x:auto;
+}
+.stat{display:flex;align-items:center;gap:7px;white-space:nowrap}
+.stat-icon{font-size:.9rem}
+.stat-val{font-weight:700;font-size:.95rem}
+.stat-lbl{font-size:.72rem;color:var(--text3)}
+.stat-divider{width:1px;height:20px;background:var(--border);flex-shrink:0}
+.trend-chip{background:var(--gold-bg);border:1px solid var(--gold);color:var(--gold);padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:600;margin-right:auto;white-space:nowrap;max-width:320px;overflow:hidden;text-overflow:ellipsis}
+
+/* ── Week nav ───────────────────────────────────── */
+.week-nav{display:flex;gap:6px;padding:12px 28px;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto}
+.week-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:5px 14px;border-radius:20px;cursor:pointer;font-size:.76rem;font-weight:500;white-space:nowrap;transition:var(--transition)}
+.week-btn:hover{border-color:var(--red);color:var(--text)}
+.week-btn.active{background:var(--red);border-color:var(--red);color:#fff}
+
+/* ── Tabs ───────────────────────────────────────── */
+.tabs{display:flex;gap:0;padding:0 28px;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto}
+.tab-btn{padding:13px 18px;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--text3);cursor:pointer;font-size:.82rem;font-weight:600;white-space:nowrap;transition:var(--transition);display:flex;align-items:center;gap:6px}
+.tab-btn .badge{background:var(--border2);color:var(--text3);font-size:.63rem;padding:1px 6px;border-radius:10px;font-weight:700}
+.tab-btn.active{color:var(--red);border-bottom-color:var(--red)}
+.tab-btn.active .badge{background:var(--red-bg);color:var(--red)}
+.tab-btn:hover:not(.active){color:var(--text)}
+
+/* ── Main ───────────────────────────────────────── */
+main{max-width:1200px;margin:0 auto;padding:24px 20px 80px}
+.tab-panel{display:none;animation:fadeIn .2s ease}
+.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.section-title{font-size:.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--red);margin-bottom:14px;margin-top:28px;display:flex;align-items:center;gap:8px}
+.section-title:first-child{margin-top:0}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── Cards grid ─────────────────────────────────── */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:var(--transition);position:relative}
+.card:hover{border-color:var(--border2);box-shadow:var(--shadow)}
+.card.best{border-color:var(--gold)}
+.card.best::before{content:'⭐ מומלץ לסרטון';position:absolute;top:0;right:0;background:var(--gold);color:#000;font-size:.63rem;font-weight:700;padding:3px 10px;border-radius:0 var(--radius) 0 var(--radius-sm)}
+
+/* Card header */
+.card-hdr{background:var(--bg3);padding:12px 15px;display:flex;align-items:flex-start;gap:10px}
+.card-num{width:26px;height:26px;min-width:26px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;margin-top:1px}
+.card-num.gold{background:var(--gold);color:#000}
+.card-hdr-info{flex:1;min-width:0}
+.card-title{font-weight:600;font-size:.9rem;line-height:1.4;margin-bottom:5px}
+.card-meta{display:flex;gap:6px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:10px;font-size:.63rem;font-weight:600}
+.badge-type{background:var(--bg4);color:var(--text3);border:1px solid var(--border)}
+.badge-source{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(59,130,246,.2)}
+
+/* Card image */
+.card-img{width:100%;height:130px;object-fit:cover;border-bottom:1px solid var(--border);display:block}
+.img-hint-bar{padding:8px 14px;background:rgba(245,166,35,.04);border-bottom:1px solid rgba(245,166,35,.1);font-size:.75rem;color:var(--gold);display:flex;align-items:flex-start;gap:6px}
+
+/* Card body */
+.card-body{padding:14px}
+
+.stat-chip{background:linear-gradient(135deg,#1a1a2e,#20102a);border:1px solid rgba(233,69,96,.3);border-radius:10px;padding:10px 14px;margin-bottom:12px;text-align:center;font-weight:700;font-size:.92rem}
+.wow{background:var(--red-bg);border:1px dashed rgba(233,69,96,.3);border-radius:var(--radius-sm);padding:8px 12px;margin-bottom:12px;font-size:.78rem;color:var(--red2);display:flex;align-items:flex-start;gap:6px}
+
+.summary{color:var(--text2);font-size:.85rem;line-height:1.75;margin-bottom:12px}
+
+.excerpt-block{background:#0a0a0f;border-right:2px solid var(--border2);padding:9px 12px;margin-bottom:12px;border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.exc-lbl{font-size:.6rem;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:4px}
+.exc-text{font-size:.78rem;color:#777;line-height:1.6;font-style:italic}
+.exc-location{font-size:.65rem;color:var(--border2);margin-top:4px}
+.exc-link{font-size:.72rem;color:var(--red);text-decoration:none;display:inline-flex;align-items:center;gap:3px;margin-top:5px}
+.exc-link:hover{text-decoration:underline}
+
+.screen-lbl{font-size:.62rem;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:4px}
+.screen-box{background:#000;border:1px solid var(--border2);border-radius:var(--radius-sm);padding:8px 12px;font-size:.85rem;color:var(--gold);font-weight:600;margin-bottom:6px}
+.hook-box{background:var(--purple-bg);border:1px solid rgba(139,92,246,.2);border-radius:var(--radius-sm);padding:7px 12px;font-size:.78rem;color:var(--purple);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+
+/* Card actions */
+.card-actions{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.btn{display:inline-flex;align-items:center;gap:4px;padding:7px 12px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-size:.76rem;font-weight:600;transition:var(--transition);text-decoration:none;white-space:nowrap}
+.btn:hover{opacity:.84;transform:translateY(-1px)}
+.btn:active{transform:none}
+.btn-red{background:var(--red);color:#fff}
+.btn-green{background:var(--green);color:#fff}
+.btn-purple{background:var(--purple);color:#fff}
+.btn-gray{background:var(--bg4);color:var(--text2);border:1px solid var(--border)}
+.btn-gold{background:var(--gold);color:#000}
+.btn-outline{background:transparent;border:1px solid var(--border2);color:var(--text2)}
+.btn-outline:hover{border-color:var(--text2);color:var(--text)}
+
+/* Status strip */
+.status-strip{border-top:1px solid var(--border);padding:10px 14px;display:flex;gap:6px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:.71rem;font-weight:600;cursor:pointer;border:1px solid transparent;transition:var(--transition);user-select:none}
+.chip.done{background:var(--green-bg);border-color:rgba(37,211,102,.3);color:var(--green)}
+.chip.pending{background:var(--bg4);border-color:var(--border);color:var(--text3)}
+.chip:hover{border-color:var(--text3);color:var(--text)}
+
+/* Video performance */
+.video-section{border-top:1px solid var(--border);padding:12px 14px}
+.video-lbl{font-size:.68rem;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.perf-row{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+.perf-btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--bg4);color:var(--text3);font-size:.73rem;font-weight:600;cursor:pointer;transition:var(--transition)}
+.perf-btn.filmed{background:var(--blue-bg);border-color:rgba(59,130,246,.3);color:var(--blue)}
+.perf-btn.worked{background:var(--green-bg);border-color:rgba(37,211,102,.3);color:var(--green)}
+.perf-btn.notwork{background:var(--red-bg);border-color:rgba(233,69,96,.3);color:var(--red)}
+.perf-btn.waiting{background:var(--gold-bg);border-color:rgba(245,166,35,.3);color:var(--gold)}
+textarea.notes{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;color:var(--text2);font-size:.78rem;resize:none;min-height:44px;font-family:inherit;transition:var(--transition)}
+textarea.notes:focus{outline:none;border-color:var(--border2)}
+
+/* ── Community tab ───────────────────────────────── */
+.comm-card{background:var(--bg2);border:1px solid rgba(37,211,102,.25);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.comm-text{color:var(--text2);line-height:1.85;white-space:pre-wrap;font-size:.88rem;margin-bottom:16px}
+.comm-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn-wa{background:var(--green);color:#fff;padding:9px 18px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-weight:700;font-size:.82rem;display:inline-flex;align-items:center;gap:6px;transition:var(--transition)}
+.btn-wa:hover{opacity:.88;transform:translateY(-1px)}
+
+/* ── Instagram tab ───────────────────────────────── */
+.ig-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.ig-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.ig-card-hdr{background:var(--bg3);padding:12px 15px;display:flex;align-items:center;gap:8px}
+.ig-body{padding:15px}
+.ig-img{width:100%;border-radius:var(--radius-sm);max-height:180px;object-fit:cover;margin-bottom:12px;display:block}
+.ig-hint{background:var(--gold-bg);border:1px dashed rgba(245,166,35,.3);border-radius:var(--radius-sm);padding:8px 12px;font-size:.76rem;color:var(--gold);display:flex;gap:6px;margin-bottom:12px}
+.caption-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:13px;font-size:.84rem;line-height:1.8;color:var(--text2);white-space:pre-wrap;margin-bottom:10px;max-height:200px;overflow-y:auto}
+.hashtags{color:var(--purple);font-size:.76rem;line-height:1.9;word-break:break-word;margin-bottom:12px}
+
+/* ── Poll tab ────────────────────────────────────── */
+.poll-wrapper{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:700px){.poll-wrapper{grid-template-columns:1fr}}
+.poll-card{background:var(--bg2);border:1px solid rgba(245,166,35,.25);border-radius:var(--radius);padding:18px}
+.ig-poll-card{background:var(--bg2);border:1px solid rgba(139,92,246,.25);border-radius:var(--radius);padding:18px}
+.poll-card-title{font-weight:700;font-size:.88rem;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.poll-q{font-size:.92rem;color:var(--text);margin-bottom:12px}
+.poll-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.poll-opt{background:rgba(245,166,35,.04);border:1px solid rgba(245,166,35,.1);border-radius:var(--radius-sm);padding:9px 12px;font-size:.85rem;display:flex;align-items:center;gap:8px}
+.poll-num{width:22px;height:22px;background:var(--gold);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.72rem;flex-shrink:0}
+.ig-poll-num{background:var(--purple)}
+.poll-msg{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-size:.82rem;color:var(--text2);white-space:pre-wrap;line-height:1.7;margin-bottom:12px;max-height:180px;overflow-y:auto}
+.approval-section{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.approval-badge{font-size:.7rem;padding:3px 10px;border-radius:10px;background:var(--gold-bg);color:var(--gold);border:1px solid rgba(245,166,35,.2);font-weight:600}
+.approval-badge.ok{background:var(--green-bg);color:var(--green);border-color:rgba(37,211,102,.2)}
+.winner-section{border-top:1px solid var(--border);padding-top:14px;margin-top:14px}
+.winner-lbl{font-size:.74rem;color:var(--text3);margin-bottom:7px}
+.winner-sel{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:var(--radius-sm);font-size:.83rem;cursor:pointer;margin-bottom:7px}
+.winner-ok{font-size:.76rem;color:var(--green);display:none;margin-top:5px}
+
+/* ── Tracking tab ────────────────────────────────── */
+.track-summary{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.track-kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center}
+.track-kpi-val{font-size:1.8rem;font-weight:700;margin-bottom:2px}
+.track-kpi-lbl{font-size:.7rem;color:var(--text3)}
+.track-table{width:100%;border-collapse:collapse;background:var(--bg2);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
+.track-table th{background:var(--bg3);padding:10px 14px;text-align:right;font-size:.72rem;color:var(--text3);font-weight:600;border-bottom:1px solid var(--border)}
+.track-table td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:.82rem;vertical-align:middle}
+.track-table tr:last-child td{border-bottom:none}
+.track-table tr:hover td{background:rgba(255,255,255,.02)}
+.tc{width:24px;height:24px;border-radius:50%;border:none;cursor:pointer;font-size:.82rem;display:inline-flex;align-items:center;justify-content:center;transition:var(--transition)}
+.tc.done{background:var(--green-bg);color:var(--green)}
+.tc.not{background:var(--bg4);color:var(--text3)}
+.perf-sel{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:4px 8px;border-radius:6px;font-size:.74rem;cursor:pointer}
+.track-card-title{font-weight:500;font-size:.82rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.global-track{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-top:16px}
+.global-track-title{font-size:.72rem;color:var(--text3);margin-bottom:10px}
+.global-chips{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ── Modals ──────────────────────────────────────── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+.overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.6);animation:modalIn .2s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:none}}
+.modal-hdr{padding:20px 22px 0;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.modal-hdr h3{font-size:1rem;font-weight:700}
+.modal-close{background:var(--bg4);border:none;color:var(--text2);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:var(--transition)}
+.modal-close:hover{background:var(--border2);color:var(--text)}
+.modal-body{padding:0 22px 22px}
+.script-text{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px;line-height:1.85;color:var(--text2);font-size:.88rem;white-space:pre-wrap;margin-bottom:14px;font-family:inherit;max-height:400px;overflow-y:auto}
+.modal-copy{width:100%;padding:11px;background:var(--red);color:#fff;border:none;border-radius:var(--radius-sm);font-size:.88rem;font-weight:700;cursor:pointer;transition:var(--transition)}
+.modal-copy:hover{opacity:.9}
+
+/* ── Toast ───────────────────────────────────────── */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1e1e2e;border:1px solid var(--border2);color:var(--text);padding:10px 20px;border-radius:30px;font-size:.82rem;font-weight:600;opacity:0;transition:opacity .25s;z-index:1000;pointer-events:none;display:flex;align-items:center;gap:8px}
+.toast.show{opacity:1}
+
+/* ── Empty state ─────────────────────────────────── */
+.empty{text-align:center;padding:80px 24px;color:var(--text3)}
+.empty-icon{font-size:3rem;margin-bottom:16px;opacity:.5}
+.empty h2{font-size:1.1rem;color:var(--text2);margin-bottom:8px}
+.empty p{font-size:.85rem;line-height:1.6}
+.empty code{background:var(--bg3);padding:2px 8px;border-radius:4px;font-size:.8rem;color:var(--red)}
+
+/* ── Mobile ──────────────────────────────────────── */
+@media(max-width:600px){
+  header,main,.week-nav,.tabs,.stats-bar{padding-right:14px;padding-left:14px}
+  .cards-grid,.ig-grid{grid-template-columns:1fr}
+  .modal{max-width:100%;border-radius:16px 16px 0 0;position:fixed;bottom:0;left:0;right:0;max-height:80vh}
+  .overlay{align-items:flex-end;padding:0}
+}
+</style>
+</head>
+<body>
+
+<!-- ── Header ─────────────────────────────────────── -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">💪</div>
+    <div class="logo-text">אביאל <span>מנהל תוכן</span></div>
+  </div>
+  <div class="header-meta">
+    <div class="live-badge"><div class="live-dot"></div><span id="weekLabel">טוען...</span></div>
+    <div class="week-pill" id="weekTheme" style="display:none"></div>
+  </div>
+</header>
+
+<!-- ── Stats bar ──────────────────────────────────── -->
+<div class="stats-bar" id="statsBar">
+  <div class="stat"><span class="stat-icon">📊</span><span class="stat-val" id="st-res">—</span><span class="stat-lbl">מחקרים</span></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><span class="stat-icon">📲</span><span class="stat-val" id="st-wa">—</span><span class="stat-lbl">נשלח לקבוצה</span></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><span class="stat-icon">📸</span><span class="stat-val" id="st-ig">—</span><span class="stat-lbl">אינסטגרם</span></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><span class="stat-icon">🎥</span><span class="stat-val" id="st-vid">—</span><span class="stat-lbl">סרטונים</span></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><span class="stat-icon">🔥</span><span class="stat-val" id="st-ok">—</span><span class="stat-lbl">עבדו</span></div>
+  <div class="trend-chip" id="trendChip" style="display:none"></div>
+</div>
+
+<!-- ── Week nav ───────────────────────────────────── -->
+<div class="week-nav" id="weekNav"></div>
+
+<!-- ── Tabs ──────────────────────────────────────── -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="tab('research',this)">📊 מחקרים<span class="badge" id="badge-research">3</span></button>
+  <button class="tab-btn" onclick="tab('community',this)">💬 קהילה</button>
+  <button class="tab-btn" onclick="tab('instagram',this)">📸 אינסטגרם</button>
+  <button class="tab-btn" onclick="tab('poll',this)">📣 פול</button>
+  <button class="tab-btn" onclick="tab('tracking',this)">📋 מעקב</button>
+</div>
+
+<main>
+
+<!-- ═══ TAB: מחקרים ════════════════════════════════ -->
+<div class="tab-panel active" id="tab-research">
+  <div id="resContainer"></div>
+</div>
+
+<!-- ═══ TAB: קהילה ════════════════════════════════ -->
+<div class="tab-panel" id="tab-community">
+  <div class="section-title">הודעה מוכנה לקבוצת הווטסאפ</div>
+  <div class="comm-card">
+    <div class="comm-text" id="commText"></div>
+    <div class="comm-actions">
+      <button class="btn-wa" onclick="sendWA('community')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        שלח לקבוצה
+      </button>
+      <button class="btn btn-gray" onclick="copy(gEl('commText').textContent)">📋 העתק</button>
+      <button class="btn btn-outline" onclick="flipStatus('comm_sent')">✅ סמן כנשלח</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TAB: אינסטגרם ═══════════════════════════════ -->
+<div class="tab-panel" id="tab-instagram">
+  <div id="igContainer"></div>
+</div>
+
+<!-- ═══ TAB: פול ════════════════════════════════════ -->
+<div class="tab-panel" id="tab-poll">
+  <div class="approval-section">
+    <span style="font-size:1rem">🔐</span>
+    <div style="flex:1">
+      <div style="font-weight:600;font-size:.88rem;margin-bottom:2px">בקרה לפני שליחה</div>
+      <div style="font-size:.76rem;color:var(--text3)">ראה את הפול, ערוך אם צריך, ולחץ אשר.</div>
+    </div>
+    <span class="approval-badge" id="appBadge">ממתין לאישור</span>
+  </div>
+
+  <div class="poll-wrapper">
+    <div class="poll-card">
+      <div class="poll-card-title">📣 פול לווטסאפ</div>
+      <div class="poll-q" id="pollQ"></div>
+      <div class="poll-opts" id="pollOpts"></div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-size:.8rem;color:var(--text3);white-space:pre-wrap;line-height:1.7;margin-bottom:12px;max-height:160px;overflow-y:auto" id="pollWaText"></div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap">
+        <button class="btn btn-gold" onclick="approvePoll()">✅ אשר ושלח</button>
+        <button class="btn btn-gray" onclick="copy(gEl('pollWaText').textContent)">📋 העתק</button>
+      </div>
+    </div>
+
+    <div class="ig-poll-card">
+      <div class="poll-card-title" style="color:var(--purple)">📸 גרסת אינסטגרם</div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-size:.8rem;color:var(--text2);white-space:pre-wrap;line-height:1.7;margin-bottom:12px;max-height:220px;overflow-y:auto" id="pollIgText"></div>
+      <div style="display:flex;gap:7px">
+        <button class="btn btn-purple" onclick="copy(gEl('pollIgText').textContent)">📋 העתק לאינסטגרם</button>
+        <button class="btn btn-outline" onclick="flipStatus('ig_poll_sent')">✅ פורסם</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-top:16px">
+    <div class="winner-lbl">📥 אחרי ההצבעה — בחר את הנושא המנצח (לבוט השבוע הבא)</div>
+    <select class="winner-sel" id="winnerSel"><option value="">-- בחר נושא מנצח --</option></select>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-green" onclick="saveWinner()">💾 שמור נושא מנצח</button>
+    </div>
+    <div class="winner-ok" id="winnerOk">✅ נשמר! הבוט ישתמש בנושא הזה בשבוע הבא</div>
+  </div>
+</div>
+
+<!-- ═══ TAB: מעקב ════════════════════════════════════ -->
+<div class="tab-panel" id="tab-tracking">
+  <div class="track-summary" id="kpiRow"></div>
+  <div class="section-title">מעקב פר מחקר</div>
+  <div style="overflow-x:auto">
+    <table class="track-table">
+      <thead><tr>
+        <th>מחקר</th><th>קבוצה</th><th>אינסטגרם</th><th>צולם</th><th>ביצועים</th>
+      </tr></thead>
+      <tbody id="trackBody"></tbody>
+    </table>
+  </div>
+  <div class="global-track">
+    <div class="global-track-title">מעקב כללי לשבוע</div>
+    <div class="global-chips" id="globalChips"></div>
+  </div>
+</div>
+
+</main>
+
+<!-- Script modal -->
+<div class="overlay" id="scriptModal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h3>📹 תסריט הסרטון</h3>
+      <button class="modal-close" onclick="closeModal('scriptModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <pre class="script-text" id="scriptText"></pre>
+      <button class="modal-copy" onclick="copy(gEl('scriptText').textContent)">📋 העתק תסריט</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toastIcon">✓</span><span id="toastMsg"></span></div>
+
+<script src="data.js"></script>
+<script>
+// ── State & utils ─────────────────────────────────────────────────────────
+let WI = 0; // week index
+
+const gEl = id => document.getElementById(id);
+const esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+function stk(suf)    { return `av_${(RESEARCH_DATA[WI]?.week_date||'x')}_${suf}`; }
+function st(k)       { return localStorage.getItem(stk(k)); }
+function setSt(k,v)  { localStorage.setItem(stk(k), v); }
+
+function copy(t) {
+  navigator.clipboard.writeText(t||'').then(()=>toast('📋','הועתק!')).catch(()=>toast('❌','שגיאה'));
+}
+
+function toast(icon, msg, dur=2200) {
+  gEl('toastIcon').textContent = icon;
+  gEl('toastMsg').textContent  = msg;
+  const el = gEl('toast');
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), dur);
+}
+
+function tab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  gEl('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+
+function closeModal(id) { gEl(id).classList.remove('open'); }
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.overlay.open').forEach(o=>o.classList.remove('open'))});
+
+// ── Init ──────────────────────────────────────────────────────────────────
+function init() {
+  if(typeof RESEARCH_DATA==='undefined'||!RESEARCH_DATA.length) {
+    gEl('resContainer').innerHTML = `<div class="empty"><div class="empty-icon">🔬</div><h2>אין גיליונות עדיין</h2><p>הרץ את <code>weekly_research_bot.py</code> כדי לייצר את הגיליון הראשון</p></div>`;
+    gEl('weekLabel').textContent = 'אין נתונים';
+    return;
+  }
+  buildWeekNav(); renderWeek(0);
+}
+
+function buildWeekNav() {
+  const nav = gEl('weekNav');
+  RESEARCH_DATA.forEach((w,i)=>{
+    const b = document.createElement('button');
+    b.className = 'week-btn'+(i===0?' active':'');
+    b.textContent = fmtDate(w.week_date);
+    b.onclick = ()=>{ nav.querySelectorAll('.week-btn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); renderWeek(i); };
+    nav.appendChild(b);
+  });
+}
+
+// ── Render week ───────────────────────────────────────────────────────────
+function renderWeek(i) {
+  WI = i;
+  const w    = RESEARCH_DATA[i];
+  const best = w.best_video_pick || 1;
+
+  gEl('weekLabel').textContent  = fmtDate(w.week_date);
+  const themeEl = gEl('weekTheme');
+  if (w.week_theme) { themeEl.textContent = w.week_theme; themeEl.style.display = ''; }
+  else themeEl.style.display = 'none';
+  const trendEl = gEl('trendChip');
+  if (w.trend_alert) { trendEl.textContent = '⚡ '+w.trend_alert; trendEl.style.display = ''; }
+  else trendEl.style.display = 'none';
+  gEl('badge-research').textContent = w.researches?.length || 0;
+
+  renderResearch(w, best);
+  renderCommunity(w);
+  renderInstagram(w, best);
+  renderPoll(w);
+  renderTracking(w);
+  updateStats(w);
+}
+
+// ── Stats ─────────────────────────────────────────────────────────────────
+function updateStats(w) {
+  const rs    = w.researches || [];
+  const waSent = rs.filter(r=>st(`wa_${r.id}`)===`1`).length;
+  const igSent = rs.filter(r=>st(`ig_${r.id}`)===`1`).length;
+  const filmed = rs.filter(r=>['filmed','worked','notwork'].includes(st(`pf_${r.id}`))).length;
+  const worked = rs.filter(r=>st(`pf_${r.id}`)==='worked').length;
+
+  const fmt = (v,t) => `${v}/${t}`;
+  gEl('st-res').textContent = rs.length;
+  gEl('st-wa').textContent  = fmt(waSent, rs.length);
+  gEl('st-ig').textContent  = fmt(igSent, rs.length);
+  gEl('st-vid').textContent = fmt(filmed, rs.length);
+  gEl('st-ok').textContent  = worked;
+}
+
+// ── Research ──────────────────────────────────────────────────────────────
+function renderResearch(w, best) {
+  gEl('resContainer').innerHTML =
+    `<div class="section-title">מחקרי השבוע — ${w.researches.length} מחקרים</div>
+     <div class="cards-grid">${w.researches.map(r=>resCard(r,best)).join('')}</div>`;
+  refreshAllStatus(w);
+}
+
+function resCard(r, best) {
+  const isBest = r.id === best;
+  const imgHtml = r.image_url
+    ? `<img class="card-img" src="${esc(r.image_url)}" onerror="this.remove()">`
+    : '';
+  const hintHtml = r.image_hint && !r.image_url
+    ? `<div class="img-hint-bar">🖼️ ${esc(r.image_hint)}</div>` : '';
+  const wowHtml  = r.wow_factor ? `<div class="wow">💥 <span>${esc(r.wow_factor)}</span></div>` : '';
+  const hookHtml = r.video_hook ? `<div class="hook-box">🎬 Hook: <strong>${esc(r.video_hook)}</strong></div>` : '';
+  const excHtml  = r.excerpt ? `
+    <div class="excerpt-block">
+      <div class="exc-lbl">ציטוט ישיר מהמחקר</div>
+      <div class="exc-text">"${esc(r.excerpt)}"</div>
+      ${r.excerpt_location?`<div class="exc-location">📍 ${esc(r.excerpt_location)}</div>`:''}
+      ${r.source_url?`<a class="exc-link" href="${esc(r.source_url)}" target="_blank" rel="noopener">🔗 ${esc(r.source_name||'מקור')} ↗</a>`:''}
+    </div>` : '';
+
+  return `
+  <div class="card${isBest?' best':''}" id="card-${r.id}">
+    <div class="card-hdr">
+      <div class="card-num${isBest?' gold':''}">${r.id}</div>
+      <div class="card-hdr-info">
+        <div class="card-title">${esc(r.title)}</div>
+        <div class="card-meta">
+          <span class="badge badge-type">${esc(r.research_type)}</span>
+          <span class="badge badge-source">${esc(r.source_name||'')}</span>
+        </div>
+      </div>
+    </div>
+    ${imgHtml}${hintHtml}
+    <div class="card-body">
+      <div class="stat-chip">📊 ${esc(r.key_stat)}</div>
+      ${wowHtml}
+      <div class="summary">${esc(r.summary)}</div>
+      ${excHtml}
+      <div class="screen-lbl">טקסט לגבי הסרטון</div>
+      <div class="screen-box">🎬 ${esc(r.screen_text)}</div>
+      ${hookHtml}
+      <div class="card-actions">
+        <button class="btn btn-red"    onclick="openScript(${r.id})">📹 תסריט מלא</button>
+        <button class="btn btn-purple" onclick="goIg(${r.id})">📸 אינסטגרם</button>
+        <button class="btn btn-green"  onclick="copy(${JSON.stringify(r.screen_text)})">📋 העתק</button>
+        ${r.source_url?`<a class="btn btn-outline" href="${esc(r.source_url)}" target="_blank" rel="noopener">🔗 מקור</a>`:''}
+      </div>
+    </div>
+    <div class="status-strip" id="ss-${r.id}">
+      <span class="chip pending" id="chip-wa-${r.id}" onclick="toggleChip('wa',${r.id})">📲 לא נשלח לקבוצה</span>
+      <span class="chip pending" id="chip-ig-${r.id}" onclick="toggleChip('ig',${r.id})">📸 לא פורסם</span>
+    </div>
+    <div class="video-section">
+      <div class="video-lbl">📹 מעקב סרטון</div>
+      <div class="perf-row">
+        <button class="perf-btn" id="pf-filmed-${r.id}" onclick="setPerf(${r.id},'filmed')">🎥 צולם</button>
+        <button class="perf-btn" id="pf-worked-${r.id}" onclick="setPerf(${r.id},'worked')">🔥 עבד מעולה</button>
+        <button class="perf-btn" id="pf-notwork-${r.id}" onclick="setPerf(${r.id},'notwork')">📉 לא עבד</button>
+        <button class="perf-btn" id="pf-waiting-${r.id}" onclick="setPerf(${r.id},'waiting')">⏳ עדיין לא</button>
+      </div>
+      <textarea class="notes" id="nt-${r.id}" placeholder="הערות על הסרטון (אפשר לכתוב כמה צפיות, תגובות, מה עבד...)" onblur="saveNote(${r.id})"></textarea>
+    </div>
+  </div>`;
+}
+
+// ── Status chip logic ─────────────────────────────────────────────────────
+function toggleChip(type, id) {
+  const key  = `${type}_${id}`;
+  const done = st(key) !== '1';
+  setSt(key, done ? '1' : '0');
+  renderChip(type, id, done);
+  updateStats(RESEARCH_DATA[WI]);
+  updateTrackRow(id);
+  toast(done?'✅':'↩', done?'סומן כבוצע':'בוטל');
+}
+function renderChip(type, id, done) {
+  const el = gEl(`chip-${type}-${id}`);
+  if (!el) return;
+  el.className = 'chip '+(done?'done':'pending');
+  el.textContent = type==='wa'
+    ? (done?'✅ נשלח לקבוצה':'📲 לא נשלח לקבוצה')
+    : (done?'✅ פורסם':'📸 לא פורסם');
+}
+
+function setPerf(id, val) {
+  setSt(`pf_${id}`, val);
+  ['filmed','worked','notwork','waiting'].forEach(v=>{
+    const b = gEl(`pf-${v}-${id}`);
+    if (b) b.className = 'perf-btn'+(val===v?` ${v}`:'');
+  });
+  updateStats(RESEARCH_DATA[WI]);
+  updateTrackRow(id);
+  const msgs = {filmed:'🎥 צוין — צולם!', worked:'🔥 מעולה!', notwork:'📉 נרשם', waiting:'⏳ בסדר'};
+  toast(val==='worked'?'🔥':'📝', msgs[val]||'');
+}
+function saveNote(id) { const el=gEl(`nt-${id}`); if(el) setSt(`nt_${id}`,el.value); }
+
+function refreshAllStatus(w) {
+  (w.researches||[]).forEach(r=>{
+    renderChip('wa', r.id, st(`wa_${r.id}`)===`1`);
+    renderChip('ig', r.id, st(`ig_${r.id}`)===`1`);
+    const pf = st(`pf_${r.id}`)||'';
+    if (pf) ['filmed','worked','notwork','waiting'].forEach(v=>{
+      const b=gEl(`pf-${v}-${r.id}`); if(b) b.className='perf-btn'+(pf===v?` ${v}`:'');
+    });
+    const nt=gEl(`nt-${r.id}`); if(nt) nt.value=st(`nt_${r.id}`)||'';
+  });
+  refreshGlobalChips();
+}
+
+function flipStatus(key) { setSt(key, st(key)==='1'?'0':'1'); refreshGlobalChips(); toast('✅','סטטוס עודכן'); }
+function refreshGlobalChips() {
+  const items = [
+    {k:'comm_sent', lbl:'קבוצה נשלחה'},
+    {k:'poll_sent', lbl:'פול נשלח'},
+    {k:'ig_poll_sent', lbl:'פול אינסטגרם'},
+  ];
+  const el = gEl('globalChips');
+  if (el) el.innerHTML = items.map(({k,lbl})=>{
+    const done = st(k)==='1';
+    return `<span class="chip ${done?'done':'pending'}" onclick="flipStatus('${k}')">${done?'✅':'⬜'} ${lbl}</span>`;
+  }).join('');
+}
+
+// ── Script modal ──────────────────────────────────────────────────────────
+function openScript(id) {
+  const r = RESEARCH_DATA[WI]?.researches?.find(x=>x.id===id);
+  if (!r) return;
+  gEl('scriptText').textContent = r.video_script||'';
+  gEl('scriptModal').classList.add('open');
+}
+
+// ── Instagram ─────────────────────────────────────────────────────────────
+function renderInstagram(w, best) {
+  gEl('igContainer').innerHTML =
+    `<div class="section-title">קפשן + האשטגים לפרסום</div>
+     <div class="ig-grid">${(w.researches||[]).map(r=>igCard(r,best)).join('')}</div>`;
+}
+
+function igCard(r, best) {
+  const isBest = r.id === best;
+  const imgHtml = r.image_url
+    ? `<img class="ig-img" src="${esc(r.image_url)}" onerror="this.remove()">`
+    : r.image_hint ? `<div class="ig-hint">🖼️ <span>${esc(r.image_hint)}</span></div>` : '';
+
+  return `
+  <div class="ig-card">
+    <div class="ig-card-hdr">
+      <div class="card-num${isBest?' gold':''}">${r.id}</div>
+      <div style="flex:1"><div class="card-title">${isBest?'⭐ ':''}${esc(r.title)}</div></div>
+    </div>
+    <div class="ig-body">
+      ${imgHtml}
+      <div class="exc-lbl" style="margin-bottom:6px">קפשן</div>
+      <div class="caption-box" id="igcap-${r.id}">${esc(r.instagram_caption||r.summary||'')}</div>
+      <div class="hashtags" id="ighash-${r.id}">${esc(r.instagram_hashtags||'')}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-purple" onclick="copy(gEl('igcap-${r.id}').textContent+'\\n\\n'+gEl('ighash-${r.id}').textContent)">📋 העתק הכל</button>
+        <button class="btn btn-gray"   onclick="copy(gEl('igcap-${r.id}').textContent)">📝 קפשן בלבד</button>
+        <button class="btn btn-outline" onclick="toggleChip('ig',${r.id});updateStats(RESEARCH_DATA[WI])">✅ פורסם</button>
+        ${r.source_url?`<a class="btn btn-outline" href="${esc(r.source_url)}" target="_blank" rel="noopener">🔗 מקור</a>`:''}
+      </div>
+    </div>
+  </div>`;
+}
+
+function goIg(id) {
+  tab('instagram', document.querySelectorAll('.tab-btn')[2]);
+  setTimeout(()=>{ const el=gEl(`igcap-${id}`); if(el) el.closest('.ig-card')?.scrollIntoView({behavior:'smooth',block:'start'}); }, 120);
+}
+
+// ── Poll ──────────────────────────────────────────────────────────────────
+function renderPoll(w) {
+  const p = w.poll || {};
+  gEl('pollQ').textContent     = p.question || '';
+  gEl('pollWaText').textContent = p.whatsapp_text || '';
+  gEl('pollIgText').textContent = p.instagram_text || '';
+
+  gEl('pollOpts').innerHTML = (p.options||[]).map((o,i)=>
+    `<div class="poll-opt"><div class="poll-num">${i+1}</div><span>${esc(o)}</span></div>`
+  ).join('');
+
+  const sel = gEl('winnerSel');
+  sel.innerHTML = '<option value="">-- בחר נושא מנצח --</option>' +
+    (p.options||[]).map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join('');
+}
+
+function approvePoll() {
+  const badge = gEl('appBadge');
+  badge.textContent = '✅ אושר ונשלח'; badge.className = 'approval-badge ok';
+  setSt('poll_sent','1');
+  const text = RESEARCH_DATA[WI]?.poll?.whatsapp_text || '';
+  copy(text);
+  if (text) setTimeout(()=>sendWA('poll'), 300);
+  refreshGlobalChips();
+  toast('✅','הפול אושר ונשלח!');
+}
+
+function saveWinner() {
+  const val = gEl('winnerSel').value;
+  if (!val) return;
+  localStorage.setItem('aviel_winner', val);
+  localStorage.setItem('aviel_winner_date', new Date().toISOString());
+  gEl('winnerOk').style.display = 'block';
+  toast('💾','נושא מנצח נשמר!');
+  setTimeout(()=>alert(`✅ נשמר!\n\nלהפעיל עבור הבוט:\npython3 save_winner.py "${val}"`), 400);
+}
+
+// ── Tracking ──────────────────────────────────────────────────────────────
+function renderTracking(w) {
+  const rs   = w.researches || [];
+  // KPI row
+  const waSent = rs.filter(r=>st(`wa_${r.id}`)===`1`).length;
+  const igSent = rs.filter(r=>st(`ig_${r.id}`)===`1`).length;
+  const filmed = rs.filter(r=>['filmed','worked','notwork'].includes(st(`pf_${r.id}`))).length;
+  const worked = rs.filter(r=>st(`pf_${r.id}`)==='worked').length;
+
+  const kpis = [
+    {val:rs.length,      lbl:'מחקרים',      color:'var(--text)'},
+    {val:`${waSent}/${rs.length}`, lbl:'נשלח לקבוצה', color:'var(--green)'},
+    {val:`${igSent}/${rs.length}`, lbl:'אינסטגרם',    color:'var(--purple)'},
+    {val:`${filmed}/${rs.length}`, lbl:'סרטונים צולמו',color:'var(--blue)'},
+    {val:worked,         lbl:'עבדו מצוין',  color:'var(--red)'},
+  ];
+  gEl('kpiRow').innerHTML = kpis.map(k=>
+    `<div class="track-kpi"><div class="track-kpi-val" style="color:${k.color}">${k.val}</div><div class="track-kpi-lbl">${k.lbl}</div></div>`
+  ).join('');
+
+  // Table
+  gEl('trackBody').innerHTML = rs.map(r=>{
+    const wa    = st(`wa_${r.id}`)===`1`;
+    const ig    = st(`ig_${r.id}`)===`1`;
+    const pf    = st(`pf_${r.id}`) || '';
+    const pfMap = {'':'-- בחר --','filmed':'🎥 צולם','worked':'🔥 עבד','notwork':'📉 לא עבד','waiting':'⏳ בהמתנה'};
+    const pfSel = Object.entries(pfMap).map(([v,l])=>`<option value="${v}"${pf===v?' selected':''}>${l}</option>`).join('');
+    return `<tr id="tr-${r.id}">
+      <td><div class="track-card-title" title="${esc(r.title)}">${esc(r.title)}</div></td>
+      <td><button class="tc ${wa?'done':'not'}" id="tc-wa-${r.id}" onclick="trToggle('wa_${r.id}','tc-wa-${r.id}','wa',${r.id})">${wa?'✅':'⬜'}</button></td>
+      <td><button class="tc ${ig?'done':'not'}" id="tc-ig-${r.id}" onclick="trToggle('ig_${r.id}','tc-ig-${r.id}','ig',${r.id})">${ig?'✅':'⬜'}</button></td>
+      <td><button class="tc ${['filmed','worked','notwork'].includes(pf)?'done':'not'}" id="tc-fl-${r.id}" onclick="trFilm(${r.id})">${['filmed','worked','notwork'].includes(pf)?'✅':'⬜'}</button></td>
+      <td><select class="perf-sel" onchange="setPerf(${r.id},this.value)">${pfSel}</select></td>
+    </tr>`;
+  }).join('');
+
+  refreshGlobalChips();
+}
+
+function trToggle(stKey, btnId, type, id) {
+  const done = st(stKey) !== '1';
+  setSt(stKey, done?'1':'0');
+  const b = gEl(btnId);
+  if(b){b.className='tc '+(done?'done':'not');b.textContent=done?'✅':'⬜';}
+  renderChip(type, id, done);
+  updateStats(RESEARCH_DATA[WI]);
+  toast(done?'✅':'↩', done?'סומן':'בוטל');
+}
+function trFilm(id) { setPerf(id,'filmed'); const b=gEl(`tc-fl-${id}`); if(b){b.className='tc done';b.textContent='✅';} }
+function updateTrackRow(id) {
+  const pf=st(`pf_${id}`)||''; const wa=st(`wa_${id}`)===`1`; const ig=st(`ig_${id}`)===`1`;
+  const wb=gEl(`tc-wa-${id}`); if(wb){wb.className='tc '+(wa?'done':'not');wb.textContent=wa?'✅':'⬜';}
+  const ib=gEl(`tc-ig-${id}`); if(ib){ib.className='tc '+(ig?'done':'not');ib.textContent=ig?'✅':'⬜';}
+  const fb=gEl(`tc-fl-${id}`); if(fb){const f=['filmed','worked','notwork'].includes(pf);fb.className='tc '+(f?'done':'not');fb.textContent=f?'✅':'⬜';}
+}
+
+// ── WA send ───────────────────────────────────────────────────────────────
+function sendWA(type) {
+  const w = RESEARCH_DATA[WI];
+  const t = type==='community' ? w.community_message : (w.poll?.whatsapp_text||'');
+  if (t) window.open(`https://wa.me/?text=${encodeURIComponent(t)}`,'_blank');
+}
+
+// ── Community ─────────────────────────────────────────────────────────────
+function renderCommunity(w) {
+  const el = gEl('commText'); if(el) el.textContent = w.community_message || '';
+}
+
+// ── Format date ───────────────────────────────────────────────────────────
+function fmtDate(s) {
+  if(!s) return '?';
+  const d = new Date(s);
+  return d.toLocaleDateString('he-IL',{day:'numeric',month:'long',year:'numeric'});
+}
+
+init();
+</script>
+</body>
+</html>
