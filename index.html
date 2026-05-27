@@ -277,6 +277,29 @@ main { max-width:1240px; margin:0 auto; padding:24px 20px 100px }
 .btn-gray   { background:var(--bg4);    color:var(--text2); border:1px solid var(--border2) }
 .btn-outline{ background:transparent;   color:var(--text3); border:1px solid var(--border2) }
 .btn-outline:hover { border-color:var(--border3); color:var(--text2) }
+/* ── Feedback ── */
+.feedback-row { display:flex; gap:6px; padding:8px 14px; border-top:1px solid var(--border) }
+.fb-btn { flex:1; padding:5px 8px; border-radius:8px; border:1px solid var(--border);
+          background:transparent; color:var(--text3); cursor:pointer; font-size:.78rem;
+          transition:all .15s; }
+.fb-btn.liked    { background:rgba(34,197,94,.13); border-color:rgba(34,197,94,.45); color:#22c55e; font-weight:700 }
+.fb-btn.disliked { background:rgba(239,68,68,.13);  border-color:rgba(239,68,68,.45);  color:#ef4444; font-weight:700 }
+/* ── Topics bar ── */
+.topics-bar { display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+              padding:7px 14px; border-bottom:1px solid var(--border);
+              background:var(--bg2); font-size:.78rem }
+.topics-bar-lbl { color:var(--text2); white-space:nowrap }
+.topic-chip { display:inline-flex; align-items:center; gap:4px; padding:3px 10px 3px 12px;
+              border-radius:20px; background:rgba(139,92,246,.14); border:1px solid rgba(139,92,246,.35);
+              color:var(--purple2); cursor:default; white-space:nowrap }
+.topic-chip .chip-x { opacity:.5; cursor:pointer; transition:opacity .1s; font-size:.9em }
+.topic-chip .chip-x:hover { opacity:1 }
+.topics-input { flex:1; min-width:120px; max-width:220px; background:var(--bg3);
+               border:1px solid var(--border); border-radius:8px; padding:4px 10px;
+               color:var(--text); font-size:.78rem; outline:none }
+.topics-input::placeholder { color:var(--text3) }
+body.light .topics-bar { background:var(--bg2) }
+body.light .topics-input { background:#fff }
 .btn-wa {
   background:var(--green); color:#fff;
   padding:9px 18px; border-radius:var(--r-sm); border:none;
@@ -848,6 +871,15 @@ kbd { background:var(--bg4); border:1px solid var(--border3); border-radius:4px;
   </button>
 </div>
 
+<!-- ── Topics bar ──────────────────────────────────── -->
+<div class="topics-bar" id="topicsBar">
+  <span class="topics-bar-lbl">📌 נושאים שאני רוצה לראות:</span>
+  <div id="topicChips" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+  <input type="text" id="topicInput" class="topics-input"
+    placeholder="הוסף נושא... (Enter)"
+    onkeydown="if(event.key==='Enter'&&this.value.trim())addTopic(this.value)">
+</div>
+
 <!-- ── Week nav ───────────────────────────────────── -->
 <div class="week-nav" id="weekNav"></div>
 
@@ -1193,6 +1225,7 @@ function renderResearch(w, best) {
     `<div class="section-title"><b>מחקרים</b> ${w.researches.length} מחקרים השבוע</div>
      <div class="cards-grid">${w.researches.map(r=>resCard(r,best)).join('')}</div>`;
   refreshAllStatus(w);
+  restoreFeedbackButtons();
 }
 
 function resCard(r, best) {
@@ -1244,6 +1277,10 @@ function resCard(r, best) {
     <div class="status-strip" id="ss-${r.id}">
       <span class="chip pending" id="chip-wa-${r.id}" onclick="toggleChip('wa',${r.id})">📲 לא נשלח לקבוצה</span>
       <span class="chip pending" id="chip-ig-${r.id}" onclick="toggleChip('ig',${r.id})">📸 לא פורסם</span>
+    </div>
+    <div class="feedback-row">
+      <button class="fb-btn" id="fb-like-${r.id}" onclick="giveFeedback(${JSON.stringify(r.title)},${r.id},'like')">👍 עבד טוב — רוצה עוד כזה</button>
+      <button class="fb-btn" id="fb-dis-${r.id}"  onclick="giveFeedback(${JSON.stringify(r.title)},${r.id},'dislike')">👎 לא רלוונטי לי</button>
     </div>
     <div class="video-section">
       <div class="video-lbl">📹 מעקב סרטון</div>
@@ -1857,7 +1894,80 @@ function showLastRefresh() {
   el.title = d.toLocaleString('he-IL');
 }
 
+// ── Preferences — feedback + topics ──────────────────────────────────────────
+let _prefs = {liked:[],disliked:[],custom_topics:[]};
+
+function loadPrefs() {
+  try { _prefs = JSON.parse(localStorage.getItem('av_prefs') || '{}'); }
+  catch(e) {}
+  _prefs.liked         = _prefs.liked         || [];
+  _prefs.disliked      = _prefs.disliked      || [];
+  _prefs.custom_topics = _prefs.custom_topics || [];
+  renderTopicChips();
+}
+
+function restoreFeedbackButtons() {
+  // מחזיר מצב לחצנים אחרי render
+  _prefs.liked.forEach(f   => { gEl('fb-like-'+f.id)?.classList.add('liked'); });
+  _prefs.disliked.forEach(f => { gEl('fb-dis-'+f.id)?.classList.add('disliked'); });
+}
+
+function giveFeedback(title, id, type) {
+  const week = (typeof RESEARCH_DATA !== 'undefined' && RESEARCH_DATA[currentIdx])
+               ? RESEARCH_DATA[currentIdx].week_date : '';
+  _prefs.liked    = _prefs.liked.filter(f => f.id !== id);
+  _prefs.disliked = _prefs.disliked.filter(f => f.id !== id);
+  const entry = {id, title, week};
+  if (type === 'like') {
+    _prefs.liked.push(entry);
+    gEl('fb-like-'+id)?.classList.add('liked');
+    gEl('fb-dis-'+id)?.classList.remove('disliked');
+  } else {
+    _prefs.disliked.push(entry);
+    gEl('fb-dis-'+id)?.classList.add('disliked');
+    gEl('fb-like-'+id)?.classList.remove('liked');
+  }
+  savePrefs();
+  // אנימציה קלה
+  const btn = gEl(type==='like'?'fb-like-'+id:'fb-dis-'+id);
+  if (btn) { btn.style.transform='scale(1.08)'; setTimeout(()=>btn.style.transform='',200); }
+}
+
+function addTopic(val) {
+  val = val.trim();
+  if (!val) return;
+  if (!_prefs.custom_topics.includes(val)) {
+    _prefs.custom_topics.push(val);
+    savePrefs();
+    renderTopicChips();
+  }
+  const inp = gEl('topicInput'); if (inp) inp.value = '';
+}
+
+function removeTopic(val) {
+  _prefs.custom_topics = _prefs.custom_topics.filter(t => t !== val);
+  savePrefs();
+  renderTopicChips();
+}
+
+function renderTopicChips() {
+  const el = gEl('topicChips'); if (!el) return;
+  el.innerHTML = _prefs.custom_topics.map(t =>
+    `<span class="topic-chip">${esc(t)}<span class="chip-x" onclick="removeTopic('${t.replace(/'/g,"\\'")}')" title="הסר">✕</span></span>`
+  ).join('');
+}
+
+function savePrefs() {
+  localStorage.setItem('av_prefs', JSON.stringify(_prefs));
+  fetch('http://localhost:7775/save-prefs', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(_prefs)
+  }).catch(()=>{}); // שקט אם השרת כבוי
+}
+
 // ── GO! ───────────────────────────────────────────────────
+loadPrefs();
 init();
 showLastRefresh();
 </script>
