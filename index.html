@@ -179,8 +179,10 @@ header {
   padding:7px 12px;
   white-space:nowrap; flex-shrink:0;
   transition:var(--t);
+  cursor:pointer; font-family:inherit; text-align:right;
 }
-.stat-card:hover { border-color:var(--border2) }
+.stat-card:hover { border-color:var(--red); background:var(--bg4) }
+.stat-card:active { transform:scale(.97) }
 .stat-icon { font-size:.88rem }
 .stat-info { display:flex; flex-direction:column }
 .stat-val  { font-weight:800; font-size:.88rem; line-height:1.1 }
@@ -732,31 +734,31 @@ kbd { background:var(--bg4); border:1px solid var(--border3); border-radius:4px;
 
 <!-- ── Stats bar ──────────────────────────────────── -->
 <div class="stats-bar" id="statsBar">
-  <div class="stat-card">
+  <button class="stat-card" onclick="tab('research',document.querySelectorAll('.tab-btn')[0])" title="מחקרים">
     <span class="stat-icon">🔬</span>
     <div class="stat-info"><span class="stat-val" id="st-res">—</span><span class="stat-lbl">מחקרים</span></div>
-  </div>
-  <div class="stat-card">
+  </button>
+  <button class="stat-card" onclick="tab('community',document.querySelectorAll('.tab-btn')[1])" title="קהילה">
     <span class="stat-icon">📲</span>
     <div class="stat-info"><span class="stat-val" id="st-wa">—</span><span class="stat-lbl">נשלח לקבוצה</span></div>
-  </div>
-  <div class="stat-card">
+  </button>
+  <button class="stat-card" onclick="tab('instagram',document.querySelectorAll('.tab-btn')[2])" title="אינסטגרם">
     <span class="stat-icon">📸</span>
     <div class="stat-info"><span class="stat-val" id="st-ig">—</span><span class="stat-lbl">אינסטגרם</span></div>
-  </div>
-  <div class="stat-card">
+  </button>
+  <button class="stat-card" onclick="tab('tracking',document.querySelectorAll('.tab-btn')[4])" title="מעקב סרטונים">
     <span class="stat-icon">🎥</span>
     <div class="stat-info"><span class="stat-val" id="st-vid">—</span><span class="stat-lbl">סרטונים</span></div>
-  </div>
-  <div class="stat-card">
+  </button>
+  <button class="stat-card" onclick="tab('tracking',document.querySelectorAll('.tab-btn')[4])" title="עבדו מצוין">
     <span class="stat-icon">🔥</span>
     <div class="stat-info"><span class="stat-val" id="st-ok">—</span><span class="stat-lbl">עבדו</span></div>
-  </div>
-  <div class="trend-pill" id="trendChip" style="display:none">⚡</div>
-  <div class="stat-card" id="lastRefreshCard" style="margin-right:auto;border-color:rgba(96,165,250,.2)">
+  </button>
+  <div class="trend-pill" id="trendChip" style="display:none;cursor:pointer" onclick="tab('research',document.querySelectorAll('.tab-btn')[0])">⚡</div>
+  <button class="stat-card" id="lastRefreshCard" onclick="refreshBot()" title="לחץ לרענון" style="margin-right:auto;border-color:rgba(96,165,250,.2)">
     <span class="stat-icon">🕐</span>
     <div class="stat-info"><span class="stat-val" id="lastRefreshVal" style="color:var(--blue);font-size:.78rem">—</span><span class="stat-lbl">רענון אחרון</span></div>
-  </div>
+  </button>
 </div>
 
 <!-- ── Week nav ───────────────────────────────────── -->
