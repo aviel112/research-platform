@@ -368,6 +368,23 @@ main { max-width:1240px; margin:0 auto; padding:24px 20px 100px }
 .drop-zone-icon { font-size: 1.8rem; margin-bottom: 6px }
 .drop-zone-text { font-size: .8rem; color: var(--text3); line-height: 1.6 }
 .drop-zone-text span { font-size: .72rem; color: var(--text3) }
+.ap-mode-btn {
+  flex:1; padding:7px; border-radius:var(--r-sm); border:1px solid var(--border2);
+  background:var(--bg4); color:var(--text3); cursor:pointer;
+  font-size:.76rem; font-weight:700; transition:var(--t);
+}
+.ap-mode-btn.active { background:var(--gold); color:#000; border-color:var(--gold) }
+.frames-strip {
+  display:flex; gap:5px; flex-wrap:wrap; margin-bottom:8px;
+}
+.frames-strip img {
+  height:70px; border-radius:var(--r-xs);
+  border:1px solid var(--border2); object-fit:cover; flex:1; min-width:60px;
+}
+.vstatus {
+  font-size:.76rem; color:var(--gold); padding:6px 0;
+  display:flex; align-items:center; gap:6px;
+}
 
 /* ════════════════════════════════════════════════
    RESEARCH CARDS
@@ -1241,23 +1258,48 @@ function resCard(r, best) {
     </div>
     <!-- ── פוסט שעבד — ניתוח ──────────────────────── -->
     <div class="analyze-panel" id="ap-${r.id}">
-      <div class="analyze-panel-title">🔍 פוסט שעבד — צור דומה</div>
-      <!-- Drop zone -->
-      <div class="drop-zone" id="ap-drop-${r.id}"
+      <div class="analyze-panel-title">🔍 תוכן שעבד — צור דומה</div>
+      <!-- Toggle photo / video -->
+      <div style="display:flex;gap:6px;margin-bottom:10px">
+        <button class="ap-mode-btn active" id="ap-mode-img-${r.id}" onclick="apSetMode(${r.id},'img')">📸 תמונה / פוסט</button>
+        <button class="ap-mode-btn"        id="ap-mode-vid-${r.id}" onclick="apSetMode(${r.id},'vid')">🎬 סרטון / רילס</button>
+      </div>
+      <!-- Drop zone — תמונה -->
+      <div class="drop-zone" id="ap-drop-img-${r.id}"
         ondragover="event.preventDefault();this.classList.add('drag-over')"
         ondragleave="this.classList.remove('drag-over')"
-        ondrop="apDrop(event,${r.id})"
-        onclick="gEl('ap-file-${r.id}').click()">
+        ondrop="apDrop(event,${r.id},'img')"
+        onclick="gEl('ap-file-img-${r.id}').click()">
         <div class="drop-zone-icon">📸</div>
-        <div class="drop-zone-text">גרור סקרינשוט של הפוסט לכאן<br><span>או לחץ לבחור קובץ</span></div>
-        <input type="file" id="ap-file-${r.id}" accept="image/*" style="display:none"
-          onchange="apFileChange(event,${r.id})">
+        <div class="drop-zone-text">גרור סקרינשוט של הפוסט לכאן<br><span>או לחץ לבחור קובץ תמונה</span></div>
+        <input type="file" id="ap-file-img-${r.id}" accept="image/*" style="display:none"
+          onchange="apFileChange(event,${r.id},'img')">
       </div>
+      <!-- Drop zone — סרטון -->
+      <div class="drop-zone" id="ap-drop-vid-${r.id}" style="display:none"
+        ondragover="event.preventDefault();this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="apDrop(event,${r.id},'vid')"
+        onclick="gEl('ap-file-vid-${r.id}').click()">
+        <div class="drop-zone-icon">🎬</div>
+        <div class="drop-zone-text">גרור סרטון / רילס לכאן<br><span>Claude יחלץ 6 פריימים וינתח — MP4, MOV, עד 200MB</span></div>
+        <input type="file" id="ap-file-vid-${r.id}" accept="video/*" style="display:none"
+          onchange="apFileChange(event,${r.id},'vid')">
+      </div>
+      <!-- Preview תמונה -->
       <img class="analyze-img-preview" id="ap-prev-${r.id}" alt="">
-      <textarea class="analyze-input" id="ap-cap-${r.id}" placeholder="הדבק כאן את הקפשן של הפוסט (אופציונלי — מוסיף דיוק לניתוח)" rows="3" style="resize:none;margin-top:4px"></textarea>
+      <!-- Preview פריימים מסרטון -->
+      <div id="ap-frames-${r.id}" class="frames-strip"></div>
+      <!-- סטטוס חילוץ פריימים -->
+      <div id="ap-vstatus-${r.id}" class="vstatus" style="display:none"></div>
+      <!-- קנבס נסתר לחילוץ פריימים -->
+      <canvas id="ap-canvas-${r.id}" style="display:none"></canvas>
+      <textarea class="analyze-input" id="ap-cap-${r.id}"
+        placeholder="הדבק כאן קפשן / תיאור (אופציונלי — מוסיף דיוק לניתוח)"
+        rows="3" style="resize:none;margin-top:4px"></textarea>
       <button class="btn btn-gold" style="width:100%;justify-content:center;padding:10px;margin-top:4px"
         onclick="analyzePost(${r.id},'${esc(r.title)}')">
-        🔍 נתח ויצור פוסט דומה
+        🔍 נתח ויצור תוכן דומה
       </button>
       <div class="analyze-loading" id="ap-load-${r.id}">
         <span class="spin">🔍</span> מנתח עם Claude... (~10 שניות)
@@ -1273,12 +1315,17 @@ function resCard(r, best) {
           <div class="analyze-block-val" id="ap-caption-${r.id}"></div>
         </div>
         <div class="analyze-block">
-          <div class="analyze-block-lbl">הנחיית צילום</div>
+          <div class="analyze-block-lbl">הנחיית צילום / ויזואל</div>
           <div class="analyze-block-val" id="ap-imgdir-${r.id}" style="color:var(--gold)"></div>
+        </div>
+        <div class="analyze-block" id="ap-scriptlbl-${r.id}" style="display:none">
+          <div class="analyze-block-lbl">🎬 תסריט לרילס דומה</div>
+          <div class="analyze-block-val" id="ap-script-${r.id}" style="display:none;background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px;max-height:200px;overflow-y:auto"></div>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">
           <button class="btn btn-gold" onclick="copy(gEl('ap-caption-${r.id}').textContent+'\\n\\n'+gEl('ap-hash-${r.id}').textContent)">📋 העתק קפשן + האשטגים</button>
           <button class="btn btn-gray" onclick="copy(gEl('ap-caption-${r.id}').textContent)">📝 קפשן בלבד</button>
+          <button class="btn btn-red"  id="ap-scriptbtn-${r.id}" onclick="copy(gEl('ap-script-${r.id}').textContent)" style="display:none">📹 העתק תסריט</button>
         </div>
         <div class="hashtags" id="ap-hash-${r.id}" style="margin-top:10px"></div>
       </div>
@@ -1606,8 +1653,12 @@ async function refreshBot() {
 // ══════════════════════════════════════════════════════════
 // ANALYZE POST
 // ══════════════════════════════════════════════════════════
-// ── Analyze panel helpers ─────────────────────────────────
-const _apB64 = {}; // שומר base64 לכל כרטיס
+// ══════════════════════════════════════════════════════════
+// ANALYZE PANEL
+// ══════════════════════════════════════════════════════════
+const _apB64    = {};      // base64 תמונה
+const _apFrames = {};      // מערך פריימים מסרטון
+const _apMode   = {};      // 'img' | 'vid'
 
 function toggleAnalyzePanel(id) {
   const panel = gEl(`ap-${id}`);
@@ -1615,66 +1666,153 @@ function toggleAnalyzePanel(id) {
   panel.classList.toggle('open');
   const btn = gEl(`pf-analyze-${id}`);
   if (btn) btn.style.background = panel.classList.contains('open') ? 'var(--gold-bg)' : '';
+  if (!_apMode[id]) apSetMode(id, 'img');
 }
 
-function apLoadPreview(id, file) {
+function apSetMode(id, mode) {
+  _apMode[id] = mode;
+  gEl(`ap-drop-img-${id}`).style.display = mode==='img' ? '' : 'none';
+  gEl(`ap-drop-vid-${id}`).style.display = mode==='vid' ? '' : 'none';
+  gEl(`ap-mode-img-${id}`).classList.toggle('active', mode==='img');
+  gEl(`ap-mode-vid-${id}`).classList.toggle('active', mode==='vid');
+}
+
+// ── Image ─────────────────────────────────────────────────
+function apLoadImage(id, file) {
   const reader = new FileReader();
   reader.onload = e => {
-    _apB64[id] = e.target.result; // data:image/jpeg;base64,...
+    _apB64[id]   = e.target.result;
+    _apFrames[id] = null;
     const prev = gEl(`ap-prev-${id}`);
     if (prev) { prev.src = e.target.result; prev.style.display = 'block'; }
-    const drop = gEl(`ap-drop-${id}`);
-    if (drop) drop.style.borderColor = 'var(--green)';
+    gEl(`ap-frames-${id}`).innerHTML = '';
+    gEl(`ap-drop-img-${id}`).style.borderColor = 'var(--green)';
     toast('📸', 'תמונה נטענה — מוכן לניתוח');
   };
   reader.readAsDataURL(file);
 }
 
-function apDrop(e, id) {
+// ── Video — חילוץ פריימים בדפדפן ─────────────────────────
+function apLoadVideo(id, file) {
+  const statusEl = gEl(`ap-vstatus-${id}`);
+  const framesEl = gEl(`ap-frames-${id}`);
+  const canvas   = gEl(`ap-canvas-${id}`);
+  const ctx      = canvas.getContext('2d');
+  const prev     = gEl(`ap-prev-${id}`);
+  if (prev) prev.style.display = 'none';
+  framesEl.innerHTML = '';
+  statusEl.style.display = 'flex';
+  statusEl.innerHTML = '<span class="spin">🎬</span> מחלץ פריימים מהסרטון...';
+
+  const video = document.createElement('video');
+  video.muted = true;
+  video.src   = URL.createObjectURL(file);
+  video.preload = 'metadata';
+
+  video.addEventListener('loadedmetadata', () => {
+    const dur      = video.duration;
+    const COUNT    = 6;
+    // פריימים ב-10%, 25%, 40%, 55%, 70%, 85% מהסרטון
+    const times    = [.1,.25,.4,.55,.7,.85].map(p => p * dur);
+    const b64list  = [];
+    let   captured = 0;
+
+    const capture = (t) => new Promise(resolve => {
+      video.currentTime = t;
+      video.addEventListener('seeked', function onSeeked() {
+        video.removeEventListener('seeked', onSeeked);
+        canvas.width  = video.videoWidth  || 640;
+        canvas.height = video.videoHeight || 360;
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const b64 = canvas.toDataURL('image/jpeg', 0.75);
+        b64list.push(b64);
+
+        // הצג ב-strip
+        const img = document.createElement('img');
+        img.src = b64;
+        framesEl.appendChild(img);
+
+        captured++;
+        statusEl.innerHTML = `<span class="spin">🎬</span> חולץ פריים ${captured}/${COUNT}...`;
+        resolve();
+      }, {once: true});
+    });
+
+    (async () => {
+      for (const t of times) await capture(t);
+      URL.revokeObjectURL(video.src);
+      _apFrames[id] = b64list;
+      _apB64[id]    = null;
+      statusEl.innerHTML = `✅ ${COUNT} פריימים מוכנים לניתוח`;
+      gEl(`ap-drop-vid-${id}`).style.borderColor = 'var(--green)';
+      toast('🎬', `${COUNT} פריימים חולצו — מוכן לניתוח`);
+    })();
+  });
+}
+
+function apDrop(e, id, mode) {
   e.preventDefault();
-  gEl(`ap-drop-${id}`)?.classList.remove('drag-over');
+  gEl(`ap-drop-${mode}-${id}`)?.classList.remove('drag-over');
   const file = e.dataTransfer?.files?.[0];
-  if (file && file.type.startsWith('image/')) apLoadPreview(id, file);
+  if (!file) return;
+  if (mode==='img' && file.type.startsWith('image/')) apLoadImage(id, file);
+  if (mode==='vid' && file.type.startsWith('video/')) apLoadVideo(id, file);
 }
 
-function apFileChange(e, id) {
+function apFileChange(e, id, mode) {
   const file = e.target.files?.[0];
-  if (file) apLoadPreview(id, file);
+  if (!file) return;
+  if (mode==='img') apLoadImage(id, file);
+  if (mode==='vid') apLoadVideo(id, file);
 }
 
+// ── שליחה לניתוח ─────────────────────────────────────────
 async function analyzePost(id, topic) {
   const caption = gEl(`ap-cap-${id}`)?.value.trim() || '';
-  const b64     = _apB64[id] || '';
+  const b64     = _apB64[id]    || '';
+  const frames  = _apFrames[id] || [];
+  const isVideo = frames.length > 0;
 
-  if (!b64 && !caption) {
-    toast('⚠️', 'גרור תמונה או הדבק קפשן של הפוסט');
+  if (!b64 && !frames.length && !caption) {
+    toast('⚠️', 'גרור תמונה/סרטון או הדבק קפשן');
     return;
   }
 
   const loadEl = gEl(`ap-load-${id}`);
   const resEl  = gEl(`ap-res-${id}`);
-  if (loadEl) loadEl.classList.add('open');
+  if (loadEl) { loadEl.classList.add('open'); loadEl.innerHTML = `<span class="spin">${isVideo?'🎬':'🔍'}</span> ${isVideo?'מנתח סרטון':'מנתח פוסט'} עם Claude... (~15 שניות)`; }
   if (resEl)  resEl.classList.remove('open');
 
   try {
     const resp = await fetch('http://localhost:7775/analyze-post', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({topic, caption, image_b64: b64})
+      body: JSON.stringify({topic, caption, image_b64: b64, video_frames: frames, is_video: isVideo})
     });
     const data = await resp.json();
     if (loadEl) loadEl.classList.remove('open');
-
     if (!data.ok) { toast('❌', data.error || 'שגיאה בניתוח'); return; }
 
-    const set = (elId, val) => { const e = gEl(elId); if (e) e.textContent = val || ''; };
+    const set = (elId, val) => { const e = gEl(elId); if (e) e.textContent = val||''; };
     set(`ap-analysis-${id}`, data.analysis);
-    set(`ap-hook-${id}`,     '🎣 ' + (data.new_hook || ''));
+    set(`ap-hook-${id}`,     '🎣 ' + (data.new_hook||''));
     set(`ap-caption-${id}`,  data.new_caption);
-    set(`ap-imgdir-${id}`,   data.image_direction);
+    set(`ap-imgdir-${id}`,   data.image_direction || data.video_direction || '');
     set(`ap-hash-${id}`,     data.new_hashtags);
+
+    // אם יש תסריט — הצג
+    const scriptLbl = gEl(`ap-scriptlbl-${id}`);
+    const scriptVal = gEl(`ap-script-${id}`);
+    if (data.new_script && scriptLbl && scriptVal) {
+      scriptLbl.style.display = '';
+      scriptVal.style.display = '';
+      scriptVal.textContent = data.new_script;
+      const sb = gEl(`ap-scriptbtn-${id}`);
+      if (sb) sb.style.display = '';
+    }
+
     if (resEl) resEl.classList.add('open');
-    toast('✅', 'ניתוח הושלם — פוסט חדש מוכן!');
+    toast('✅', isVideo ? 'ניתוח סרטון הושלם!' : 'ניתוח הושלם — פוסט חדש מוכן!');
   } catch {
     if (loadEl) loadEl.classList.remove('open');
     toast('❌', 'שרת הניתוח לא פועל — הרץ: python3 refresh_server.py');
