@@ -1,4 +1,5 @@
 // Auto-generated — do not edit
+const LAST_REFRESH = '2026-05-27T00:00:00';
 const RESEARCH_DATA = [
   {
     "week_date": "2026-05-26",

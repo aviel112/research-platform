@@ -709,6 +709,10 @@ kbd { background:var(--bg4); border:1px solid var(--border3); border-radius:4px;
     <div class="stat-info"><span class="stat-val" id="st-ok">—</span><span class="stat-lbl">עבדו</span></div>
   </div>
   <div class="trend-pill" id="trendChip" style="display:none">⚡</div>
+  <div class="stat-card" id="lastRefreshCard" style="margin-right:auto;border-color:rgba(96,165,250,.2)">
+    <span class="stat-icon">🕐</span>
+    <div class="stat-info"><span class="stat-val" id="lastRefreshVal" style="color:var(--blue);font-size:.78rem">—</span><span class="stat-lbl">רענון אחרון</span></div>
+  </div>
 </div>
 
 <!-- ── Week nav ───────────────────────────────────── -->
@@ -1438,8 +1442,31 @@ async function refreshBot() {
   }, 5000);
 }
 
+// ── Last refresh display ──────────────────────────────────
+function showLastRefresh() {
+  if (typeof LAST_REFRESH === 'undefined') return;
+  const el = gEl('lastRefreshVal');
+  if (!el) return;
+  const d = new Date(LAST_REFRESH);
+  const now = new Date();
+  const diffMin = Math.round((now - d) / 60000);
+  let label;
+  if (diffMin < 1)        label = 'זה עתה';
+  else if (diffMin < 60)  label = `לפני ${diffMin} דק'`;
+  else if (diffMin < 1440) {
+    const h = Math.floor(diffMin / 60);
+    label = `לפני ${h} שעה${h>1?'ות':''}`;
+  } else {
+    label = d.toLocaleDateString('he-IL',{day:'numeric',month:'short'}) +
+            ' ' + d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+  }
+  el.textContent = label;
+  el.title = d.toLocaleString('he-IL');
+}
+
 // ── GO! ───────────────────────────────────────────────────
 init();
+showLastRefresh();
 </script>
 </body>
 </html>
