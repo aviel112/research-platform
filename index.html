@@ -351,6 +351,23 @@ main { max-width:1240px; margin:0 auto; padding:24px 20px 100px }
   display:none;
 }
 .analyze-loading.open { display:block }
+.drop-zone {
+  border: 2px dashed rgba(245,158,11,.35);
+  border-radius: var(--r-sm);
+  padding: 22px 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--t);
+  background: rgba(245,158,11,.03);
+  margin-bottom: 8px;
+}
+.drop-zone:hover, .drop-zone.drag-over {
+  border-color: var(--gold);
+  background: var(--gold-bg);
+}
+.drop-zone-icon { font-size: 1.8rem; margin-bottom: 6px }
+.drop-zone-text { font-size: .8rem; color: var(--text3); line-height: 1.6 }
+.drop-zone-text span { font-size: .72rem; color: var(--text3) }
 
 /* ════════════════════════════════════════════════
    RESEARCH CARDS
@@ -1225,13 +1242,20 @@ function resCard(r, best) {
     <!-- ── פוסט שעבד — ניתוח ──────────────────────── -->
     <div class="analyze-panel" id="ap-${r.id}">
       <div class="analyze-panel-title">🔍 פוסט שעבד — צור דומה</div>
-      <input class="analyze-input" id="ap-url-${r.id}" placeholder="קישור לפוסט באינסטגרם (אופציונלי)"
-        oninput="apUrlChange(${r.id})">
-      <input class="analyze-input" id="ap-img-${r.id}" placeholder="URL של תמונת הפוסט (אופציונלי)"
-        oninput="apImgChange(${r.id})">
+      <!-- Drop zone -->
+      <div class="drop-zone" id="ap-drop-${r.id}"
+        ondragover="event.preventDefault();this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="apDrop(event,${r.id})"
+        onclick="gEl('ap-file-${r.id}').click()">
+        <div class="drop-zone-icon">📸</div>
+        <div class="drop-zone-text">גרור סקרינשוט של הפוסט לכאן<br><span>או לחץ לבחור קובץ</span></div>
+        <input type="file" id="ap-file-${r.id}" accept="image/*" style="display:none"
+          onchange="apFileChange(event,${r.id})">
+      </div>
       <img class="analyze-img-preview" id="ap-prev-${r.id}" alt="">
-      <textarea class="analyze-input" id="ap-cap-${r.id}" placeholder="קפשן של הפוסט שעבד — הדבק כאן" rows="4" style="resize:none"></textarea>
-      <button class="btn btn-gold" style="width:100%;justify-content:center;padding:10px"
+      <textarea class="analyze-input" id="ap-cap-${r.id}" placeholder="הדבק כאן את הקפשן של הפוסט (אופציונלי — מוסיף דיוק לניתוח)" rows="3" style="resize:none;margin-top:4px"></textarea>
+      <button class="btn btn-gold" style="width:100%;justify-content:center;padding:10px;margin-top:4px"
         onclick="analyzePost(${r.id},'${esc(r.title)}')">
         🔍 נתח ויצור פוסט דומה
       </button>
@@ -1582,6 +1606,9 @@ async function refreshBot() {
 // ══════════════════════════════════════════════════════════
 // ANALYZE POST
 // ══════════════════════════════════════════════════════════
+// ── Analyze panel helpers ─────────────────────────────────
+const _apB64 = {}; // שומר base64 לכל כרטיס
+
 function toggleAnalyzePanel(id) {
   const panel = gEl(`ap-${id}`);
   if (!panel) return;
@@ -1590,56 +1617,62 @@ function toggleAnalyzePanel(id) {
   if (btn) btn.style.background = panel.classList.contains('open') ? 'var(--gold-bg)' : '';
 }
 
-function apImgChange(id) {
-  const url  = gEl(`ap-img-${id}`)?.value.trim();
-  const prev = gEl(`ap-prev-${id}`);
-  if (!prev) return;
-  if (url) { prev.src = url; prev.style.display = 'block'; }
-  else      { prev.style.display = 'none'; }
+function apLoadPreview(id, file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    _apB64[id] = e.target.result; // data:image/jpeg;base64,...
+    const prev = gEl(`ap-prev-${id}`);
+    if (prev) { prev.src = e.target.result; prev.style.display = 'block'; }
+    const drop = gEl(`ap-drop-${id}`);
+    if (drop) drop.style.borderColor = 'var(--green)';
+    toast('📸', 'תמונה נטענה — מוכן לניתוח');
+  };
+  reader.readAsDataURL(file);
 }
 
-function apUrlChange(id) {
-  // auto-extract image from IG post URL if possible (just store, Claude will analyze)
+function apDrop(e, id) {
+  e.preventDefault();
+  gEl(`ap-drop-${id}`)?.classList.remove('drag-over');
+  const file = e.dataTransfer?.files?.[0];
+  if (file && file.type.startsWith('image/')) apLoadPreview(id, file);
+}
+
+function apFileChange(e, id) {
+  const file = e.target.files?.[0];
+  if (file) apLoadPreview(id, file);
 }
 
 async function analyzePost(id, topic) {
-  const postUrl = gEl(`ap-url-${id}`)?.value.trim() || '';
-  const imgUrl  = gEl(`ap-img-${id}`)?.value.trim() || '';
   const caption = gEl(`ap-cap-${id}`)?.value.trim() || '';
+  const b64     = _apB64[id] || '';
 
-  if (!postUrl && !imgUrl && !caption) {
-    toast('⚠️', 'הכנס לפחות קישור, תמונה, או קפשן');
+  if (!b64 && !caption) {
+    toast('⚠️', 'גרור תמונה או הדבק קפשן של הפוסט');
     return;
   }
 
   const loadEl = gEl(`ap-load-${id}`);
   const resEl  = gEl(`ap-res-${id}`);
-  if (loadEl) { loadEl.classList.add('open'); }
-  if (resEl)  { resEl.classList.remove('open'); }
+  if (loadEl) loadEl.classList.add('open');
+  if (resEl)  resEl.classList.remove('open');
 
   try {
     const resp = await fetch('http://localhost:7775/analyze-post', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({topic, post_url: postUrl, image_url: imgUrl, caption})
+      body: JSON.stringify({topic, caption, image_b64: b64})
     });
     const data = await resp.json();
-
     if (loadEl) loadEl.classList.remove('open');
 
-    if (!data.ok) {
-      toast('❌', data.error || 'שגיאה בניתוח');
-      return;
-    }
+    if (!data.ok) { toast('❌', data.error || 'שגיאה בניתוח'); return; }
 
-    // מלא תוצאות
     const set = (elId, val) => { const e = gEl(elId); if (e) e.textContent = val || ''; };
     set(`ap-analysis-${id}`, data.analysis);
     set(`ap-hook-${id}`,     '🎣 ' + (data.new_hook || ''));
     set(`ap-caption-${id}`,  data.new_caption);
     set(`ap-imgdir-${id}`,   data.image_direction);
     set(`ap-hash-${id}`,     data.new_hashtags);
-
     if (resEl) resEl.classList.add('open');
     toast('✅', 'ניתוח הושלם — פוסט חדש מוכן!');
   } catch {
