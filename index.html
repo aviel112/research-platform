@@ -299,6 +299,59 @@ main { max-width:1240px; margin:0 auto; padding:24px 20px 100px }
 @keyframes spin { to{ transform:rotate(360deg) } }
 .spin { display:inline-block; animation:spin .75s linear infinite }
 
+/* ── Analyze post panel ─────────────────────────── */
+.analyze-panel {
+  border-top: 1px dashed rgba(245,158,11,.3);
+  padding: 14px 15px;
+  display: none;
+  background: linear-gradient(135deg,rgba(245,158,11,.04),transparent);
+}
+.analyze-panel.open { display:block }
+.analyze-panel-title {
+  font-size:.68rem; font-weight:800; text-transform:uppercase;
+  letter-spacing:1.5px; color:var(--gold); margin-bottom:12px;
+  display:flex; align-items:center; gap:7px;
+}
+.analyze-input {
+  width:100%; background:var(--bg); border:1px solid var(--border2);
+  border-radius:var(--r-sm); padding:9px 12px;
+  color:var(--text); font-size:.82rem; font-family:inherit;
+  transition:var(--t); margin-bottom:8px;
+}
+.analyze-input:focus { outline:none; border-color:var(--gold) }
+.analyze-img-preview {
+  width:100%; max-height:160px; object-fit:cover;
+  border-radius:var(--r-sm); margin-bottom:10px;
+  display:none; border:1px solid var(--border2);
+}
+.analyze-result {
+  background:var(--bg3); border:1px solid rgba(245,158,11,.2);
+  border-radius:var(--r-sm); padding:14px; margin-top:12px;
+  display:none;
+}
+.analyze-result.open { display:block }
+.analyze-block { margin-bottom:14px }
+.analyze-block-lbl {
+  font-size:.6rem; font-weight:800; text-transform:uppercase;
+  letter-spacing:1.5px; color:var(--text3); margin-bottom:5px;
+}
+.analyze-block-val {
+  font-size:.84rem; color:var(--text2); line-height:1.75;
+  white-space:pre-wrap;
+}
+.analyze-hook {
+  font-size:1rem; font-weight:800; color:var(--gold);
+  background:var(--gold-bg); border:1px solid rgba(245,158,11,.25);
+  border-radius:var(--r-sm); padding:10px 14px; margin-bottom:14px;
+  line-height:1.4;
+}
+.analyze-loading {
+  text-align:center; padding:20px;
+  font-size:.84rem; color:var(--text3);
+  display:none;
+}
+.analyze-loading.open { display:block }
+
 /* ════════════════════════════════════════════════
    RESEARCH CARDS
    ════════════════════════════════════════════════ */
@@ -1165,8 +1218,46 @@ function resCard(r, best) {
         <button class="perf-btn" id="pf-worked-${r.id}"  onclick="setPerf(${r.id},'worked')">🔥 עבד מעולה</button>
         <button class="perf-btn" id="pf-notwork-${r.id}" onclick="setPerf(${r.id},'notwork')">📉 לא עבד</button>
         <button class="perf-btn" id="pf-waiting-${r.id}" onclick="setPerf(${r.id},'waiting')">⏳ עדיין לא</button>
+        <button class="perf-btn" id="pf-analyze-${r.id}" onclick="toggleAnalyzePanel(${r.id})" style="margin-right:auto;border-color:rgba(245,158,11,.3);color:var(--gold)">🔍 פוסט שעבד</button>
       </div>
       <textarea class="notes" id="nt-${r.id}" placeholder="הערות — כמה צפיות, תגובות, מה עבד..." onblur="saveNote(${r.id})"></textarea>
+    </div>
+    <!-- ── פוסט שעבד — ניתוח ──────────────────────── -->
+    <div class="analyze-panel" id="ap-${r.id}">
+      <div class="analyze-panel-title">🔍 פוסט שעבד — צור דומה</div>
+      <input class="analyze-input" id="ap-url-${r.id}" placeholder="קישור לפוסט באינסטגרם (אופציונלי)"
+        oninput="apUrlChange(${r.id})">
+      <input class="analyze-input" id="ap-img-${r.id}" placeholder="URL של תמונת הפוסט (אופציונלי)"
+        oninput="apImgChange(${r.id})">
+      <img class="analyze-img-preview" id="ap-prev-${r.id}" alt="">
+      <textarea class="analyze-input" id="ap-cap-${r.id}" placeholder="קפשן של הפוסט שעבד — הדבק כאן" rows="4" style="resize:none"></textarea>
+      <button class="btn btn-gold" style="width:100%;justify-content:center;padding:10px"
+        onclick="analyzePost(${r.id},'${esc(r.title)}')">
+        🔍 נתח ויצור פוסט דומה
+      </button>
+      <div class="analyze-loading" id="ap-load-${r.id}">
+        <span class="spin">🔍</span> מנתח עם Claude... (~10 שניות)
+      </div>
+      <div class="analyze-result" id="ap-res-${r.id}">
+        <div class="analyze-block">
+          <div class="analyze-block-lbl">מה עבד בפוסט</div>
+          <div class="analyze-block-val" id="ap-analysis-${r.id}"></div>
+        </div>
+        <div class="analyze-hook" id="ap-hook-${r.id}"></div>
+        <div class="analyze-block">
+          <div class="analyze-block-lbl">קפשן חדש דומה</div>
+          <div class="analyze-block-val" id="ap-caption-${r.id}"></div>
+        </div>
+        <div class="analyze-block">
+          <div class="analyze-block-lbl">הנחיית צילום</div>
+          <div class="analyze-block-val" id="ap-imgdir-${r.id}" style="color:var(--gold)"></div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">
+          <button class="btn btn-gold" onclick="copy(gEl('ap-caption-${r.id}').textContent+'\\n\\n'+gEl('ap-hash-${r.id}').textContent)">📋 העתק קפשן + האשטגים</button>
+          <button class="btn btn-gray" onclick="copy(gEl('ap-caption-${r.id}').textContent)">📝 קפשן בלבד</button>
+        </div>
+        <div class="hashtags" id="ap-hash-${r.id}" style="margin-top:10px"></div>
+      </div>
     </div>
   </div>`;
 }
@@ -1486,6 +1577,75 @@ async function refreshBot() {
       btn.innerHTML = '🔄 רענן';
     }
   }, 5000);
+}
+
+// ══════════════════════════════════════════════════════════
+// ANALYZE POST
+// ══════════════════════════════════════════════════════════
+function toggleAnalyzePanel(id) {
+  const panel = gEl(`ap-${id}`);
+  if (!panel) return;
+  panel.classList.toggle('open');
+  const btn = gEl(`pf-analyze-${id}`);
+  if (btn) btn.style.background = panel.classList.contains('open') ? 'var(--gold-bg)' : '';
+}
+
+function apImgChange(id) {
+  const url  = gEl(`ap-img-${id}`)?.value.trim();
+  const prev = gEl(`ap-prev-${id}`);
+  if (!prev) return;
+  if (url) { prev.src = url; prev.style.display = 'block'; }
+  else      { prev.style.display = 'none'; }
+}
+
+function apUrlChange(id) {
+  // auto-extract image from IG post URL if possible (just store, Claude will analyze)
+}
+
+async function analyzePost(id, topic) {
+  const postUrl = gEl(`ap-url-${id}`)?.value.trim() || '';
+  const imgUrl  = gEl(`ap-img-${id}`)?.value.trim() || '';
+  const caption = gEl(`ap-cap-${id}`)?.value.trim() || '';
+
+  if (!postUrl && !imgUrl && !caption) {
+    toast('⚠️', 'הכנס לפחות קישור, תמונה, או קפשן');
+    return;
+  }
+
+  const loadEl = gEl(`ap-load-${id}`);
+  const resEl  = gEl(`ap-res-${id}`);
+  if (loadEl) { loadEl.classList.add('open'); }
+  if (resEl)  { resEl.classList.remove('open'); }
+
+  try {
+    const resp = await fetch('http://localhost:7775/analyze-post', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({topic, post_url: postUrl, image_url: imgUrl, caption})
+    });
+    const data = await resp.json();
+
+    if (loadEl) loadEl.classList.remove('open');
+
+    if (!data.ok) {
+      toast('❌', data.error || 'שגיאה בניתוח');
+      return;
+    }
+
+    // מלא תוצאות
+    const set = (elId, val) => { const e = gEl(elId); if (e) e.textContent = val || ''; };
+    set(`ap-analysis-${id}`, data.analysis);
+    set(`ap-hook-${id}`,     '🎣 ' + (data.new_hook || ''));
+    set(`ap-caption-${id}`,  data.new_caption);
+    set(`ap-imgdir-${id}`,   data.image_direction);
+    set(`ap-hash-${id}`,     data.new_hashtags);
+
+    if (resEl) resEl.classList.add('open');
+    toast('✅', 'ניתוח הושלם — פוסט חדש מוכן!');
+  } catch {
+    if (loadEl) loadEl.classList.remove('open');
+    toast('❌', 'שרת הניתוח לא פועל — הרץ: python3 refresh_server.py');
+  }
 }
 
 // ── Theme toggle ──────────────────────────────────────────
