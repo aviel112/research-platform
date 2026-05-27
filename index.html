@@ -9,7 +9,7 @@
    DESIGN SYSTEM — AVIEL CONTENT MANAGER v3
    ════════════════════════════════════════════════ */
 :root {
-  /* Backgrounds — layered depth */
+  /* Backgrounds — dark mode (default) */
   --bg:   #07070d;
   --bg2:  #0d0d1a;
   --bg3:  #131325;
@@ -58,6 +58,49 @@
   --sh-lg:0 8px 40px rgba(0,0,0,.6);
   --t:    .16s cubic-bezier(.4,0,.2,1);
 }
+
+/* ════════════════════════════════════════════════
+   LIGHT MODE
+   ════════════════════════════════════════════════ */
+body.light {
+  --bg:      #f5f5fa;
+  --bg2:     #ffffff;
+  --bg3:     #eeeef8;
+  --bg4:     #e4e4f0;
+  --bg5:     #d8d8ec;
+  --border:  #dcdcee;
+  --border2: #c8c8e0;
+  --border3: #b0b0d0;
+  --text:    #16162a;
+  --text2:   #4a4a6a;
+  --text3:   #8888aa;
+  --sh:      0 4px 20px rgba(0,0,0,.08);
+  --sh-lg:   0 8px 40px rgba(0,0,0,.14);
+}
+body.light ::-webkit-scrollbar-thumb { background: var(--border3) }
+body.light header { background: rgba(255,255,255,.96) }
+body.light .modal { background: var(--bg2) }
+body.light textarea.notes { background: var(--bg3) }
+body.light .script-text { background: var(--bg3) }
+body.light .caption-box { background: var(--bg3) }
+body.light .comm-text   { background: var(--bg3) }
+body.light .screen-box  { background: var(--bg4) }
+body.light .excerpt-block { background: rgba(0,0,0,.04) }
+
+/* Theme toggle button */
+.btn-theme {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text3);
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex; align-items:center; justify-content:center;
+  transition: var(--t);
+  flex-shrink: 0;
+}
+.btn-theme:hover { border-color:var(--border3); color:var(--text); transform:scale(1.1) }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box }
 html { scroll-behavior:smooth }
@@ -682,7 +725,8 @@ kbd { background:var(--bg4); border:1px solid var(--border3); border-radius:4px;
   <div class="header-right">
     <div class="live-indicator"><div class="live-dot"></div><span id="weekLabel">טוען...</span></div>
     <div class="week-badge" id="weekTheme" style="display:none"></div>
-    <button class="btn-refresh" id="refreshBtn" onclick="refreshBot()" title="רענן מחקרים — עולה ~$0.10">🔄 רענן</button>
+    <button class="btn-theme" id="themeBtn" onclick="toggleTheme()" title="החלף מצב כהה/בהיר">🌙</button>
+    <button class="btn-refresh" id="refreshBtn" onclick="refreshBot()" title="רענן מחקרים">🔄 רענן</button>
   </div>
 </header>
 
@@ -1441,6 +1485,22 @@ async function refreshBot() {
     }
   }, 5000);
 }
+
+// ── Theme toggle ──────────────────────────────────────────
+function toggleTheme() {
+  const isLight = document.body.classList.toggle('light');
+  localStorage.setItem('av_theme', isLight ? 'light' : 'dark');
+  gEl('themeBtn').textContent = isLight ? '☀️' : '🌙';
+}
+function applyTheme() {
+  const saved = localStorage.getItem('av_theme');
+  if (saved === 'light') {
+    document.body.classList.add('light');
+    const btn = gEl('themeBtn');
+    if (btn) btn.textContent = '☀️';
+  }
+}
+applyTheme();
 
 // ── Last refresh display ──────────────────────────────────
 function showLastRefresh() {
