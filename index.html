@@ -300,6 +300,21 @@ main { max-width:1240px; margin:0 auto; padding:24px 20px 100px }
 .topics-input::placeholder { color:var(--text3) }
 body.light .topics-bar { background:var(--bg2) }
 body.light .topics-input { background:#fff }
+/* ── Editable fields ── */
+.ef {
+  outline: none; border-radius: 6px;
+  transition: background .15s, box-shadow .15s;
+  cursor: text; display: block;
+}
+.ef:hover  { background: rgba(255,255,255,.05) }
+.ef:focus  { background: rgba(255,255,255,.07); box-shadow: 0 0 0 1.5px rgba(139,92,246,.4) }
+.ef:empty::before { content: attr(data-ph); color: var(--text3); font-style: italic; pointer-events: none }
+body.light .ef:hover { background: rgba(0,0,0,.04) }
+body.light .ef:focus { background: rgba(0,0,0,.06); box-shadow: 0 0 0 1.5px rgba(139,92,246,.4) }
+.ef-wrap { position: relative }
+.ef-wrap::after { content: '✏️'; position: absolute; top: 4px; left: 6px;
+                  font-size: .65rem; opacity: 0; transition: opacity .2s; pointer-events: none }
+.ef-wrap:hover::after { opacity: .6 }
 .btn-wa {
   background:var(--green); color:#fff;
   padding:9px 18px; border-radius:var(--r-sm); border:none;
@@ -909,7 +924,7 @@ kbd { background:var(--bg4); border:1px solid var(--border3); border-radius:4px;
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
       הודעה מוכנה לשליחה
     </div>
-    <div class="comm-text" id="commText"></div>
+    <div class="comm-text ef" id="commText" contenteditable="true" data-ph="הודעה לקבוצה..."></div>
     <div class="comm-actions">
       <button class="btn-wa" onclick="sendWA('community')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
@@ -928,7 +943,7 @@ kbd { background:var(--bg4); border:1px solid var(--border3); border-radius:4px;
       <div style="font-size:.72rem;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">כותרת הסרטון</div>
       <div id="commVideoTitle" style="font-weight:700;font-size:.95rem;color:var(--gold);margin-bottom:10px"></div>
       <div style="font-size:.72rem;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">מה לכתוב לפני ששולחים</div>
-      <div id="commVideoIntro" style="font-size:.86rem;color:var(--text2);line-height:1.7;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px"></div>
+      <div id="commVideoIntro" class="ef" contenteditable="true" style="font-size:.86rem;color:var(--text2);line-height:1.7;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px"></div>
     </div>
     <div style="display:flex;gap:7px;flex-wrap:wrap">
       <a id="commVideoLink" href="#" target="_blank" rel="noopener" class="btn btn-gold">▶ פתח סרטון ביוטיוב</a>
@@ -947,7 +962,7 @@ kbd { background:var(--bg4); border:1px solid var(--border3); border-radius:4px;
       <div id="commDiscOpts"></div>
     </div>
     <div style="font-size:.72rem;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">טקסט מוכן לשליחה</div>
-    <div id="commDiscText" style="font-size:.85rem;color:var(--text2);line-height:1.8;white-space:pre-wrap;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px;margin-bottom:12px"></div>
+    <div id="commDiscText" class="ef" contenteditable="true" style="font-size:.85rem;color:var(--text2);line-height:1.8;white-space:pre-wrap;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px;margin-bottom:12px"></div>
     <div style="display:flex;gap:7px;flex-wrap:wrap">
       <button class="btn-wa" onclick="sendWA('discussion')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
@@ -982,7 +997,7 @@ kbd { background:var(--bg4); border:1px solid var(--border3); border-radius:4px;
   <div class="section-title"><b>שלב 1</b> שאלת הסקר</div>
   <div class="poll-block">
     <div class="poll-block-label">העתק את השאלה ← הדבק בווטסאפ</div>
-    <div class="poll-block-text" id="pollQ"></div>
+    <div class="poll-block-text ef" id="pollQ" contenteditable="true"></div>
     <button class="btn btn-gold" onclick="copy(gEl('pollQ').textContent)">📋 העתק שאלה</button>
   </div>
 
@@ -994,7 +1009,7 @@ kbd { background:var(--bg4); border:1px solid var(--border3); border-radius:4px;
   <div class="section-title"><b>שלב 3</b> הודעה לפני הסקר (אופציונלי)</div>
   <div class="poll-block">
     <div class="poll-block-label">שלח קודם לפני הסקר כדי להסביר</div>
-    <div class="poll-block-text" id="pollWaText" style="white-space:pre-wrap;font-size:.85rem;line-height:1.82;font-weight:500"></div>
+    <div class="poll-block-text ef" id="pollWaText" contenteditable="true" style="white-space:pre-wrap;font-size:.85rem;line-height:1.82;font-weight:500"></div>
     <div style="display:flex;gap:7px;flex-wrap:wrap">
       <button class="btn-wa" onclick="sendWA('poll')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
@@ -1009,7 +1024,7 @@ kbd { background:var(--bg4); border:1px solid var(--border3); border-radius:4px;
   <div class="section-title"><b>אינסטגרם</b> גרסת סטורי / פוסט</div>
   <div class="poll-block">
     <div class="poll-block-label">גרסה מותאמת לאינסטגרם</div>
-    <div class="poll-block-text" id="pollIgText" style="white-space:pre-wrap;font-size:.85rem;line-height:1.82;font-weight:500"></div>
+    <div class="poll-block-text ef" id="pollIgText" contenteditable="true" style="white-space:pre-wrap;font-size:.85rem;line-height:1.82;font-weight:500"></div>
     <div style="display:flex;gap:7px">
       <button class="btn btn-purple" onclick="copy(gEl('pollIgText').textContent)">📋 העתק לאינסטגרם</button>
       <button class="btn btn-outline" onclick="flipStatus('ig_poll_sent');toast('✅','סומן כנשלח')">✅ פורסם</button>
@@ -1055,8 +1070,8 @@ kbd { background:var(--bg4); border:1px solid var(--border3); border-radius:4px;
       <button class="modal-close" onclick="closeModal('scriptModal')">✕</button>
     </div>
     <div class="modal-body">
-      <pre class="script-text" id="scriptText"></pre>
-      <button class="modal-copy" onclick="copy(gEl('scriptText').textContent)">📋 העתק תסריט</button>
+      <div class="script-text ef" id="scriptText" contenteditable="true" style="white-space:pre-wrap;min-height:80px"></div>
+      <button class="modal-copy" onclick="copy(gEl('scriptText').innerText)">📋 העתק תסריט</button>
     </div>
   </div>
 </div>
@@ -1200,6 +1215,8 @@ function renderWeek(i) {
   renderPoll(w);
   renderTracking(w);
   updateStats(w);
+  // שחזור עריכות שמורות לשבוע זה
+  setTimeout(() => restoreEdits(w.week_date), 50);
 }
 
 // ── Stats ─────────────────────────────────────────────────
@@ -1435,7 +1452,11 @@ function refreshGlobalChips() {
 function openScript(id) {
   const r = RESEARCH_DATA[WI]?.researches?.find(x=>x.id===id);
   if (!r) return;
-  gEl('scriptText').textContent = r.video_script||'';
+  const scriptEl = gEl('scriptText');
+  const wd = RESEARCH_DATA[WI]?.week_date || '';
+  const savedScript = wd ? localStorage.getItem(`av_ed_${wd}_scriptText_${r.id}`) : null;
+  scriptEl.innerText = savedScript ?? (r.video_script || '');
+  scriptEl.dataset.resId = r.id;
   gEl('scriptModal').classList.add('open');
 }
 
@@ -1463,8 +1484,8 @@ function igCard(r, best) {
     <div class="ig-body">
       ${imgHtml}
       <div class="exc-lbl" style="margin-bottom:6px">קפשן</div>
-      <div class="caption-box" id="igcap-${r.id}">${esc(r.instagram_caption||r.summary||'')}</div>
-      <div class="hashtags" id="ighash-${r.id}">${esc(r.instagram_hashtags||'')}</div>
+      <div class="caption-box ef" id="igcap-${r.id}" contenteditable="true">${esc(r.instagram_caption||r.summary||'')}</div>
+      <div class="hashtags ef" id="ighash-${r.id}" contenteditable="true">${esc(r.instagram_hashtags||'')}</div>
       <div style="display:flex;gap:6px;flex-wrap:wrap">
         <button class="btn btn-purple" onclick="copy(gEl('igcap-${r.id}').textContent+'\\n\\n'+gEl('ighash-${r.id}').textContent)">📋 העתק הכל</button>
         <button class="btn btn-gray"   onclick="copy(gEl('igcap-${r.id}').textContent)">📝 קפשן בלבד</button>
@@ -1495,8 +1516,8 @@ function renderPoll(w) {
   gEl('pollOpts').innerHTML = (p.options||[]).map((o,i) =>
     `<div class="poll-opt-row">
       <div class="poll-num">${i+1}</div>
-      <div class="poll-opt-text">${esc(o)}</div>
-      <button class="btn btn-gold" style="padding:5px 12px;font-size:.7rem;white-space:nowrap" onclick="copy('${o.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,'\\n')}')">📋 העתק</button>
+      <div class="poll-opt-text ef" id="pollopt-${i}" contenteditable="true">${esc(o)}</div>
+      <button class="btn btn-gold" style="padding:5px 12px;font-size:.7rem;white-space:nowrap" onclick="copy(gEl('pollopt-${i}').innerText)">📋 העתק</button>
     </div>`
   ).join('');
 
@@ -1585,11 +1606,10 @@ function updateTrackRow(id) {
 // WHATSAPP & UTILS
 // ══════════════════════════════════════════════════════════
 function sendWA(type) {
-  const w = RESEARCH_DATA[WI];
   let t = '';
-  if      (type==='community')  t = w.community_message || '';
-  else if (type==='poll')       t = w.poll?.whatsapp_text || '';
-  else if (type==='discussion') t = w.community_discussion_poll?.whatsapp_text || '';
+  if      (type==='community')  t = gEl('commText')?.innerText    || '';
+  else if (type==='poll')       t = gEl('pollWaText')?.innerText   || '';
+  else if (type==='discussion') t = gEl('commDiscText')?.innerText || '';
   if (t) window.open(`https://wa.me/?text=${encodeURIComponent(t)}`,'_blank');
 }
 
@@ -1892,6 +1912,33 @@ function showLastRefresh() {
   }
   el.textContent = label;
   el.title = d.toLocaleString('he-IL');
+}
+
+// ── Editable fields — save & restore ─────────────────────────────────────────
+document.addEventListener('focusout', e => {
+  const el = e.target;
+  if (!el.matches('.ef[contenteditable]')) return;
+  const wd = RESEARCH_DATA[WI]?.week_date || 'draft';
+  // תסריט — מזהה לפי research id
+  const id = el.id === 'scriptText'
+    ? `scriptText_${el.dataset.resId || '0'}`
+    : el.id;
+  if (id) localStorage.setItem(`av_ed_${wd}_${id}`, el.innerText);
+});
+
+function restoreEdits(weekDate) {
+  if (!weekDate) return;
+  const prefix = `av_ed_${weekDate}_`;
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (!key || !key.startsWith(prefix)) continue;
+    const fieldId = key.slice(prefix.length);
+    if (fieldId.startsWith('scriptText_')) continue; // restored when modal opens
+    const el = gEl(fieldId);
+    if (el && el.matches('.ef[contenteditable]')) {
+      el.innerText = localStorage.getItem(key) || '';
+    }
+  }
 }
 
 // ── Preferences — feedback + topics ──────────────────────────────────────────
