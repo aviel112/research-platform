@@ -5,246 +5,670 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>מנהל תוכן | אביאל</title>
 <style>
-:root{
-  --bg:#0a0a0f;--bg2:#111118;--bg3:#18181f;--bg4:#1e1e28;
-  --border:#242432;--border2:#2e2e3e;
-  --red:#e94560;--red2:#ff6b84;--red-bg:rgba(233,69,96,.1);
-  --green:#25d366;--green-bg:rgba(37,211,102,.08);
-  --gold:#f5a623;--gold-bg:rgba(245,166,35,.08);
-  --purple:#8b5cf6;--purple-bg:rgba(139,92,246,.1);
-  --blue:#3b82f6;--blue-bg:rgba(59,130,246,.08);
-  --text:#f0f0f0;--text2:#aaa;--text3:#666;
-  --radius:14px;--radius-sm:8px;
-  --shadow:0 4px 24px rgba(0,0,0,.4);
-  --transition:.18s ease;
+/* ════════════════════════════════════════════════
+   DESIGN SYSTEM — AVIEL CONTENT MANAGER v3
+   ════════════════════════════════════════════════ */
+:root {
+  /* Backgrounds — layered depth */
+  --bg:   #07070d;
+  --bg2:  #0d0d1a;
+  --bg3:  #131325;
+  --bg4:  #191930;
+  --bg5:  #20203c;
+
+  /* Borders */
+  --border:  #1a1a2e;
+  --border2: #252540;
+  --border3: #32325a;
+
+  /* Brand — red (primary) */
+  --red:    #e63956;
+  --red2:   #ff5f78;
+  --red-bg: rgba(230,57,86,.12);
+
+  /* Green (WhatsApp / success) */
+  --green:    #22c55e;
+  --green2:   #4ade80;
+  --green-bg: rgba(34,197,94,.1);
+
+  /* Gold (featured / best) */
+  --gold:    #f59e0b;
+  --gold2:   #fbbf24;
+  --gold-bg: rgba(245,158,11,.1);
+
+  /* Purple (Instagram) */
+  --purple:    #a855f7;
+  --purple2:   #c084fc;
+  --purple-bg: rgba(168,85,247,.1);
+
+  /* Blue (info) */
+  --blue:    #60a5fa;
+  --blue-bg: rgba(96,165,250,.1);
+
+  /* Text */
+  --text:  #eeeef5;
+  --text2: #7878a0;
+  --text3: #44445a;
+
+  /* Tokens */
+  --r:    16px;
+  --r-sm: 10px;
+  --r-xs: 6px;
+  --sh:   0 4px 20px rgba(0,0,0,.45);
+  --sh-lg:0 8px 40px rgba(0,0,0,.6);
+  --t:    .16s cubic-bezier(.4,0,.2,1);
 }
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{font-family:-apple-system,'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box }
+html { scroll-behavior:smooth }
+body {
+  font-family: -apple-system,'Segoe UI',system-ui,sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
 
 /* ── Scrollbar ──────────────────────────────────── */
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+::-webkit-scrollbar { width:4px; height:4px }
+::-webkit-scrollbar-track { background:transparent }
+::-webkit-scrollbar-thumb { background:var(--border3); border-radius:99px }
 
-/* ── Header ─────────────────────────────────────── */
-header{
-  background:linear-gradient(135deg,#0f0f1a 0%,#161624 100%);
-  border-bottom:1px solid var(--border);
-  padding:0 28px;
-  height:60px;
-  display:flex;align-items:center;justify-content:space-between;
-  position:sticky;top:0;z-index:200;
-  backdrop-filter:blur(12px);
+/* ════════════════════════════════════════════════
+   HEADER
+   ════════════════════════════════════════════════ */
+header {
+  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13,13,26,.95) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  height: 56px;
+  display: flex; align-items:center; justify-content:space-between;
+  position: sticky; top:0; z-index:200;
+  backdrop-filter: blur(24px);
 }
-.logo{display:flex;align-items:center;gap:10px}
-.logo-icon{width:32px;height:32px;background:var(--red);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
-.logo-text{font-weight:700;font-size:1.05rem;letter-spacing:-.3px}
-.logo-text span{color:var(--red)}
-.header-meta{display:flex;align-items:center;gap:12px}
-.week-pill{background:var(--red-bg);border:1px solid var(--red);color:var(--red);padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:600}
-.live-badge{display:flex;align-items:center;gap:5px;font-size:.72rem;color:var(--text3)}
-.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(37,211,102,.4)}50%{box-shadow:0 0 0 6px transparent}}
+.logo { display:flex; align-items:center; gap:10px }
+.logo-icon {
+  width:34px; height:34px;
+  background: linear-gradient(135deg,#ff3d5a,#c0284a);
+  border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:17px;
+  box-shadow: 0 2px 14px rgba(230,57,86,.4);
+  flex-shrink:0;
+}
+.logo-text { font-weight:800; font-size:1rem; letter-spacing:-.4px }
+.logo-text em { color:var(--red); font-style:normal }
+.header-right { display:flex; align-items:center; gap:8px }
+.week-badge {
+  background: var(--red-bg);
+  border: 1px solid rgba(230,57,86,.25);
+  color: var(--red2);
+  padding: 4px 11px;
+  border-radius:20px; font-size:.7rem; font-weight:700;
+}
+.live-indicator {
+  display:flex; align-items:center; gap:5px;
+  font-size:.7rem; color:var(--text3);
+}
+.live-dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--green);
+  animation: livePulse 2.5s ease infinite;
+}
+@keyframes livePulse {
+  0%,100%{ opacity:1; box-shadow:0 0 0 0 rgba(34,197,94,.5) }
+  50%    { box-shadow:0 0 0 5px transparent }
+}
 
 /* ── Stats bar ──────────────────────────────────── */
-.stats-bar{
-  background:var(--bg2);border-bottom:1px solid var(--border);
-  padding:10px 28px;display:flex;gap:20px;align-items:center;overflow-x:auto;
+.stats-bar {
+  background:var(--bg2); border-bottom:1px solid var(--border);
+  padding:8px 24px;
+  display:flex; gap:6px; align-items:center;
+  overflow-x:auto; scrollbar-width:none;
 }
-.stat{display:flex;align-items:center;gap:7px;white-space:nowrap}
-.stat-icon{font-size:.9rem}
-.stat-val{font-weight:700;font-size:.95rem}
-.stat-lbl{font-size:.72rem;color:var(--text3)}
-.stat-divider{width:1px;height:20px;background:var(--border);flex-shrink:0}
-.trend-chip{background:var(--gold-bg);border:1px solid var(--gold);color:var(--gold);padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:600;margin-right:auto;white-space:nowrap;max-width:320px;overflow:hidden;text-overflow:ellipsis}
+.stats-bar::-webkit-scrollbar { display:none }
+.stat-card {
+  display:flex; align-items:center; gap:7px;
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:var(--r-sm);
+  padding:7px 12px;
+  white-space:nowrap; flex-shrink:0;
+  transition:var(--t);
+}
+.stat-card:hover { border-color:var(--border2) }
+.stat-icon { font-size:.88rem }
+.stat-info { display:flex; flex-direction:column }
+.stat-val  { font-weight:800; font-size:.88rem; line-height:1.1 }
+.stat-lbl  { font-size:.62rem; color:var(--text3); font-weight:600 }
+.trend-pill {
+  display:flex; align-items:center; gap:5px;
+  background:linear-gradient(135deg,var(--gold-bg),transparent);
+  border:1px solid rgba(245,158,11,.22);
+  color:var(--gold); padding:5px 12px;
+  border-radius:20px; font-size:.71rem; font-weight:600;
+  white-space:nowrap; max-width:260px; overflow:hidden; text-overflow:ellipsis;
+  margin-right:auto; flex-shrink:1;
+}
 
 /* ── Week nav ───────────────────────────────────── */
-.week-nav{display:flex;gap:6px;padding:12px 28px;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto}
-.week-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:5px 14px;border-radius:20px;cursor:pointer;font-size:.76rem;font-weight:500;white-space:nowrap;transition:var(--transition)}
-.week-btn:hover{border-color:var(--red);color:var(--text)}
-.week-btn.active{background:var(--red);border-color:var(--red);color:#fff}
+.week-nav {
+  display:flex; gap:6px; padding:9px 24px;
+  background:var(--bg2); border-bottom:1px solid var(--border);
+  overflow-x:auto; scrollbar-width:none;
+}
+.week-nav::-webkit-scrollbar { display:none }
+.week-btn {
+  background:transparent; border:1px solid var(--border);
+  color:var(--text3); padding:5px 14px;
+  border-radius:20px; cursor:pointer;
+  font-size:.73rem; font-weight:600; white-space:nowrap;
+  transition:var(--t);
+}
+.week-btn:hover { border-color:var(--border3); color:var(--text2) }
+.week-btn.active {
+  background:var(--red); border-color:var(--red); color:#fff;
+  box-shadow:0 2px 10px rgba(230,57,86,.3);
+}
 
 /* ── Tabs ───────────────────────────────────────── */
-.tabs{display:flex;gap:0;padding:0 28px;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto}
-.tab-btn{padding:13px 18px;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--text3);cursor:pointer;font-size:.82rem;font-weight:600;white-space:nowrap;transition:var(--transition);display:flex;align-items:center;gap:6px}
-.tab-btn .badge{background:var(--border2);color:var(--text3);font-size:.63rem;padding:1px 6px;border-radius:10px;font-weight:700}
-.tab-btn.active{color:var(--red);border-bottom-color:var(--red)}
-.tab-btn.active .badge{background:var(--red-bg);color:var(--red)}
-.tab-btn:hover:not(.active){color:var(--text)}
+.tabs {
+  display:flex; padding:0 24px;
+  background:var(--bg2); border-bottom:1px solid var(--border);
+  overflow-x:auto; scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar { display:none }
+.tab-btn {
+  padding:12px 16px;
+  background:transparent; border:none; border-bottom:2px solid transparent;
+  color:var(--text3); cursor:pointer;
+  font-size:.78rem; font-weight:700; white-space:nowrap;
+  transition:var(--t); display:flex; align-items:center; gap:6px;
+}
+.tab-btn .cnt {
+  background:var(--bg4); color:var(--text3);
+  font-size:.6rem; padding:1px 6px; border-radius:99px; font-weight:800;
+}
+.tab-btn.active           { color:var(--red); border-bottom-color:var(--red) }
+.tab-btn.active .cnt      { background:var(--red-bg); color:var(--red) }
+.tab-btn:hover:not(.active){ color:var(--text2) }
 
-/* ── Main ───────────────────────────────────────── */
-main{max-width:1200px;margin:0 auto;padding:24px 20px 80px}
-.tab-panel{display:none;animation:fadeIn .2s ease}
-.tab-panel.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+/* ── Main / panels ──────────────────────────────── */
+main { max-width:1240px; margin:0 auto; padding:24px 20px 100px }
+.tab-panel { display:none; animation:fadeUp .2s ease }
+.tab-panel.active { display:block }
+@keyframes fadeUp {
+  from{ opacity:0; transform:translateY(6px) }
+  to  { opacity:1; transform:none }
+}
 
-.section-title{font-size:.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--red);margin-bottom:14px;margin-top:28px;display:flex;align-items:center;gap:8px}
-.section-title:first-child{margin-top:0}
-.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+/* ── Section title ──────────────────────────────── */
+.section-title {
+  font-size:.62rem; text-transform:uppercase; letter-spacing:2px;
+  color:var(--text3); margin:28px 0 14px;
+  display:flex; align-items:center; gap:10px; font-weight:800;
+}
+.section-title:first-child { margin-top:0 }
+.section-title b { color:var(--red); letter-spacing:1px }
+.section-title::after { content:''; flex:1; height:1px; background:var(--border) }
 
-/* ── Cards grid ─────────────────────────────────── */
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+/* ════════════════════════════════════════════════
+   BUTTONS
+   ════════════════════════════════════════════════ */
+.btn {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:7px 13px; border-radius:var(--r-sm);
+  border:none; cursor:pointer;
+  font-size:.74rem; font-weight:700;
+  transition:var(--t); text-decoration:none; white-space:nowrap;
+}
+.btn:hover  { opacity:.84; transform:translateY(-1px) }
+.btn:active { transform:none; opacity:1 }
+.btn-red    { background:var(--red);    color:#fff; box-shadow:0 2px 10px rgba(230,57,86,.28) }
+.btn-green  { background:var(--green);  color:#fff; box-shadow:0 2px 10px rgba(34,197,94,.22) }
+.btn-purple { background:var(--purple); color:#fff; box-shadow:0 2px 10px rgba(168,85,247,.22) }
+.btn-gold   { background:var(--gold);   color:#000; box-shadow:0 2px 10px rgba(245,158,11,.22) }
+.btn-gray   { background:var(--bg4);    color:var(--text2); border:1px solid var(--border2) }
+.btn-outline{ background:transparent;   color:var(--text3); border:1px solid var(--border2) }
+.btn-outline:hover { border-color:var(--border3); color:var(--text2) }
+.btn-wa {
+  background:var(--green); color:#fff;
+  padding:9px 18px; border-radius:var(--r-sm); border:none;
+  cursor:pointer; font-weight:800; font-size:.82rem;
+  display:inline-flex; align-items:center; gap:7px;
+  transition:var(--t);
+  box-shadow:0 3px 14px rgba(34,197,94,.28);
+}
+.btn-wa:hover { opacity:.9; transform:translateY(-1px) }
 
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:var(--transition);position:relative}
-.card:hover{border-color:var(--border2);box-shadow:var(--shadow)}
-.card.best{border-color:var(--gold)}
-.card.best::before{content:'⭐ מומלץ לסרטון';position:absolute;top:0;right:0;background:var(--gold);color:#000;font-size:.63rem;font-weight:700;padding:3px 10px;border-radius:0 var(--radius) 0 var(--radius-sm)}
+/* Refresh button */
+.btn-refresh {
+  background:var(--bg3); border:1px solid var(--border2);
+  color:var(--text3); padding:5px 12px; border-radius:20px;
+  font-size:.72rem; font-weight:700; cursor:pointer;
+  transition:var(--t); display:flex; align-items:center; gap:5px;
+}
+.btn-refresh:hover { border-color:rgba(230,57,86,.4); color:var(--text2) }
+.btn-refresh.loading { border-color:var(--gold); color:var(--gold); pointer-events:none }
+@keyframes spin { to{ transform:rotate(360deg) } }
+.spin { display:inline-block; animation:spin .75s linear infinite }
 
-/* Card header */
-.card-hdr{background:var(--bg3);padding:12px 15px;display:flex;align-items:flex-start;gap:10px}
-.card-num{width:26px;height:26px;min-width:26px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;margin-top:1px}
-.card-num.gold{background:var(--gold);color:#000}
-.card-hdr-info{flex:1;min-width:0}
-.card-title{font-weight:600;font-size:.9rem;line-height:1.4;margin-bottom:5px}
-.card-meta{display:flex;gap:6px;flex-wrap:wrap}
-.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:10px;font-size:.63rem;font-weight:600}
-.badge-type{background:var(--bg4);color:var(--text3);border:1px solid var(--border)}
-.badge-source{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(59,130,246,.2)}
+/* ════════════════════════════════════════════════
+   RESEARCH CARDS
+   ════════════════════════════════════════════════ */
+.cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:16px }
 
-/* Card image */
-.card-img{width:100%;height:130px;object-fit:cover;border-bottom:1px solid var(--border);display:block}
-.img-hint-bar{padding:8px 14px;background:rgba(245,166,35,.04);border-bottom:1px solid rgba(245,166,35,.1);font-size:.75rem;color:var(--gold);display:flex;align-items:flex-start;gap:6px}
+.card {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); overflow:hidden;
+  transition:var(--t); position:relative;
+}
+.card:hover { border-color:var(--border2); box-shadow:var(--sh) }
+.card.best {
+  border-color:rgba(245,158,11,.35);
+  box-shadow:0 0 0 1px rgba(245,158,11,.08), var(--sh);
+}
+.card.best::before {
+  content:'⭐ מומלץ לסרטון';
+  position:absolute; top:0; right:0;
+  background:linear-gradient(135deg,var(--gold),#d97706);
+  color:#000; font-size:.61rem; font-weight:800;
+  padding:4px 12px;
+  border-radius:0 var(--r) 0 var(--r-sm);
+  letter-spacing:.3px;
+}
 
-/* Card body */
-.card-body{padding:14px}
+.card-hdr {
+  background:var(--bg3); padding:13px 15px;
+  display:flex; align-items:flex-start; gap:11px;
+  border-bottom:1px solid var(--border);
+}
+.card-num {
+  width:28px; height:28px; min-width:28px;
+  background:var(--red); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:.78rem; margin-top:1px;
+  box-shadow:0 2px 8px rgba(230,57,86,.3);
+}
+.card-num.gold {
+  background:linear-gradient(135deg,var(--gold),var(--gold2)); color:#000;
+  box-shadow:0 2px 8px rgba(245,158,11,.3);
+}
+.card-hdr-info { flex:1; min-width:0 }
+.card-title { font-weight:700; font-size:.9rem; line-height:1.45; margin-bottom:6px }
+.card-meta  { display:flex; gap:5px; flex-wrap:wrap }
+.badge {
+  display:inline-flex; align-items:center;
+  padding:2px 8px; border-radius:99px;
+  font-size:.6rem; font-weight:700;
+}
+.badge-type   { background:var(--bg5); color:var(--text3); border:1px solid var(--border2) }
+.badge-source { background:var(--blue-bg); color:var(--blue); border:1px solid rgba(96,165,250,.2) }
 
-.stat-chip{background:linear-gradient(135deg,#1a1a2e,#20102a);border:1px solid rgba(233,69,96,.3);border-radius:10px;padding:10px 14px;margin-bottom:12px;text-align:center;font-weight:700;font-size:.92rem}
-.wow{background:var(--red-bg);border:1px dashed rgba(233,69,96,.3);border-radius:var(--radius-sm);padding:8px 12px;margin-bottom:12px;font-size:.78rem;color:var(--red2);display:flex;align-items:flex-start;gap:6px}
+.card-img { width:100%; height:130px; object-fit:cover; border-bottom:1px solid var(--border); display:block }
+.img-hint-bar {
+  padding:8px 15px;
+  background:rgba(245,158,11,.04); border-bottom:1px solid rgba(245,158,11,.1);
+  font-size:.73rem; color:var(--gold);
+  display:flex; align-items:flex-start; gap:6px;
+}
 
-.summary{color:var(--text2);font-size:.85rem;line-height:1.75;margin-bottom:12px}
+.card-body { padding:14px 15px }
 
-.excerpt-block{background:#0a0a0f;border-right:2px solid var(--border2);padding:9px 12px;margin-bottom:12px;border-radius:0 var(--radius-sm) var(--radius-sm) 0}
-.exc-lbl{font-size:.6rem;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:4px}
-.exc-text{font-size:.78rem;color:#777;line-height:1.6;font-style:italic}
-.exc-location{font-size:.65rem;color:var(--border2);margin-top:4px}
-.exc-link{font-size:.72rem;color:var(--red);text-decoration:none;display:inline-flex;align-items:center;gap:3px;margin-top:5px}
-.exc-link:hover{text-decoration:underline}
+.stat-chip {
+  background:linear-gradient(135deg,rgba(230,57,86,.1),rgba(168,85,247,.05));
+  border:1px solid rgba(230,57,86,.18);
+  border-radius:var(--r-sm);
+  padding:10px 14px; margin-bottom:12px;
+  text-align:center; font-weight:800; font-size:.9rem; color:var(--red2);
+  line-height:1.4;
+}
+.wow {
+  background:var(--red-bg); border:1px dashed rgba(230,57,86,.22);
+  border-radius:var(--r-sm);
+  padding:8px 12px; margin-bottom:12px;
+  font-size:.77rem; color:var(--red2);
+  display:flex; align-items:flex-start; gap:6px; line-height:1.55;
+}
+.summary { color:var(--text2); font-size:.84rem; line-height:1.82; margin-bottom:12px }
 
-.screen-lbl{font-size:.62rem;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:4px}
-.screen-box{background:#000;border:1px solid var(--border2);border-radius:var(--radius-sm);padding:8px 12px;font-size:.85rem;color:var(--gold);font-weight:600;margin-bottom:6px}
-.hook-box{background:var(--purple-bg);border:1px solid rgba(139,92,246,.2);border-radius:var(--radius-sm);padding:7px 12px;font-size:.78rem;color:var(--purple);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.excerpt-block {
+  background:rgba(0,0,0,.3); border-right:3px solid var(--border2);
+  padding:10px 13px; margin-bottom:12px;
+  border-radius:0 var(--r-sm) var(--r-sm) 0;
+}
+.exc-lbl      { font-size:.58rem; text-transform:uppercase; letter-spacing:1.5px; color:var(--text3); margin-bottom:5px; font-weight:800 }
+.exc-text     { font-size:.78rem; color:var(--text2); line-height:1.72; font-style:italic }
+.exc-location { font-size:.63rem; color:var(--text3); margin-top:4px }
+.exc-link     { font-size:.7rem; color:var(--red); text-decoration:none; display:inline-flex; align-items:center; gap:3px; margin-top:6px; font-weight:700 }
+.exc-link:hover { color:var(--red2); text-decoration:underline }
 
-/* Card actions */
-.card-actions{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.btn{display:inline-flex;align-items:center;gap:4px;padding:7px 12px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-size:.76rem;font-weight:600;transition:var(--transition);text-decoration:none;white-space:nowrap}
-.btn:hover{opacity:.84;transform:translateY(-1px)}
-.btn:active{transform:none}
-.btn-red{background:var(--red);color:#fff}
-.btn-green{background:var(--green);color:#fff}
-.btn-purple{background:var(--purple);color:#fff}
-.btn-gray{background:var(--bg4);color:var(--text2);border:1px solid var(--border)}
-.btn-gold{background:var(--gold);color:#000}
-.btn-outline{background:transparent;border:1px solid var(--border2);color:var(--text2)}
-.btn-outline:hover{border-color:var(--text2);color:var(--text)}
+.screen-lbl { font-size:.6rem; text-transform:uppercase; letter-spacing:1.5px; color:var(--text3); margin-bottom:5px; font-weight:800 }
+.screen-box {
+  background:rgba(0,0,0,.4); border:1px solid var(--border2);
+  border-radius:var(--r-sm);
+  padding:9px 13px; font-size:.85rem; color:var(--gold);
+  font-weight:700; margin-bottom:8px; line-height:1.5;
+}
+.hook-box {
+  background:var(--purple-bg); border:1px solid rgba(168,85,247,.18);
+  border-radius:var(--r-sm);
+  padding:8px 12px; font-size:.77rem; color:var(--purple2);
+  margin-bottom:12px; display:flex; align-items:flex-start; gap:6px; line-height:1.55;
+}
+
+.card-actions { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px }
 
 /* Status strip */
-.status-strip{border-top:1px solid var(--border);padding:10px 14px;display:flex;gap:6px;flex-wrap:wrap}
-.chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:.71rem;font-weight:600;cursor:pointer;border:1px solid transparent;transition:var(--transition);user-select:none}
-.chip.done{background:var(--green-bg);border-color:rgba(37,211,102,.3);color:var(--green)}
-.chip.pending{background:var(--bg4);border-color:var(--border);color:var(--text3)}
-.chip:hover{border-color:var(--text3);color:var(--text)}
+.status-strip {
+  border-top:1px solid var(--border);
+  padding:10px 14px; display:flex; gap:6px; flex-wrap:wrap;
+}
+.chip {
+  display:inline-flex; align-items:center; gap:4px;
+  padding:4px 11px; border-radius:20px;
+  font-size:.69rem; font-weight:700;
+  cursor:pointer; border:1px solid transparent;
+  transition:var(--t); user-select:none;
+}
+.chip.done    { background:var(--green-bg); border-color:rgba(34,197,94,.22); color:var(--green) }
+.chip.pending { background:var(--bg4);      border-color:var(--border);       color:var(--text3) }
+.chip:hover   { border-color:var(--border3); color:var(--text2) }
 
-/* Video performance */
-.video-section{border-top:1px solid var(--border);padding:12px 14px}
-.video-lbl{font-size:.68rem;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.perf-row{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
-.perf-btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--bg4);color:var(--text3);font-size:.73rem;font-weight:600;cursor:pointer;transition:var(--transition)}
-.perf-btn.filmed{background:var(--blue-bg);border-color:rgba(59,130,246,.3);color:var(--blue)}
-.perf-btn.worked{background:var(--green-bg);border-color:rgba(37,211,102,.3);color:var(--green)}
-.perf-btn.notwork{background:var(--red-bg);border-color:rgba(233,69,96,.3);color:var(--red)}
-.perf-btn.waiting{background:var(--gold-bg);border-color:rgba(245,166,35,.3);color:var(--gold)}
-textarea.notes{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;color:var(--text2);font-size:.78rem;resize:none;min-height:44px;font-family:inherit;transition:var(--transition)}
-textarea.notes:focus{outline:none;border-color:var(--border2)}
+/* Video tracking section */
+.video-section { border-top:1px solid var(--border); padding:12px 15px }
+.video-lbl {
+  font-size:.62rem; color:var(--text3); margin-bottom:8px;
+  display:flex; align-items:center; gap:6px;
+  font-weight:800; text-transform:uppercase; letter-spacing:1px;
+}
+.perf-row  { display:flex; gap:5px; margin-bottom:8px; flex-wrap:wrap }
+.perf-btn {
+  padding:5px 12px; border-radius:20px;
+  border:1px solid var(--border); background:var(--bg4);
+  color:var(--text3); font-size:.71rem; font-weight:700;
+  cursor:pointer; transition:var(--t);
+}
+.perf-btn.filmed  { background:var(--blue-bg);  border-color:rgba(96,165,250,.3);  color:var(--blue) }
+.perf-btn.worked  { background:var(--green-bg); border-color:rgba(34,197,94,.3);   color:var(--green) }
+.perf-btn.notwork { background:var(--red-bg);   border-color:rgba(230,57,86,.3);   color:var(--red) }
+.perf-btn.waiting { background:var(--gold-bg);  border-color:rgba(245,158,11,.3);  color:var(--gold) }
+textarea.notes {
+  width:100%; background:var(--bg); border:1px solid var(--border);
+  border-radius:var(--r-sm); padding:8px 11px;
+  color:var(--text2); font-size:.76rem; resize:none;
+  min-height:40px; font-family:inherit; transition:var(--t); line-height:1.65;
+}
+textarea.notes:focus { outline:none; border-color:var(--border3); color:var(--text) }
 
-/* ── Community tab ───────────────────────────────── */
-.comm-card{background:var(--bg2);border:1px solid rgba(37,211,102,.25);border-radius:var(--radius);padding:20px;margin-bottom:16px}
-.comm-text{color:var(--text2);line-height:1.85;white-space:pre-wrap;font-size:.88rem;margin-bottom:16px}
-.comm-actions{display:flex;gap:8px;flex-wrap:wrap}
-.btn-wa{background:var(--green);color:#fff;padding:9px 18px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-weight:700;font-size:.82rem;display:inline-flex;align-items:center;gap:6px;transition:var(--transition)}
-.btn-wa:hover{opacity:.88;transform:translateY(-1px)}
+/* ════════════════════════════════════════════════
+   COMMUNITY TAB
+   ════════════════════════════════════════════════ */
+.comm-card {
+  background:var(--bg2);
+  border:1px solid rgba(34,197,94,.2);
+  border-radius:var(--r); padding:20px; margin-bottom:16px;
+}
+.comm-header {
+  display:flex; align-items:center; gap:8px;
+  font-weight:800; font-size:.82rem; color:var(--green);
+  margin-bottom:12px;
+}
+.comm-text {
+  color:var(--text2); line-height:1.92; white-space:pre-wrap;
+  font-size:.87rem; margin-bottom:16px;
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:var(--r-sm); padding:14px 16px;
+}
+.comm-actions { display:flex; gap:8px; flex-wrap:wrap }
 
-/* ── Instagram tab ───────────────────────────────── */
-.ig-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
-.ig-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-.ig-card-hdr{background:var(--bg3);padding:12px 15px;display:flex;align-items:center;gap:8px}
-.ig-body{padding:15px}
-.ig-img{width:100%;border-radius:var(--radius-sm);max-height:180px;object-fit:cover;margin-bottom:12px;display:block}
-.ig-hint{background:var(--gold-bg);border:1px dashed rgba(245,166,35,.3);border-radius:var(--radius-sm);padding:8px 12px;font-size:.76rem;color:var(--gold);display:flex;gap:6px;margin-bottom:12px}
-.caption-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:13px;font-size:.84rem;line-height:1.8;color:var(--text2);white-space:pre-wrap;margin-bottom:10px;max-height:200px;overflow-y:auto}
-.hashtags{color:var(--purple);font-size:.76rem;line-height:1.9;word-break:break-word;margin-bottom:12px}
+/* ════════════════════════════════════════════════
+   INSTAGRAM TAB
+   ════════════════════════════════════════════════ */
+.ig-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px }
+.ig-card {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); overflow:hidden; transition:var(--t);
+}
+.ig-card:hover { border-color:var(--border2) }
+.ig-card-hdr {
+  background:var(--bg3); padding:12px 15px;
+  display:flex; align-items:center; gap:8px;
+  border-bottom:1px solid var(--border);
+}
+.ig-body { padding:15px }
+.ig-img  { width:100%; border-radius:var(--r-sm); max-height:180px; object-fit:cover; margin-bottom:12px; display:block }
+.ig-hint {
+  background:var(--gold-bg); border:1px dashed rgba(245,158,11,.3);
+  border-radius:var(--r-sm); padding:8px 12px;
+  font-size:.74rem; color:var(--gold);
+  display:flex; gap:6px; margin-bottom:12px;
+}
+.caption-box {
+  background:var(--bg); border:1px solid var(--border);
+  border-radius:var(--r-sm); padding:13px;
+  font-size:.84rem; line-height:1.88; color:var(--text2);
+  white-space:pre-wrap; margin-bottom:10px;
+  max-height:200px; overflow-y:auto;
+}
+.hashtags { color:var(--purple2); font-size:.74rem; line-height:1.95; word-break:break-word; margin-bottom:12px }
 
-/* ── Poll tab ────────────────────────────────────── */
-.poll-wrapper{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:700px){.poll-wrapper{grid-template-columns:1fr}}
-.poll-card{background:var(--bg2);border:1px solid rgba(245,166,35,.25);border-radius:var(--radius);padding:18px}
-.ig-poll-card{background:var(--bg2);border:1px solid rgba(139,92,246,.25);border-radius:var(--radius);padding:18px}
-.poll-card-title{font-weight:700;font-size:.88rem;margin-bottom:12px;display:flex;align-items:center;gap:7px}
-.poll-q{font-size:.92rem;color:var(--text);margin-bottom:12px}
-.poll-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
-.poll-opt{background:rgba(245,166,35,.04);border:1px solid rgba(245,166,35,.1);border-radius:var(--radius-sm);padding:9px 12px;font-size:.85rem;display:flex;align-items:center;gap:8px}
-.poll-num{width:22px;height:22px;background:var(--gold);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.72rem;flex-shrink:0}
-.ig-poll-num{background:var(--purple)}
-.poll-msg{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-size:.82rem;color:var(--text2);white-space:pre-wrap;line-height:1.7;margin-bottom:12px;max-height:180px;overflow-y:auto}
-.approval-section{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
-.approval-badge{font-size:.7rem;padding:3px 10px;border-radius:10px;background:var(--gold-bg);color:var(--gold);border:1px solid rgba(245,166,35,.2);font-weight:600}
-.approval-badge.ok{background:var(--green-bg);color:var(--green);border-color:rgba(37,211,102,.2)}
-.winner-section{border-top:1px solid var(--border);padding-top:14px;margin-top:14px}
-.winner-lbl{font-size:.74rem;color:var(--text3);margin-bottom:7px}
-.winner-sel{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:var(--radius-sm);font-size:.83rem;cursor:pointer;margin-bottom:7px}
-.winner-ok{font-size:.76rem;color:var(--green);display:none;margin-top:5px}
+/* ════════════════════════════════════════════════
+   POLL TAB
+   ════════════════════════════════════════════════ */
+.poll-howto {
+  background:linear-gradient(135deg,rgba(34,197,94,.07),rgba(34,197,94,.02));
+  border:1px solid rgba(34,197,94,.2);
+  border-radius:var(--r); padding:18px 20px; margin-bottom:22px;
+}
+.poll-howto-title {
+  font-weight:800; font-size:.9rem; color:var(--green);
+  margin-bottom:14px; display:flex; align-items:center; gap:8px;
+}
+.poll-howto-steps { display:flex; flex-direction:column; gap:10px }
+.poll-step {
+  display:flex; align-items:center; gap:12px;
+  font-size:.84rem; color:var(--text2);
+}
+.poll-step-num {
+  width:26px; height:26px; min-width:26px;
+  background:var(--green); color:#000;
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:.73rem;
+}
+.poll-block {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); padding:16px 18px; margin-bottom:8px;
+}
+.poll-block-label {
+  font-size:.6rem; font-weight:800; text-transform:uppercase;
+  letter-spacing:1.5px; color:var(--text3); margin-bottom:8px;
+}
+.poll-block-text {
+  font-size:.92rem; color:var(--text);
+  line-height:1.65; margin-bottom:14px; font-weight:700;
+}
+.poll-opt-row {
+  display:flex; align-items:center; gap:10px;
+  background:var(--bg3); border:1px solid rgba(245,158,11,.2);
+  border-radius:var(--r-sm); padding:11px 14px; margin-bottom:8px;
+  transition:var(--t);
+}
+.poll-opt-row:hover { border-color:rgba(245,158,11,.4); background:var(--bg4) }
+.poll-num {
+  width:28px; height:28px; min-width:28px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2)); color:#000;
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:.8rem; flex-shrink:0;
+}
+.poll-opt-text { flex:1; font-size:.88rem; font-weight:700 }
+.winner-sel {
+  width:100%; background:var(--bg3); border:1px solid var(--border);
+  color:var(--text); padding:10px 13px;
+  border-radius:var(--r-sm); font-size:.84rem;
+  cursor:pointer; margin-bottom:10px; display:block; transition:var(--t);
+}
+.winner-sel:focus { outline:none; border-color:var(--border3) }
+.winner-ok { font-size:.77rem; color:var(--green); margin-top:8px }
 
-/* ── Tracking tab ────────────────────────────────── */
-.track-summary{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:20px}
-.track-kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center}
-.track-kpi-val{font-size:1.8rem;font-weight:700;margin-bottom:2px}
-.track-kpi-lbl{font-size:.7rem;color:var(--text3)}
-.track-table{width:100%;border-collapse:collapse;background:var(--bg2);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
-.track-table th{background:var(--bg3);padding:10px 14px;text-align:right;font-size:.72rem;color:var(--text3);font-weight:600;border-bottom:1px solid var(--border)}
-.track-table td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:.82rem;vertical-align:middle}
-.track-table tr:last-child td{border-bottom:none}
-.track-table tr:hover td{background:rgba(255,255,255,.02)}
-.tc{width:24px;height:24px;border-radius:50%;border:none;cursor:pointer;font-size:.82rem;display:inline-flex;align-items:center;justify-content:center;transition:var(--transition)}
-.tc.done{background:var(--green-bg);color:var(--green)}
-.tc.not{background:var(--bg4);color:var(--text3)}
-.perf-sel{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:4px 8px;border-radius:6px;font-size:.74rem;cursor:pointer}
-.track-card-title{font-weight:500;font-size:.82rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.global-track{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-top:16px}
-.global-track-title{font-size:.72rem;color:var(--text3);margin-bottom:10px}
-.global-chips{display:flex;gap:8px;flex-wrap:wrap}
+/* ════════════════════════════════════════════════
+   TRACKING TAB
+   ════════════════════════════════════════════════ */
+.track-summary { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; margin-bottom:20px }
+.track-kpi {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); padding:16px 14px;
+  text-align:center; transition:var(--t);
+}
+.track-kpi:hover { border-color:var(--border2); box-shadow:var(--sh) }
+.track-kpi-val { font-size:1.9rem; font-weight:800; margin-bottom:4px; line-height:1 }
+.track-kpi-lbl { font-size:.68rem; color:var(--text3); font-weight:700 }
 
-/* ── Modals ──────────────────────────────────────── */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
-.overlay.open{display:flex}
-.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.6);animation:modalIn .2s ease}
-@keyframes modalIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:none}}
-.modal-hdr{padding:20px 22px 0;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.modal-hdr h3{font-size:1rem;font-weight:700}
-.modal-close{background:var(--bg4);border:none;color:var(--text2);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:var(--transition)}
-.modal-close:hover{background:var(--border2);color:var(--text)}
-.modal-body{padding:0 22px 22px}
-.script-text{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px;line-height:1.85;color:var(--text2);font-size:.88rem;white-space:pre-wrap;margin-bottom:14px;font-family:inherit;max-height:400px;overflow-y:auto}
-.modal-copy{width:100%;padding:11px;background:var(--red);color:#fff;border:none;border-radius:var(--radius-sm);font-size:.88rem;font-weight:700;cursor:pointer;transition:var(--transition)}
-.modal-copy:hover{opacity:.9}
+.track-table {
+  width:100%; border-collapse:collapse;
+  background:var(--bg2); border-radius:var(--r);
+  overflow:hidden; border:1px solid var(--border);
+}
+.track-table th {
+  background:var(--bg3); padding:10px 14px;
+  text-align:right; font-size:.68rem; color:var(--text3);
+  font-weight:800; border-bottom:1px solid var(--border);
+  text-transform:uppercase; letter-spacing:.5px;
+}
+.track-table td { padding:11px 14px; border-bottom:1px solid var(--border); font-size:.82rem; vertical-align:middle }
+.track-table tr:last-child td { border-bottom:none }
+.track-table tr:hover td { background:rgba(255,255,255,.015) }
+.tc {
+  width:26px; height:26px; border-radius:50%;
+  border:none; cursor:pointer; font-size:.82rem;
+  display:inline-flex; align-items:center; justify-content:center; transition:var(--t);
+}
+.tc.done { background:var(--green-bg); color:var(--green) }
+.tc.not  { background:var(--bg4);      color:var(--text3) }
+.perf-sel {
+  background:var(--bg3); border:1px solid var(--border);
+  color:var(--text2); padding:4px 9px;
+  border-radius:var(--r-xs); font-size:.72rem; cursor:pointer;
+}
+.track-card-title { font-weight:600; font-size:.82rem; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.global-track {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); padding:16px; margin-top:16px;
+}
+.global-track-title {
+  font-size:.68rem; color:var(--text3); margin-bottom:10px;
+  font-weight:800; text-transform:uppercase; letter-spacing:.5px;
+}
+.global-chips { display:flex; gap:8px; flex-wrap:wrap }
 
-/* ── Toast ───────────────────────────────────────── */
-.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1e1e2e;border:1px solid var(--border2);color:var(--text);padding:10px 20px;border-radius:30px;font-size:.82rem;font-weight:600;opacity:0;transition:opacity .25s;z-index:1000;pointer-events:none;display:flex;align-items:center;gap:8px}
-.toast.show{opacity:1}
+/* ════════════════════════════════════════════════
+   MODALS
+   ════════════════════════════════════════════════ */
+.overlay {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,.9); z-index:500;
+  align-items:center; justify-content:center;
+  padding:16px; backdrop-filter:blur(10px);
+}
+.overlay.open { display:flex }
+.modal {
+  background:var(--bg2); border:1px solid var(--border2);
+  border-radius:22px; width:100%; max-width:640px;
+  max-height:90vh; overflow-y:auto;
+  box-shadow:0 24px 80px rgba(0,0,0,.75);
+  animation:modalIn .2s cubic-bezier(.4,0,.2,1);
+}
+@keyframes modalIn { from{opacity:0;transform:scale(.96)} to{opacity:1;transform:none} }
+.modal-hdr { padding:20px 22px 0; display:flex; align-items:center; justify-content:space-between; margin-bottom:16px }
+.modal-hdr h3 { font-size:1rem; font-weight:800 }
+.modal-close {
+  background:var(--bg4); border:none; color:var(--text2);
+  width:30px; height:30px; border-radius:50%;
+  cursor:pointer; font-size:.88rem;
+  display:flex; align-items:center; justify-content:center; transition:var(--t);
+}
+.modal-close:hover { background:var(--border2); color:var(--text) }
+.modal-body { padding:0 22px 22px }
+.script-text {
+  background:var(--bg); border:1px solid var(--border);
+  border-radius:var(--r); padding:16px;
+  line-height:1.9; color:var(--text2); font-size:.87rem;
+  white-space:pre-wrap; margin-bottom:14px; font-family:inherit;
+  max-height:420px; overflow-y:auto;
+}
+.modal-copy {
+  width:100%; padding:12px;
+  background:var(--red); color:#fff; border:none;
+  border-radius:var(--r-sm); font-size:.88rem; font-weight:800;
+  cursor:pointer; transition:var(--t);
+  box-shadow:0 3px 14px rgba(230,57,86,.3);
+}
+.modal-copy:hover { opacity:.9 }
+
+/* ════════════════════════════════════════════════
+   TOAST
+   ════════════════════════════════════════════════ */
+.toast {
+  position:fixed; bottom:28px; left:50%;
+  transform:translateX(-50%) translateY(10px);
+  background:var(--bg3); border:1px solid var(--border2);
+  color:var(--text); padding:10px 20px;
+  border-radius:30px; font-size:.81rem; font-weight:700;
+  opacity:0; transition:opacity .22s,transform .22s;
+  z-index:1000; pointer-events:none;
+  display:flex; align-items:center; gap:8px;
+  box-shadow:var(--sh); white-space:nowrap;
+}
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0) }
 
 /* ── Empty state ─────────────────────────────────── */
-.empty{text-align:center;padding:80px 24px;color:var(--text3)}
-.empty-icon{font-size:3rem;margin-bottom:16px;opacity:.5}
-.empty h2{font-size:1.1rem;color:var(--text2);margin-bottom:8px}
-.empty p{font-size:.85rem;line-height:1.6}
-.empty code{background:var(--bg3);padding:2px 8px;border-radius:4px;font-size:.8rem;color:var(--red)}
+.empty { text-align:center; padding:80px 24px; color:var(--text3) }
+.empty-icon { font-size:3.2rem; margin-bottom:18px; opacity:.35 }
+.empty h2 { font-size:1.1rem; color:var(--text2); margin-bottom:8px; font-weight:800 }
+.empty p  { font-size:.85rem; line-height:1.7; max-width:380px; margin:0 auto }
+.empty code { background:var(--bg3); padding:2px 8px; border-radius:4px; font-size:.8rem; color:var(--red); font-family:monospace }
+
+/* ── Refresh overlay ─────────────────────────────── */
+.refresh-overlay {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,.78); z-index:600;
+  align-items:center; justify-content:center; backdrop-filter:blur(12px);
+}
+.refresh-overlay.open { display:flex }
+.refresh-box {
+  background:var(--bg2); border:1px solid var(--border2);
+  border-radius:24px; padding:36px 32px;
+  text-align:center; max-width:340px; width:90%;
+  box-shadow:var(--sh-lg);
+}
+.refresh-icon { font-size:2.8rem; margin-bottom:14px; display:inline-block; animation:spin 1.2s linear infinite }
+.refresh-title { font-size:1.1rem; font-weight:800; margin-bottom:8px }
+.refresh-sub { font-size:.84rem; color:var(--text3); line-height:1.72 }
 
 /* ── Mobile ──────────────────────────────────────── */
-@media(max-width:600px){
-  header,main,.week-nav,.tabs,.stats-bar{padding-right:14px;padding-left:14px}
-  .cards-grid,.ig-grid{grid-template-columns:1fr}
-  .modal{max-width:100%;border-radius:16px 16px 0 0;position:fixed;bottom:0;left:0;right:0;max-height:80vh}
-  .overlay{align-items:flex-end;padding:0}
+@media(max-width:640px) {
+  header,.stats-bar,.week-nav,.tabs { padding-right:14px; padding-left:14px }
+  main { padding:18px 14px 100px }
+  .cards-grid,.ig-grid { grid-template-columns:1fr }
+  .track-summary { grid-template-columns:repeat(2,1fr) }
+  .modal { max-width:100%; border-radius:20px 20px 0 0; position:fixed; bottom:0; left:0; right:0; max-height:82vh }
+  .overlay { align-items:flex-end; padding:0 }
+  .toast { width:calc(100% - 32px); max-width:340px }
+  .trend-pill { display:none }
 }
+
+/* ── Keyboard shortcut hint ──────────────────────── */
+.kbd-hint {
+  position:fixed; bottom:20px; right:20px;
+  background:var(--bg3); border:1px solid var(--border2);
+  border-radius:var(--r-sm); padding:10px 14px;
+  font-size:.68rem; color:var(--text3); line-height:1.8;
+  z-index:100; pointer-events:none;
+  opacity:0; transition:opacity .3s;
+}
+.kbd-hint.show { opacity:1 }
+kbd { background:var(--bg4); border:1px solid var(--border3); border-radius:4px; padding:1px 5px; font-size:.65rem; font-family:monospace; color:var(--text2) }
 </style>
 </head>
 <body>
@@ -253,38 +677,50 @@ textarea.notes:focus{outline:none;border-color:var(--border2)}
 <header>
   <div class="logo">
     <div class="logo-icon">💪</div>
-    <div class="logo-text">אביאל <span>מנהל תוכן</span></div>
+    <div class="logo-text">אביאל <em>מנהל תוכן</em></div>
   </div>
-  <div class="header-meta">
-    <div class="live-badge"><div class="live-dot"></div><span id="weekLabel">טוען...</span></div>
-    <div class="week-pill" id="weekTheme" style="display:none"></div>
+  <div class="header-right">
+    <div class="live-indicator"><div class="live-dot"></div><span id="weekLabel">טוען...</span></div>
+    <div class="week-badge" id="weekTheme" style="display:none"></div>
+    <button class="btn-refresh" id="refreshBtn" onclick="refreshBot()" title="רענן מחקרים — עולה ~$0.10">🔄 רענן</button>
   </div>
 </header>
 
 <!-- ── Stats bar ──────────────────────────────────── -->
 <div class="stats-bar" id="statsBar">
-  <div class="stat"><span class="stat-icon">📊</span><span class="stat-val" id="st-res">—</span><span class="stat-lbl">מחקרים</span></div>
-  <div class="stat-divider"></div>
-  <div class="stat"><span class="stat-icon">📲</span><span class="stat-val" id="st-wa">—</span><span class="stat-lbl">נשלח לקבוצה</span></div>
-  <div class="stat-divider"></div>
-  <div class="stat"><span class="stat-icon">📸</span><span class="stat-val" id="st-ig">—</span><span class="stat-lbl">אינסטגרם</span></div>
-  <div class="stat-divider"></div>
-  <div class="stat"><span class="stat-icon">🎥</span><span class="stat-val" id="st-vid">—</span><span class="stat-lbl">סרטונים</span></div>
-  <div class="stat-divider"></div>
-  <div class="stat"><span class="stat-icon">🔥</span><span class="stat-val" id="st-ok">—</span><span class="stat-lbl">עבדו</span></div>
-  <div class="trend-chip" id="trendChip" style="display:none"></div>
+  <div class="stat-card">
+    <span class="stat-icon">🔬</span>
+    <div class="stat-info"><span class="stat-val" id="st-res">—</span><span class="stat-lbl">מחקרים</span></div>
+  </div>
+  <div class="stat-card">
+    <span class="stat-icon">📲</span>
+    <div class="stat-info"><span class="stat-val" id="st-wa">—</span><span class="stat-lbl">נשלח לקבוצה</span></div>
+  </div>
+  <div class="stat-card">
+    <span class="stat-icon">📸</span>
+    <div class="stat-info"><span class="stat-val" id="st-ig">—</span><span class="stat-lbl">אינסטגרם</span></div>
+  </div>
+  <div class="stat-card">
+    <span class="stat-icon">🎥</span>
+    <div class="stat-info"><span class="stat-val" id="st-vid">—</span><span class="stat-lbl">סרטונים</span></div>
+  </div>
+  <div class="stat-card">
+    <span class="stat-icon">🔥</span>
+    <div class="stat-info"><span class="stat-val" id="st-ok">—</span><span class="stat-lbl">עבדו</span></div>
+  </div>
+  <div class="trend-pill" id="trendChip" style="display:none">⚡</div>
 </div>
 
 <!-- ── Week nav ───────────────────────────────────── -->
 <div class="week-nav" id="weekNav"></div>
 
 <!-- ── Tabs ──────────────────────────────────────── -->
-<div class="tabs">
-  <button class="tab-btn active" onclick="tab('research',this)">📊 מחקרים<span class="badge" id="badge-research">3</span></button>
-  <button class="tab-btn" onclick="tab('community',this)">💬 קהילה</button>
-  <button class="tab-btn" onclick="tab('instagram',this)">📸 אינסטגרם</button>
-  <button class="tab-btn" onclick="tab('poll',this)">📣 פול</button>
-  <button class="tab-btn" onclick="tab('tracking',this)">📋 מעקב</button>
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" onclick="tab('research',this)" title="[1]">🔬 מחקרים<span class="cnt" id="badge-research">0</span></button>
+  <button class="tab-btn" onclick="tab('community',this)" title="[2]">💬 קהילה</button>
+  <button class="tab-btn" onclick="tab('instagram',this)" title="[3]">📸 אינסטגרם</button>
+  <button class="tab-btn" onclick="tab('poll',this)" title="[4]">📣 פול</button>
+  <button class="tab-btn" onclick="tab('tracking',this)" title="[5]">📋 מעקב</button>
 </div>
 
 <main>
@@ -296,12 +732,16 @@ textarea.notes:focus{outline:none;border-color:var(--border2)}
 
 <!-- ═══ TAB: קהילה ════════════════════════════════ -->
 <div class="tab-panel" id="tab-community">
-  <div class="section-title">הודעה מוכנה לקבוצת הווטסאפ</div>
+  <div class="section-title"><b>קהילה</b> הודעה לווטסאפ</div>
   <div class="comm-card">
+    <div class="comm-header">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      הודעה מוכנה לקבוצה
+    </div>
     <div class="comm-text" id="commText"></div>
     <div class="comm-actions">
       <button class="btn-wa" onclick="sendWA('community')">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
         שלח לקבוצה
       </button>
       <button class="btn btn-gray" onclick="copy(gEl('commText').textContent)">📋 העתק</button>
@@ -317,51 +757,71 @@ textarea.notes:focus{outline:none;border-color:var(--border2)}
 
 <!-- ═══ TAB: פול ════════════════════════════════════ -->
 <div class="tab-panel" id="tab-poll">
-  <div class="approval-section">
-    <span style="font-size:1rem">🔐</span>
-    <div style="flex:1">
-      <div style="font-weight:600;font-size:.88rem;margin-bottom:2px">בקרה לפני שליחה</div>
-      <div style="font-size:.76rem;color:var(--text3)">ראה את הפול, ערוך אם צריך, ולחץ אשר.</div>
-    </div>
-    <span class="approval-badge" id="appBadge">ממתין לאישור</span>
-  </div>
 
-  <div class="poll-wrapper">
-    <div class="poll-card">
-      <div class="poll-card-title">📣 פול לווטסאפ</div>
-      <div class="poll-q" id="pollQ"></div>
-      <div class="poll-opts" id="pollOpts"></div>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-size:.8rem;color:var(--text3);white-space:pre-wrap;line-height:1.7;margin-bottom:12px;max-height:160px;overflow-y:auto" id="pollWaText"></div>
-      <div style="display:flex;gap:7px;flex-wrap:wrap">
-        <button class="btn btn-gold" onclick="approvePoll()">✅ אשר ושלח</button>
-        <button class="btn btn-gray" onclick="copy(gEl('pollWaText').textContent)">📋 העתק</button>
-      </div>
-    </div>
-
-    <div class="ig-poll-card">
-      <div class="poll-card-title" style="color:var(--purple)">📸 גרסת אינסטגרם</div>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-size:.8rem;color:var(--text2);white-space:pre-wrap;line-height:1.7;margin-bottom:12px;max-height:220px;overflow-y:auto" id="pollIgText"></div>
-      <div style="display:flex;gap:7px">
-        <button class="btn btn-purple" onclick="copy(gEl('pollIgText').textContent)">📋 העתק לאינסטגרם</button>
-        <button class="btn btn-outline" onclick="flipStatus('ig_poll_sent')">✅ פורסם</button>
-      </div>
+  <!-- הוראות -->
+  <div class="poll-howto">
+    <div class="poll-howto-title">📲 איך יוצרים סקר בווטסאפ</div>
+    <div class="poll-howto-steps">
+      <div class="poll-step"><div class="poll-step-num">1</div><span>פתח את הקבוצה ← לחץ על <strong>📎</strong></span></div>
+      <div class="poll-step"><div class="poll-step-num">2</div><span>בחר <strong>סקר</strong></span></div>
+      <div class="poll-step"><div class="poll-step-num">3</div><span>הדבק את <strong>השאלה</strong> ← הדבק כל <strong>אפשרות</strong> בנפרד</span></div>
+      <div class="poll-step"><div class="poll-step-num">4</div><span>שלח ✅</span></div>
     </div>
   </div>
 
-  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-top:16px">
-    <div class="winner-lbl">📥 אחרי ההצבעה — בחר את הנושא המנצח (לבוט השבוע הבא)</div>
+  <!-- שאלה -->
+  <div class="section-title"><b>שלב 1</b> שאלת הסקר</div>
+  <div class="poll-block">
+    <div class="poll-block-label">העתק את השאלה ← הדבק בווטסאפ</div>
+    <div class="poll-block-text" id="pollQ"></div>
+    <button class="btn btn-gold" onclick="copy(gEl('pollQ').textContent)">📋 העתק שאלה</button>
+  </div>
+
+  <!-- אפשרויות -->
+  <div class="section-title"><b>שלב 2</b> אפשרויות — העתק כל אחת בנפרד</div>
+  <div id="pollOpts"></div>
+
+  <!-- הודעה מקדימה -->
+  <div class="section-title"><b>שלב 3</b> הודעה לפני הסקר (אופציונלי)</div>
+  <div class="poll-block">
+    <div class="poll-block-label">שלח קודם לפני הסקר כדי להסביר</div>
+    <div class="poll-block-text" id="pollWaText" style="white-space:pre-wrap;font-size:.85rem;line-height:1.82;font-weight:500"></div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap">
+      <button class="btn-wa" onclick="sendWA('poll')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        שלח לקבוצה
+      </button>
+      <button class="btn btn-gray" onclick="copy(gEl('pollWaText').textContent)">📋 העתק</button>
+      <button class="btn btn-outline" onclick="flipStatus('poll_sent');toast('✅','סומן כנשלח')">✅ סומן כנשלח</button>
+    </div>
+  </div>
+
+  <!-- אינסטגרם -->
+  <div class="section-title"><b>אינסטגרם</b> גרסת סטורי / פוסט</div>
+  <div class="poll-block">
+    <div class="poll-block-label">גרסה מותאמת לאינסטגרם</div>
+    <div class="poll-block-text" id="pollIgText" style="white-space:pre-wrap;font-size:.85rem;line-height:1.82;font-weight:500"></div>
+    <div style="display:flex;gap:7px">
+      <button class="btn btn-purple" onclick="copy(gEl('pollIgText').textContent)">📋 העתק לאינסטגרם</button>
+      <button class="btn btn-outline" onclick="flipStatus('ig_poll_sent');toast('✅','סומן כנשלח')">✅ פורסם</button>
+    </div>
+  </div>
+
+  <!-- נושא מנצח -->
+  <div class="section-title"><b>אחרי ההצבעה</b> שמור נושא מנצח</div>
+  <div class="poll-block">
+    <div class="poll-block-label">הנושא שיישמר כאן ישמש את הבוט לשבוע הבא</div>
     <select class="winner-sel" id="winnerSel"><option value="">-- בחר נושא מנצח --</option></select>
-    <div style="display:flex;gap:8px">
-      <button class="btn btn-green" onclick="saveWinner()">💾 שמור נושא מנצח</button>
-    </div>
-    <div class="winner-ok" id="winnerOk">✅ נשמר! הבוט ישתמש בנושא הזה בשבוע הבא</div>
+    <button class="btn btn-green" onclick="saveWinner()">💾 שמור נושא מנצח</button>
+    <div class="winner-ok" id="winnerOk" style="display:none">✅ נשמר! הבוט ישתמש בנושא הזה בשבוע הבא</div>
   </div>
+
 </div>
 
 <!-- ═══ TAB: מעקב ════════════════════════════════════ -->
 <div class="tab-panel" id="tab-tracking">
   <div class="track-summary" id="kpiRow"></div>
-  <div class="section-title">מעקב פר מחקר</div>
+  <div class="section-title"><b>מעקב</b> פר מחקר</div>
   <div style="overflow-x:auto">
     <table class="track-table">
       <thead><tr>
@@ -378,7 +838,7 @@ textarea.notes:focus{outline:none;border-color:var(--border2)}
 
 </main>
 
-<!-- Script modal -->
+<!-- ── Script modal ───────────────────────────────── -->
 <div class="overlay" id="scriptModal">
   <div class="modal">
     <div class="modal-hdr">
@@ -392,22 +852,42 @@ textarea.notes:focus{outline:none;border-color:var(--border2)}
   </div>
 </div>
 
+<!-- ── Refresh overlay ────────────────────────────── -->
+<div class="refresh-overlay" id="refreshOverlay">
+  <div class="refresh-box">
+    <div class="refresh-icon">🔄</div>
+    <div class="refresh-title">מחפש מחקרים חדשים...</div>
+    <div class="refresh-sub">הבוט סורק 8 מקורות מדעיים<br>ומייצר תוכן חדש בעברית.<br><br>⏱ לוקח כ-2 דקות</div>
+  </div>
+</div>
+
+<!-- ── Toast ──────────────────────────────────────── -->
 <div class="toast" id="toast"><span id="toastIcon">✓</span><span id="toastMsg"></span></div>
+
+<!-- ── Keyboard hint ──────────────────────────────── -->
+<div class="kbd-hint" id="kbdHint">
+  <kbd>1</kbd>–<kbd>5</kbd> מעבר בין טאבים<br>
+  <kbd>Esc</kbd> סגור חלון
+</div>
 
 <script src="data.js"></script>
 <script>
-// ── State & utils ─────────────────────────────────────────────────────────
-let WI = 0; // week index
+// ══════════════════════════════════════════════════════════
+// STATE & UTILS
+// ══════════════════════════════════════════════════════════
+let WI = 0;
 
 const gEl = id => document.getElementById(id);
 const esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
-function stk(suf)    { return `av_${(RESEARCH_DATA[WI]?.week_date||'x')}_${suf}`; }
-function st(k)       { return localStorage.getItem(stk(k)); }
-function setSt(k,v)  { localStorage.setItem(stk(k), v); }
+function stk(suf)   { return `av_${(RESEARCH_DATA[WI]?.week_date||'x')}_${suf}`; }
+function st(k)      { return localStorage.getItem(stk(k)); }
+function setSt(k,v) { localStorage.setItem(stk(k), v); }
 
 function copy(t) {
-  navigator.clipboard.writeText(t||'').then(()=>toast('📋','הועתק!')).catch(()=>toast('❌','שגיאה'));
+  navigator.clipboard.writeText(t||'')
+    .then(()  => toast('📋','הועתק!'))
+    .catch(()  => toast('❌','שגיאה בהעתקה'));
 }
 
 function toast(icon, msg, dur=2200) {
@@ -415,7 +895,8 @@ function toast(icon, msg, dur=2200) {
   gEl('toastMsg').textContent  = msg;
   const el = gEl('toast');
   el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'), dur);
+  clearTimeout(el._t);
+  el._t = setTimeout(()=>el.classList.remove('show'), dur);
 }
 
 function tab(name, btn) {
@@ -426,43 +907,82 @@ function tab(name, btn) {
 }
 
 function closeModal(id) { gEl(id).classList.remove('open'); }
-document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
-document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.overlay.open').forEach(o=>o.classList.remove('open'))});
+document.querySelectorAll('.overlay').forEach(o=>
+  o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('open'); })
+);
 
-// ── Init ──────────────────────────────────────────────────────────────────
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.target.tagName==='TEXTAREA'||e.target.tagName==='INPUT'||e.target.tagName==='SELECT') return;
+  if (e.key==='Escape') {
+    document.querySelectorAll('.overlay.open').forEach(o=>o.classList.remove('open'));
+    return;
+  }
+  const tabs = ['research','community','instagram','poll','tracking'];
+  const n = parseInt(e.key);
+  if (n>=1 && n<=5) {
+    const btns = document.querySelectorAll('.tab-btn');
+    tab(tabs[n-1], btns[n-1]);
+  }
+});
+
+// Show keyboard hint for 3s on first visit
+if (!localStorage.getItem('av_kbdhint_shown')) {
+  setTimeout(()=>{ gEl('kbdHint').classList.add('show'); setTimeout(()=>gEl('kbdHint').classList.remove('show'),3500); },1000);
+  localStorage.setItem('av_kbdhint_shown','1');
+}
+
+// ══════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════
 function init() {
-  if(typeof RESEARCH_DATA==='undefined'||!RESEARCH_DATA.length) {
-    gEl('resContainer').innerHTML = `<div class="empty"><div class="empty-icon">🔬</div><h2>אין גיליונות עדיין</h2><p>הרץ את <code>weekly_research_bot.py</code> כדי לייצר את הגיליון הראשון</p></div>`;
+  if (typeof RESEARCH_DATA==='undefined' || !RESEARCH_DATA.length) {
+    gEl('resContainer').innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">🔬</div>
+        <h2>אין גיליונות עדיין</h2>
+        <p>הרץ את <code>weekly_research_bot.py</code> כדי לייצר את הגיליון הראשון</p>
+      </div>`;
     gEl('weekLabel').textContent = 'אין נתונים';
     return;
   }
-  buildWeekNav(); renderWeek(0);
+  buildWeekNav();
+  renderWeek(0);
 }
 
 function buildWeekNav() {
   const nav = gEl('weekNav');
-  RESEARCH_DATA.forEach((w,i)=>{
+  RESEARCH_DATA.forEach((w,i) => {
     const b = document.createElement('button');
     b.className = 'week-btn'+(i===0?' active':'');
     b.textContent = fmtDate(w.week_date);
-    b.onclick = ()=>{ nav.querySelectorAll('.week-btn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); renderWeek(i); };
+    b.onclick = () => {
+      nav.querySelectorAll('.week-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      renderWeek(i);
+    };
     nav.appendChild(b);
   });
 }
 
-// ── Render week ───────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════
+// RENDER WEEK
+// ══════════════════════════════════════════════════════════
 function renderWeek(i) {
   WI = i;
   const w    = RESEARCH_DATA[i];
   const best = w.best_video_pick || 1;
 
-  gEl('weekLabel').textContent  = fmtDate(w.week_date);
+  gEl('weekLabel').textContent = fmtDate(w.week_date);
+
   const themeEl = gEl('weekTheme');
   if (w.week_theme) { themeEl.textContent = w.week_theme; themeEl.style.display = ''; }
   else themeEl.style.display = 'none';
+
   const trendEl = gEl('trendChip');
-  if (w.trend_alert) { trendEl.textContent = '⚡ '+w.trend_alert; trendEl.style.display = ''; }
+  if (w.trend_alert) { trendEl.textContent = '⚡ ' + w.trend_alert; trendEl.style.display = ''; }
   else trendEl.style.display = 'none';
+
   gEl('badge-research').textContent = w.researches?.length || 0;
 
   renderResearch(w, best);
@@ -473,39 +993,41 @@ function renderWeek(i) {
   updateStats(w);
 }
 
-// ── Stats ─────────────────────────────────────────────────────────────────
+// ── Stats ─────────────────────────────────────────────────
 function updateStats(w) {
-  const rs    = w.researches || [];
+  const rs     = w.researches || [];
   const waSent = rs.filter(r=>st(`wa_${r.id}`)===`1`).length;
   const igSent = rs.filter(r=>st(`ig_${r.id}`)===`1`).length;
   const filmed = rs.filter(r=>['filmed','worked','notwork'].includes(st(`pf_${r.id}`))).length;
   const worked = rs.filter(r=>st(`pf_${r.id}`)==='worked').length;
 
-  const fmt = (v,t) => `${v}/${t}`;
   gEl('st-res').textContent = rs.length;
-  gEl('st-wa').textContent  = fmt(waSent, rs.length);
-  gEl('st-ig').textContent  = fmt(igSent, rs.length);
-  gEl('st-vid').textContent = fmt(filmed, rs.length);
+  gEl('st-wa').textContent  = `${waSent}/${rs.length}`;
+  gEl('st-ig').textContent  = `${igSent}/${rs.length}`;
+  gEl('st-vid').textContent = `${filmed}/${rs.length}`;
   gEl('st-ok').textContent  = worked;
 }
 
-// ── Research ──────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════
+// RESEARCH
+// ══════════════════════════════════════════════════════════
 function renderResearch(w, best) {
   gEl('resContainer').innerHTML =
-    `<div class="section-title">מחקרי השבוע — ${w.researches.length} מחקרים</div>
+    `<div class="section-title"><b>מחקרים</b> ${w.researches.length} מחקרים השבוע</div>
      <div class="cards-grid">${w.researches.map(r=>resCard(r,best)).join('')}</div>`;
   refreshAllStatus(w);
 }
 
 function resCard(r, best) {
-  const isBest = r.id === best;
+  const isBest  = r.id === best;
   const imgHtml = r.image_url
-    ? `<img class="card-img" src="${esc(r.image_url)}" onerror="this.remove()">`
-    : '';
+    ? `<img class="card-img" src="${esc(r.image_url)}" onerror="this.remove()">` : '';
   const hintHtml = r.image_hint && !r.image_url
     ? `<div class="img-hint-bar">🖼️ ${esc(r.image_hint)}</div>` : '';
-  const wowHtml  = r.wow_factor ? `<div class="wow">💥 <span>${esc(r.wow_factor)}</span></div>` : '';
-  const hookHtml = r.video_hook ? `<div class="hook-box">🎬 Hook: <strong>${esc(r.video_hook)}</strong></div>` : '';
+  const wowHtml  = r.wow_factor
+    ? `<div class="wow">💥 <span>${esc(r.wow_factor)}</span></div>` : '';
+  const hookHtml = r.video_hook
+    ? `<div class="hook-box">🎬 Hook: <strong>${esc(r.video_hook)}</strong></div>` : '';
   const excHtml  = r.excerpt ? `
     <div class="excerpt-block">
       <div class="exc-lbl">ציטוט ישיר מהמחקר</div>
@@ -536,9 +1058,9 @@ function resCard(r, best) {
       <div class="screen-box">🎬 ${esc(r.screen_text)}</div>
       ${hookHtml}
       <div class="card-actions">
-        <button class="btn btn-red"    onclick="openScript(${r.id})">📹 תסריט מלא</button>
-        <button class="btn btn-purple" onclick="goIg(${r.id})">📸 אינסטגרם</button>
-        <button class="btn btn-green"  onclick="copy(${JSON.stringify(r.screen_text)})">📋 העתק</button>
+        <button class="btn btn-red"     onclick="openScript(${r.id})">📹 תסריט מלא</button>
+        <button class="btn btn-purple"  onclick="goIg(${r.id})">📸 אינסטגרם</button>
+        <button class="btn btn-gray"    onclick="copy(${JSON.stringify(r.screen_text)})">📋 העתק</button>
         ${r.source_url?`<a class="btn btn-outline" href="${esc(r.source_url)}" target="_blank" rel="noopener">🔗 מקור</a>`:''}
       </div>
     </div>
@@ -549,21 +1071,21 @@ function resCard(r, best) {
     <div class="video-section">
       <div class="video-lbl">📹 מעקב סרטון</div>
       <div class="perf-row">
-        <button class="perf-btn" id="pf-filmed-${r.id}" onclick="setPerf(${r.id},'filmed')">🎥 צולם</button>
-        <button class="perf-btn" id="pf-worked-${r.id}" onclick="setPerf(${r.id},'worked')">🔥 עבד מעולה</button>
+        <button class="perf-btn" id="pf-filmed-${r.id}"  onclick="setPerf(${r.id},'filmed')">🎥 צולם</button>
+        <button class="perf-btn" id="pf-worked-${r.id}"  onclick="setPerf(${r.id},'worked')">🔥 עבד מעולה</button>
         <button class="perf-btn" id="pf-notwork-${r.id}" onclick="setPerf(${r.id},'notwork')">📉 לא עבד</button>
         <button class="perf-btn" id="pf-waiting-${r.id}" onclick="setPerf(${r.id},'waiting')">⏳ עדיין לא</button>
       </div>
-      <textarea class="notes" id="nt-${r.id}" placeholder="הערות על הסרטון (אפשר לכתוב כמה צפיות, תגובות, מה עבד...)" onblur="saveNote(${r.id})"></textarea>
+      <textarea class="notes" id="nt-${r.id}" placeholder="הערות — כמה צפיות, תגובות, מה עבד..." onblur="saveNote(${r.id})"></textarea>
     </div>
   </div>`;
 }
 
-// ── Status chip logic ─────────────────────────────────────────────────────
+// ── Chips & perf ──────────────────────────────────────────
 function toggleChip(type, id) {
   const key  = `${type}_${id}`;
   const done = st(key) !== '1';
-  setSt(key, done ? '1' : '0');
+  setSt(key, done?'1':'0');
   renderChip(type, id, done);
   updateStats(RESEARCH_DATA[WI]);
   updateTrackRow(id);
@@ -577,7 +1099,6 @@ function renderChip(type, id, done) {
     ? (done?'✅ נשלח לקבוצה':'📲 לא נשלח לקבוצה')
     : (done?'✅ פורסם':'📸 לא פורסם');
 }
-
 function setPerf(id, val) {
   setSt(`pf_${id}`, val);
   ['filmed','worked','notwork','waiting'].forEach(v=>{
@@ -586,29 +1107,32 @@ function setPerf(id, val) {
   });
   updateStats(RESEARCH_DATA[WI]);
   updateTrackRow(id);
-  const msgs = {filmed:'🎥 צוין — צולם!', worked:'🔥 מעולה!', notwork:'📉 נרשם', waiting:'⏳ בסדר'};
+  const msgs = {filmed:'🎥 צוין — צולם!',worked:'🔥 מעולה!',notwork:'📉 נרשם',waiting:'⏳ בסדר'};
   toast(val==='worked'?'🔥':'📝', msgs[val]||'');
 }
-function saveNote(id) { const el=gEl(`nt-${id}`); if(el) setSt(`nt_${id}`,el.value); }
-
+function saveNote(id) {
+  const el = gEl(`nt-${id}`);
+  if (el) setSt(`nt_${id}`, el.value);
+}
 function refreshAllStatus(w) {
   (w.researches||[]).forEach(r=>{
     renderChip('wa', r.id, st(`wa_${r.id}`)===`1`);
     renderChip('ig', r.id, st(`ig_${r.id}`)===`1`);
     const pf = st(`pf_${r.id}`)||'';
     if (pf) ['filmed','worked','notwork','waiting'].forEach(v=>{
-      const b=gEl(`pf-${v}-${r.id}`); if(b) b.className='perf-btn'+(pf===v?` ${v}`:'');
+      const b = gEl(`pf-${v}-${r.id}`);
+      if (b) b.className = 'perf-btn'+(pf===v?` ${v}`:'');
     });
-    const nt=gEl(`nt-${r.id}`); if(nt) nt.value=st(`nt_${r.id}`)||'';
+    const nt = gEl(`nt-${r.id}`);
+    if (nt) nt.value = st(`nt_${r.id}`)||'';
   });
   refreshGlobalChips();
 }
-
 function flipStatus(key) { setSt(key, st(key)==='1'?'0':'1'); refreshGlobalChips(); toast('✅','סטטוס עודכן'); }
 function refreshGlobalChips() {
   const items = [
-    {k:'comm_sent', lbl:'קבוצה נשלחה'},
-    {k:'poll_sent', lbl:'פול נשלח'},
+    {k:'comm_sent',    lbl:'קבוצה נשלחה'},
+    {k:'poll_sent',    lbl:'פול נשלח'},
     {k:'ig_poll_sent', lbl:'פול אינסטגרם'},
   ];
   const el = gEl('globalChips');
@@ -618,7 +1142,7 @@ function refreshGlobalChips() {
   }).join('');
 }
 
-// ── Script modal ──────────────────────────────────────────────────────────
+// ── Script modal ──────────────────────────────────────────
 function openScript(id) {
   const r = RESEARCH_DATA[WI]?.researches?.find(x=>x.id===id);
   if (!r) return;
@@ -626,21 +1150,23 @@ function openScript(id) {
   gEl('scriptModal').classList.add('open');
 }
 
-// ── Instagram ─────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════
+// INSTAGRAM
+// ══════════════════════════════════════════════════════════
 function renderInstagram(w, best) {
   gEl('igContainer').innerHTML =
-    `<div class="section-title">קפשן + האשטגים לפרסום</div>
+    `<div class="section-title"><b>אינסטגרם</b> קפשן + האשטגים לפרסום</div>
      <div class="ig-grid">${(w.researches||[]).map(r=>igCard(r,best)).join('')}</div>`;
 }
 
 function igCard(r, best) {
-  const isBest = r.id === best;
+  const isBest  = r.id === best;
   const imgHtml = r.image_url
     ? `<img class="ig-img" src="${esc(r.image_url)}" onerror="this.remove()">`
     : r.image_hint ? `<div class="ig-hint">🖼️ <span>${esc(r.image_hint)}</span></div>` : '';
 
   return `
-  <div class="ig-card">
+  <div class="ig-card" id="igcard-${r.id}">
     <div class="ig-card-hdr">
       <div class="card-num${isBest?' gold':''}">${r.id}</div>
       <div style="flex:1"><div class="card-title">${isBest?'⭐ ':''}${esc(r.title)}</div></div>
@@ -662,34 +1188,32 @@ function igCard(r, best) {
 
 function goIg(id) {
   tab('instagram', document.querySelectorAll('.tab-btn')[2]);
-  setTimeout(()=>{ const el=gEl(`igcap-${id}`); if(el) el.closest('.ig-card')?.scrollIntoView({behavior:'smooth',block:'start'}); }, 120);
+  setTimeout(()=>{
+    const el = gEl(`igcap-${id}`);
+    if (el) el.closest('.ig-card')?.scrollIntoView({behavior:'smooth',block:'start'});
+  }, 140);
 }
 
-// ── Poll ──────────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════
+// POLL
+// ══════════════════════════════════════════════════════════
 function renderPoll(w) {
   const p = w.poll || {};
-  gEl('pollQ').textContent     = p.question || '';
+  gEl('pollQ').textContent      = p.question || '';
   gEl('pollWaText').textContent = p.whatsapp_text || '';
   gEl('pollIgText').textContent = p.instagram_text || '';
 
-  gEl('pollOpts').innerHTML = (p.options||[]).map((o,i)=>
-    `<div class="poll-opt"><div class="poll-num">${i+1}</div><span>${esc(o)}</span></div>`
+  gEl('pollOpts').innerHTML = (p.options||[]).map((o,i) =>
+    `<div class="poll-opt-row">
+      <div class="poll-num">${i+1}</div>
+      <div class="poll-opt-text">${esc(o)}</div>
+      <button class="btn btn-gold" style="padding:5px 12px;font-size:.7rem;white-space:nowrap" onclick="copy('${o.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,'\\n')}')">📋 העתק</button>
+    </div>`
   ).join('');
 
   const sel = gEl('winnerSel');
   sel.innerHTML = '<option value="">-- בחר נושא מנצח --</option>' +
     (p.options||[]).map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join('');
-}
-
-function approvePoll() {
-  const badge = gEl('appBadge');
-  badge.textContent = '✅ אושר ונשלח'; badge.className = 'approval-badge ok';
-  setSt('poll_sent','1');
-  const text = RESEARCH_DATA[WI]?.poll?.whatsapp_text || '';
-  copy(text);
-  if (text) setTimeout(()=>sendWA('poll'), 300);
-  refreshGlobalChips();
-  toast('✅','הפול אושר ונשלח!');
 }
 
 function saveWinner() {
@@ -702,32 +1226,35 @@ function saveWinner() {
   setTimeout(()=>alert(`✅ נשמר!\n\nלהפעיל עבור הבוט:\npython3 save_winner.py "${val}"`), 400);
 }
 
-// ── Tracking ──────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════
+// TRACKING
+// ══════════════════════════════════════════════════════════
 function renderTracking(w) {
-  const rs   = w.researches || [];
-  // KPI row
+  const rs     = w.researches || [];
   const waSent = rs.filter(r=>st(`wa_${r.id}`)===`1`).length;
   const igSent = rs.filter(r=>st(`ig_${r.id}`)===`1`).length;
   const filmed = rs.filter(r=>['filmed','worked','notwork'].includes(st(`pf_${r.id}`))).length;
   const worked = rs.filter(r=>st(`pf_${r.id}`)==='worked').length;
 
   const kpis = [
-    {val:rs.length,      lbl:'מחקרים',      color:'var(--text)'},
-    {val:`${waSent}/${rs.length}`, lbl:'נשלח לקבוצה', color:'var(--green)'},
-    {val:`${igSent}/${rs.length}`, lbl:'אינסטגרם',    color:'var(--purple)'},
-    {val:`${filmed}/${rs.length}`, lbl:'סרטונים צולמו',color:'var(--blue)'},
-    {val:worked,         lbl:'עבדו מצוין',  color:'var(--red)'},
+    {val:rs.length,                  lbl:'מחקרים',        color:'var(--text)'},
+    {val:`${waSent}/${rs.length}`,   lbl:'נשלח לקבוצה',  color:'var(--green)'},
+    {val:`${igSent}/${rs.length}`,   lbl:'אינסטגרם',      color:'var(--purple)'},
+    {val:`${filmed}/${rs.length}`,   lbl:'סרטונים צולמו', color:'var(--blue)'},
+    {val:worked,                     lbl:'עבדו מצוין',    color:'var(--red)'},
   ];
   gEl('kpiRow').innerHTML = kpis.map(k=>
-    `<div class="track-kpi"><div class="track-kpi-val" style="color:${k.color}">${k.val}</div><div class="track-kpi-lbl">${k.lbl}</div></div>`
+    `<div class="track-kpi">
+       <div class="track-kpi-val" style="color:${k.color}">${k.val}</div>
+       <div class="track-kpi-lbl">${k.lbl}</div>
+     </div>`
   ).join('');
 
-  // Table
-  gEl('trackBody').innerHTML = rs.map(r=>{
-    const wa    = st(`wa_${r.id}`)===`1`;
-    const ig    = st(`ig_${r.id}`)===`1`;
-    const pf    = st(`pf_${r.id}`) || '';
-    const pfMap = {'':'-- בחר --','filmed':'🎥 צולם','worked':'🔥 עבד','notwork':'📉 לא עבד','waiting':'⏳ בהמתנה'};
+  const pfMap = {'':'-- בחר --','filmed':'🎥 צולם','worked':'🔥 עבד','notwork':'📉 לא עבד','waiting':'⏳ בהמתנה'};
+  gEl('trackBody').innerHTML = rs.map(r => {
+    const wa = st(`wa_${r.id}`)===`1`;
+    const ig = st(`ig_${r.id}`)===`1`;
+    const pf = st(`pf_${r.id}`) || '';
     const pfSel = Object.entries(pfMap).map(([v,l])=>`<option value="${v}"${pf===v?' selected':''}>${l}</option>`).join('');
     return `<tr id="tr-${r.id}">
       <td><div class="track-card-title" title="${esc(r.title)}">${esc(r.title)}</div></td>
@@ -745,38 +1272,87 @@ function trToggle(stKey, btnId, type, id) {
   const done = st(stKey) !== '1';
   setSt(stKey, done?'1':'0');
   const b = gEl(btnId);
-  if(b){b.className='tc '+(done?'done':'not');b.textContent=done?'✅':'⬜';}
+  if (b) { b.className='tc '+(done?'done':'not'); b.textContent=done?'✅':'⬜'; }
   renderChip(type, id, done);
   updateStats(RESEARCH_DATA[WI]);
   toast(done?'✅':'↩', done?'סומן':'בוטל');
 }
-function trFilm(id) { setPerf(id,'filmed'); const b=gEl(`tc-fl-${id}`); if(b){b.className='tc done';b.textContent='✅';} }
+function trFilm(id) {
+  setPerf(id,'filmed');
+  const b = gEl(`tc-fl-${id}`);
+  if (b) { b.className='tc done'; b.textContent='✅'; }
+}
 function updateTrackRow(id) {
-  const pf=st(`pf_${id}`)||''; const wa=st(`wa_${id}`)===`1`; const ig=st(`ig_${id}`)===`1`;
-  const wb=gEl(`tc-wa-${id}`); if(wb){wb.className='tc '+(wa?'done':'not');wb.textContent=wa?'✅':'⬜';}
-  const ib=gEl(`tc-ig-${id}`); if(ib){ib.className='tc '+(ig?'done':'not');ib.textContent=ig?'✅':'⬜';}
-  const fb=gEl(`tc-fl-${id}`); if(fb){const f=['filmed','worked','notwork'].includes(pf);fb.className='tc '+(f?'done':'not');fb.textContent=f?'✅':'⬜';}
+  const pf = st(`pf_${id}`)||'';
+  const wa = st(`wa_${id}`)===`1`;
+  const ig = st(`ig_${id}`)===`1`;
+  const wb = gEl(`tc-wa-${id}`); if(wb){wb.className='tc '+(wa?'done':'not');wb.textContent=wa?'✅':'⬜';}
+  const ib = gEl(`tc-ig-${id}`); if(ib){ib.className='tc '+(ig?'done':'not');ib.textContent=ig?'✅':'⬜';}
+  const f  = ['filmed','worked','notwork'].includes(pf);
+  const fb = gEl(`tc-fl-${id}`); if(fb){fb.className='tc '+(f?'done':'not');fb.textContent=f?'✅':'⬜';}
 }
 
-// ── WA send ───────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════
+// WHATSAPP & UTILS
+// ══════════════════════════════════════════════════════════
 function sendWA(type) {
   const w = RESEARCH_DATA[WI];
   const t = type==='community' ? w.community_message : (w.poll?.whatsapp_text||'');
   if (t) window.open(`https://wa.me/?text=${encodeURIComponent(t)}`,'_blank');
 }
-
-// ── Community ─────────────────────────────────────────────────────────────
 function renderCommunity(w) {
-  const el = gEl('commText'); if(el) el.textContent = w.community_message || '';
+  const el = gEl('commText');
+  if (el) el.textContent = w.community_message || '';
 }
-
-// ── Format date ───────────────────────────────────────────────────────────
 function fmtDate(s) {
-  if(!s) return '?';
-  const d = new Date(s);
-  return d.toLocaleDateString('he-IL',{day:'numeric',month:'long',year:'numeric'});
+  if (!s) return '?';
+  return new Date(s).toLocaleDateString('he-IL',{day:'numeric',month:'long',year:'numeric'});
 }
 
+// ══════════════════════════════════════════════════════════
+// REFRESH BOT
+// ══════════════════════════════════════════════════════════
+async function refreshBot() {
+  if (!confirm('🔄 רענון מחקרים\n\nזה יריץ את הבוט ויוציא כ-$0.10 מהחשבון.\nלהמשיך?')) return;
+
+  const btn = gEl('refreshBtn');
+  const ov  = gEl('refreshOverlay');
+
+  try {
+    await fetch('http://localhost:7775/status', {signal:AbortSignal.timeout(1500)});
+  } catch {
+    alert('שרת הרענון לא פועל.\nפתח טרמינל והרץ:\n\npython3 refresh_server.py');
+    return;
+  }
+
+  btn.className = 'btn-refresh loading';
+  btn.innerHTML = '<span class="spin">🔄</span> מחפש...';
+  ov.classList.add('open');
+
+  try { await fetch('http://localhost:7775/refresh',{method:'POST'}); } catch {}
+
+  const poll = setInterval(async () => {
+    try {
+      const r = await fetch('http://localhost:7775/status');
+      const d = await r.json();
+      if (!d.running) {
+        clearInterval(poll);
+        ov.classList.remove('open');
+        btn.className = 'btn-refresh';
+        btn.innerHTML = '🔄 רענן';
+        toast('✅','מחקרים חדשים מוכנים!');
+        setTimeout(()=>location.reload(), 1200);
+      }
+    } catch {
+      clearInterval(poll);
+      ov.classList.remove('open');
+      btn.className = 'btn-refresh';
+      btn.innerHTML = '🔄 רענן';
+    }
+  }, 5000);
+}
+
+// ── GO! ───────────────────────────────────────────────────
 init();
 </script>
 </body>
