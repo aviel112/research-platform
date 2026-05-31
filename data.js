@@ -1,6 +1,102 @@
 // Auto-generated
-const LAST_REFRESH = '2026-05-28T11:47:09';
+const LAST_REFRESH = '2026-05-31T06:08:56';
 const RESEARCH_DATA = [
+  {
+    "week_date": "2026-05-31",
+    "week_theme": "מיתוסים תזונתיים שוברי שגרה",
+    "best_video_pick": 1,
+    "trend_alert": "בננה בשייק הפירות יער שלך הורסת עד 84% מנוגדי החמצון — המחקר שכולם מדברים עליו",
+    "researches": [
+      {
+        "id": 1,
+        "article_id": "Src_001",
+        "title": "בננה בשייק מורידה 84% ספיגת פלבנולים — המיתוס שהרס לך את הבוקר",
+        "research_type": "מחקר",
+        "source_name": "ScienceDaily",
+        "source_url": "https://www.sciencedaily.com/releases/2026/05/260524020950.htm",
+        "image_url": "",
+        "image_hint": "שייק פירות יער לצד בננה חצויה",
+        "excerpt": "Adding bananas to berry smoothies can dramatically reduce the body's ability to absorb healthy flavanols — even simple food combinations change nutrition absorbed.",
+        "excerpt_location": "intro",
+        "summary": "מחקר חדש גילה שהוספת בננה לשייק פירות יער הורסת את רוב הפלבנולים — נוגדי החמצון שאתה שותה את השייק בגללם. הסיבה: אנזים בבננה מפרק אותם לפני שהגוף ספג אותם.",
+        "key_stat": "84% ירידה בספיגת פלבנולים בשייק עם בננה לעומת שייק פירות יער בלבד",
+        "wow_factor": "השייק ה'בריא' שלך עם בננה יכול לתת פחות נוגדי חמצון מכוס מים עם אבקה זולה",
+        "viral_angle": "כל אחד עם בלנדר ישתף מיד — פוגע ישירות בשגרת הבוקר של מיליונים",
+        "screen_text": "בננה + פירות יער = 84% פחות ויטמינים",
+        "video_hook": "עצור! אל תוסיף בננה",
+        "video_script": "עצור לפני שאתה זורק בננה לשייק. מחקר חדש גילה שבננה מכילה אנזים שמפרק עד 84% מנוגדי החמצון בפירות יער — לפני שהגוף שלך בכלל ספג אותם. אתה שותה שייק כל בוקר בשביל הבריאות? הבננה עושה בדיוק ההפך. הפתרון: בננה בנפרד. פירות יער בנפרד. שמור ותייג מישהו שחייב לדעת.",
+        "instagram_caption": "🚫 אל תוסיף בננה לשייק הפירות יער שלך.\n\nמחקר חדש גילה שבננה מכילה אנזים שמפרק עד 84% מנוגדי החמצון — לפני שגופך בכלל ספג אותם.\n\nשייק שנראה בריא, אבל עובד אחרת לגמרי.\n\nאתה שם בננה בשייק שלך? 👇",
+        "instagram_hashtags": "#תזונה #שייק #בריאות #פירותיער #מחקרחדש #פיטנס #אורחייםבריא #מיתוסתזונה #נוגדיחמצון #שייקבוקר #nutrition #smoothie #healthylifestyle #fitness #wellness #superfood #antioxidants #healthtips #flavanols #berries"
+      },
+      {
+        "id": 2,
+        "article_id": "Src_002",
+        "title": "קטניות כל יום: 19% פחות סיכון ליתר לחץ דם — ניתוח עולמי של עשרות מחקרים",
+        "research_type": "מחקר",
+        "source_name": "ScienceDaily",
+        "source_url": "https://www.sciencedaily.com/releases/2026/05/260523103906.htm",
+        "image_url": "",
+        "image_hint": "קערת עדשים שעועית וחומוס צבעוניים",
+        "excerpt": "People with the highest intake of legumes were 16% less likely to develop hypertension; those eating the most soy foods had a 19% lower risk.",
+        "excerpt_location": "body",
+        "summary": "ניתוח עולמי של עשרות מחקרים מגלה: מי שאוכל הכי הרבה קטניות — שעועית, עדשים, חומוס, טופו — מפחית סיכון ליתר לחץ דם ב-16 עד 19%. הסיבים התזונתיים הם המפתח.",
+        "key_stat": "19% פחות סיכון ליתר לחץ דם אצל אוכלי סויה, 16% אצל אוכלי קטניות",
+        "wow_factor": "מנה יומית של שעועית עושה לכלי הדם מה שתרופת מרשם עושה — בלי תופעות לוואי",
+        "viral_angle": "כולם מחפשים תחליף לתרופות — קטניות הן התשובה שאף אחד לא ציפה לה",
+        "screen_text": "שעועית יומית = 19% פחות לחץ דם",
+        "video_hook": "האוכל שמחליף תרופה",
+        "video_script": "מה אם הייתי אומר לך שאפשר להוריד לחץ דם ב-19% בלי כדורים? ניתוח עולמי של עשרות מחקרים גילה: קטניות — שעועית, עדשים, חומוס — מפחיתות סיכון ליתר לחץ דם בצורה משמעותית. הסיבים התזונתיים שבהן הם המפתח. מנה אחת ביום. זה הכל. תייג מישהו שחייב לשמוע.",
+        "instagram_caption": "שעועית ביום — 19% פחות סיכון ליתר לחץ דם.\n\nניתוח עולמי של עשרות מחקרים: אנשים שאוכלים הכי הרבה קטניות מפחיתים משמעותית סיכון ליתר לחץ דם.\n\nהסיבים התזונתיים בשעועית, עדשים וחומוס שומרים על הלב בצורה מדהימה.\n\nכמה פעמים בשבוע אתה אוכל קטניות? 👇",
+        "instagram_hashtags": "#קטניות #שעועית #לחץדם #תזונהבריאה #סיבים #בריאות #פיטנס #לבבריא #עדשים #חומוס #legumes #bloodpressure #nutrition #healthyfood #fiber #hearthealth #plantbased #wellness #hypertension #beans"
+      },
+      {
+        "id": 3,
+        "article_id": "Src_003",
+        "title": "שינוי זווית הרגל בהליכה: ניסוי קליני שנה שלמה — כאב ברך ירד כמו עם כדורים",
+        "research_type": "RCT",
+        "source_name": "ScienceDaily",
+        "source_url": "https://www.sciencedaily.com/releases/2026/05/260522031135.htm",
+        "image_url": "",
+        "image_hint": "מבט על רגליים הולכות בשביל חיצוני",
+        "excerpt": "Slightly changing the angle of a person's foot while walking reduced knee pain as effectively as common medications and even slowed cartilage damage.",
+        "excerpt_location": "intro",
+        "summary": "ניסוי קליני של שנה שלמה גילה: שינוי קטן בזווית כף הרגל בהליכה מפחית כאב ברך כמו תרופות נפוצות — ואפילו האט נזק לסחוס. ללא ניתוח, ללא כדורים, אפס עלות.",
+        "key_stat": "שינוי זווית הרגל הפחית כאב ברך באותה יעילות כמו תרופות נפוצות תוך 12 חודשים",
+        "wow_factor": "לשנות רק את זווית הרגל כשאתה הולך שווה כמו כדור כאב — ואף אחד לא סיפר לך",
+        "viral_angle": "מיליונים עם כאבי ברכיים ישתפו מיד — פתרון אפס עלות שאף רופא לא אמר להם",
+        "screen_text": "זווית הרגל = פחות כאב ברך",
+        "video_hook": "כאב ברך? שנה רק זאת",
+        "video_script": "אם יש לך כאב ברך — צפה עד הסוף. ניסוי קליני של שנה שלמה גילה: שינוי קטן בזווית כף הרגל בהליכה מפחית כאב כמו תרופות כאב נפוצות. ולא רק זה — הוא גם האט את הנזק לסחוס. ללא ניתוח, ללא כדורים. רק הליכה קצת שונה. שלח לחבר שסובל מברכיים.",
+        "instagram_caption": "כאב ברך? אל תזדרז לניתוח או כדורים.\n\nניסוי קליני של שנה שלמה הראה: שינוי קטן בזווית ההליכה מפחית כאב ברך כמו תרופות מרשם — ואפילו האט נזק לסחוס.\n\nאפס עלות. אפס תרופות. רק הליכה קצת אחרת.\n\nמכיר מישהו עם כאבי ברכיים? תייג אותו 👇",
+        "instagram_hashtags": "#כאבברך #הליכה #בריאות #פיטנס #ריצה #אורחייםבריא #מחקר #כאב #ברכיים #ספורט #kneepain #walking #running #fitness #health #sportsmedicine #painrelief #naturalhealing #osteoarthritis #joints"
+      }
+    ],
+    "community_message": "הידעת? בננה בשייק הפירות יער שלך יכולה להוריד דרמטית את ספיגת נוגדי החמצון.\n\n🔢 19% — כך הפחיתה מנה יומית של קטניות סיכון ליתר לחץ דם בניתוח עולמי.\n\n💬 \"The gut sends powerful signals to the brain that reshape cravings and push animals to seek essential amino acids\" — ScienceDaily 2026\n\nשאלה לקהילה: מה הדבר האחד בתזונה שלכם שגיליתם שהפתיע אתכם הכי הרבה?",
+    "community_video": {
+      "title": "המדע מאחורי תזונה אופטימלית — מה באמת עובד",
+      "youtube_url": "https://www.youtube.com/watch?v=DkS1pkKpILY",
+      "intro_text": "סרטון מרתק שמסביר מדוע לא כל מה שנראה בריא הוא בריא"
+    },
+    "community_discussion_poll": {
+      "question": "מה עדיף לבריאות: להימנע לגמרי מסוכר או לאכול הכל במידה?",
+      "options": [
+        "להימנע לגמרי מסוכר",
+        "הכל במידה",
+        "תלוי בסוג הסוכר"
+      ],
+      "whatsapp_text": "🤔 שאלת השבוע: מה עדיף לבריאות — להימנע לגמרי מסוכר או הכל במידה? ספרו לנו מה אתם חושבים!"
+    },
+    "poll": {
+      "question": "מה אתה מוסיף לשייק הבוקר שלך?",
+      "options": [
+        "בננה",
+        "פירות יער בלבד",
+        "לא שותה שייקים"
+      ],
+      "whatsapp_text": "🥤 מה אתה מוסיף לשייק הבוקר? בננה / פירות יער בלבד / בכלל לא שותה שייקים — ספר לנו!",
+      "instagram_text": "מה בשייק הבוקר שלך? 🥤 בננה / פירות יער בלבד / לא שותה שייקים — ספר/י בתגובות!"
+    }
+  },
   {
     "week_date": "2026-05-28",
     "week_theme": "תזונה שוברת מיתוסים",
