@@ -1130,7 +1130,8 @@ kbd { background:var(--bg4); border:1px solid var(--border3); border-radius:4px;
   <kbd>Esc</kbd> סגור חלון
 </div>
 
-<script src="data.js"></script>
+<!-- טוען data.js עם cache-busting — תמיד הנתונים הכי טריים אחרי רענון -->
+<script>document.write('<scr'+'ipt src="data.js?v='+Date.now()+'"><\/scr'+'ipt>');</script>
 <script>
 // ══════════════════════════════════════════════════════════
 // STATE & UTILS
