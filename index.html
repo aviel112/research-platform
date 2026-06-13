@@ -503,8 +503,16 @@ body.light .ef:focus { background: rgba(0,0,0,.06); box-shadow: 0 0 0 1.5px rgba
   padding:3px 10px; border-radius:99px;
   font-size:.74rem; font-weight:700;
 }
-.badge-type   { background:var(--bg5); color:var(--text3); border:1px solid var(--border2) }
+.badge-type   { background:var(--bg5); color:var(--text2); border:1px solid var(--border2) }
 .badge-source { background:var(--blue-bg); color:var(--blue); border:1px solid rgba(96,165,250,.2) }
+/* בידול צבעוני לפי סוג מקור */
+.badge-podcast{ background:var(--purple-bg); color:var(--purple2); border:1px solid rgba(168,85,247,.4); font-weight:800 }
+.badge-reddit { background:rgba(255,122,40,.14); color:#ff9f57; border:1px solid rgba(255,122,40,.4); font-weight:800 }
+.badge-study  { background:var(--blue-bg); color:var(--blue); border:1px solid rgba(96,165,250,.4); font-weight:800 }
+.badge-media  { background:rgba(148,163,184,.14); color:#cbd5e1; border:1px solid rgba(148,163,184,.35); font-weight:700 }
+/* קלף פודקאסט — מסגרת סגולה עדינה לבולטות */
+.card.podcast { border-color:rgba(168,85,247,.32) }
+.card.podcast .card-hdr { background:linear-gradient(180deg,rgba(168,85,247,.08),transparent) }
 
 .card-img { width:100%; height:170px; object-fit:cover; border-bottom:1px solid var(--border); display:block }
 .img-hint-bar {
@@ -849,9 +857,18 @@ textarea.notes:focus { outline:none; border-color:var(--border3); color:var(--te
 /* ── Mobile ──────────────────────────────────────── */
 @media(max-width:640px) {
   header,.stats-bar,.week-nav,.tabs { padding-right:14px; padding-left:14px }
-  main { padding:18px 14px 100px }
+  /* כותרת קומפקטית בנייד — בלי גלישה */
+  header { height:58px; padding-right:14px; padding-left:14px }
+  .logo-icon { width:34px; height:34px; font-size:17px }
+  .logo-text { font-size:.95rem }
+  .live-indicator, .week-badge { display:none }   /* התאריך מופיע בלשונית השבוע ממילא */
+  .btn-refresh { padding:8px 14px; font-size:.85rem }
+  .btn-theme { width:36px; height:36px; font-size:16px }
+  .tabs { top:58px }                               /* התאמת ה-sticky לגובה הכותרת */
+  main { padding:16px 14px 100px }
   .cards-grid,.ig-grid { grid-template-columns:1fr }
   .track-summary { grid-template-columns:repeat(2,1fr) }
+  .tab-help { font-size:.92rem; padding:12px 14px 0 }
   .modal { max-width:100%; border-radius:20px 20px 0 0; position:fixed; bottom:0; left:0; right:0; max-height:82vh }
   .overlay { align-items:flex-end; padding:0 }
   .toast { width:calc(100% - 32px); max-width:340px }
@@ -1295,8 +1312,20 @@ function renderResearch(w, best) {
   restoreFeedbackButtons();
 }
 
+// מיפוי סוג מחקר → צבע badge + אייקון (בידול ויזואלי בין פודקאסט/מחקר/רדיט)
+function typeMeta(type) {
+  const t = (type||'').toLowerCase();
+  if (t.includes('פודקאסט') || t.includes('podcast'))            return {cls:'badge-podcast', icon:'🎙️'};
+  if (t.includes('reddit') || t.includes('טרנד'))               return {cls:'badge-reddit',  icon:'🔥'};
+  if (t.includes('rct') || t.includes('מטא') || t.includes('מחקר') || t.includes('סקירה')) return {cls:'badge-study', icon:'🔬'};
+  if (t.includes('כתבה'))                                        return {cls:'badge-media',  icon:'📰'};
+  return {cls:'badge-type', icon:'📄'};
+}
+
 function resCard(r, best) {
   const isBest  = r.id === best;
+  const tm      = typeMeta(r.research_type);
+  const isPod   = tm.cls === 'badge-podcast';
   const imgHtml = r.image_url
     ? `<img class="card-img" src="${esc(r.image_url)}" onerror="this.remove()">` : '';
   const hintHtml = r.image_hint && !r.image_url
@@ -1314,13 +1343,13 @@ function resCard(r, best) {
     </div>` : '';
 
   return `
-  <div class="card${isBest?' best':''}" id="card-${r.id}">
+  <div class="card${isBest?' best':''}${isPod?' podcast':''}" id="card-${r.id}">
     <div class="card-hdr">
       <div class="card-num${isBest?' gold':''}">${r.id}</div>
       <div class="card-hdr-info">
         <div class="card-title">${esc(r.title)}</div>
         <div class="card-meta">
-          <span class="badge badge-type">${esc(r.research_type)}</span>
+          <span class="badge ${tm.cls}">${tm.icon} ${esc(r.research_type)}</span>
           <span class="badge badge-source">${esc(r.source_name||'')}</span>
         </div>
       </div>
