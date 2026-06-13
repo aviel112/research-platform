@@ -45,15 +45,15 @@
   --blue:    #60a5fa;
   --blue-bg: rgba(96,165,250,.1);
 
-  /* Text */
-  --text:  #eeeef5;
-  --text2: #7878a0;
-  --text3: #44445a;
+  /* Text — brightened for readability */
+  --text:  #f4f4fb;
+  --text2: #b4b4d0;
+  --text3: #8a8ab0;
 
   /* Tokens */
   --r:    16px;
-  --r-sm: 10px;
-  --r-xs: 6px;
+  --r-sm: 11px;
+  --r-xs: 7px;
   --sh:   0 4px 20px rgba(0,0,0,.45);
   --sh-lg:0 8px 40px rgba(0,0,0,.6);
   --t:    .16s cubic-bezier(.4,0,.2,1);
@@ -72,8 +72,8 @@ body.light {
   --border2: #c8c8e0;
   --border3: #b0b0d0;
   --text:    #16162a;
-  --text2:   #4a4a6a;
-  --text3:   #8888aa;
+  --text2:   #3a3a55;
+  --text3:   #5e5e80;
   --sh:      0 4px 20px rgba(0,0,0,.08);
   --sh-lg:   0 8px 40px rgba(0,0,0,.14);
 }
@@ -91,11 +91,11 @@ body.light .excerpt-block { background: rgba(0,0,0,.04) }
 .btn-theme {
   background: var(--bg3);
   border: 1px solid var(--border2);
-  color: var(--text3);
-  width: 32px; height: 32px;
+  color: var(--text2);
+  width: 40px; height: 40px;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 18px;
   display: flex; align-items:center; justify-content:center;
   transition: var(--t);
   flex-shrink: 0;
@@ -109,14 +109,16 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  font-size: 15px;
+  font-size: 17px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
 /* ── Scrollbar ──────────────────────────────────── */
-::-webkit-scrollbar { width:4px; height:4px }
+::-webkit-scrollbar { width:10px; height:10px }
 ::-webkit-scrollbar-track { background:transparent }
-::-webkit-scrollbar-thumb { background:var(--border3); border-radius:99px }
+::-webkit-scrollbar-thumb { background:var(--border3); border-radius:99px; border:2px solid var(--bg) }
+::-webkit-scrollbar-thumb:hover { background:var(--text3) }
 
 /* ════════════════════════════════════════════════
    HEADER
@@ -124,35 +126,35 @@ body {
 header {
   background: linear-gradient(180deg, var(--bg2) 0%, rgba(13,13,26,.95) 100%);
   border-bottom: 1px solid var(--border);
-  padding: 0 24px;
-  height: 56px;
+  padding: 0 28px;
+  height: 68px;
   display: flex; align-items:center; justify-content:space-between;
   position: sticky; top:0; z-index:200;
   backdrop-filter: blur(24px);
 }
 .logo { display:flex; align-items:center; gap:10px }
 .logo-icon {
-  width:34px; height:34px;
+  width:40px; height:40px;
   background: linear-gradient(135deg,#ff3d5a,#c0284a);
-  border-radius:10px;
+  border-radius:12px;
   display:flex; align-items:center; justify-content:center;
-  font-size:17px;
+  font-size:20px;
   box-shadow: 0 2px 14px rgba(230,57,86,.4);
   flex-shrink:0;
 }
-.logo-text { font-weight:800; font-size:1rem; letter-spacing:-.4px }
+.logo-text { font-weight:800; font-size:1.15rem; letter-spacing:-.4px }
 .logo-text em { color:var(--red); font-style:normal }
 .header-right { display:flex; align-items:center; gap:8px }
 .week-badge {
   background: var(--red-bg);
   border: 1px solid rgba(230,57,86,.25);
   color: var(--red2);
-  padding: 4px 11px;
-  border-radius:20px; font-size:.7rem; font-weight:700;
+  padding: 5px 13px;
+  border-radius:20px; font-size:.85rem; font-weight:700;
 }
 .live-indicator {
-  display:flex; align-items:center; gap:5px;
-  font-size:.7rem; color:var(--text3);
+  display:flex; align-items:center; gap:6px;
+  font-size:.85rem; color:var(--text2); font-weight:600;
 }
 .live-dot {
   width:6px; height:6px; border-radius:50%;
@@ -167,33 +169,33 @@ header {
 /* ── Stats bar ──────────────────────────────────── */
 .stats-bar {
   background:var(--bg2); border-bottom:1px solid var(--border);
-  padding:8px 24px;
-  display:flex; gap:6px; align-items:center;
+  padding:11px 24px;
+  display:flex; gap:8px; align-items:center;
   overflow-x:auto; scrollbar-width:none;
 }
 .stats-bar::-webkit-scrollbar { display:none }
 .stat-card {
-  display:flex; align-items:center; gap:7px;
+  display:flex; align-items:center; gap:9px;
   background:var(--bg3); border:1px solid var(--border);
   border-radius:var(--r-sm);
-  padding:7px 12px;
+  padding:9px 15px;
   white-space:nowrap; flex-shrink:0;
   transition:var(--t);
   cursor:pointer; font-family:inherit; text-align:right;
 }
 .stat-card:hover { border-color:var(--red); background:var(--bg4) }
 .stat-card:active { transform:scale(.97) }
-.stat-icon { font-size:.88rem }
+.stat-icon { font-size:1.15rem }
 .stat-info { display:flex; flex-direction:column }
-.stat-val  { font-weight:800; font-size:.88rem; line-height:1.1 }
-.stat-lbl  { font-size:.62rem; color:var(--text3); font-weight:600 }
+.stat-val  { font-weight:800; font-size:1.05rem; line-height:1.15 }
+.stat-lbl  { font-size:.78rem; color:var(--text3); font-weight:600 }
 .trend-pill {
-  display:flex; align-items:center; gap:5px;
+  display:flex; align-items:center; gap:6px;
   background:linear-gradient(135deg,var(--gold-bg),transparent);
   border:1px solid rgba(245,158,11,.22);
-  color:var(--gold); padding:5px 12px;
-  border-radius:20px; font-size:.71rem; font-weight:600;
-  white-space:nowrap; max-width:260px; overflow:hidden; text-overflow:ellipsis;
+  color:var(--gold2); padding:7px 15px;
+  border-radius:20px; font-size:.88rem; font-weight:600;
+  white-space:nowrap; max-width:420px; overflow:hidden; text-overflow:ellipsis;
   margin-right:auto; flex-shrink:1;
 }
 
@@ -205,10 +207,10 @@ header {
 }
 .week-nav::-webkit-scrollbar { display:none }
 .week-btn {
-  background:transparent; border:1px solid var(--border);
-  color:var(--text3); padding:5px 14px;
+  background:transparent; border:1px solid var(--border2);
+  color:var(--text2); padding:7px 17px;
   border-radius:20px; cursor:pointer;
-  font-size:.73rem; font-weight:600; white-space:nowrap;
+  font-size:.88rem; font-weight:600; white-space:nowrap;
   transition:var(--t);
 }
 .week-btn:hover { border-color:var(--border3); color:var(--text2) }
@@ -217,30 +219,54 @@ header {
   box-shadow:0 2px 10px rgba(230,57,86,.3);
 }
 
-/* ── Tabs ───────────────────────────────────────── */
+/* ── Tabs (guided steps) ────────────────────────── */
 .tabs {
-  display:flex; padding:0 24px;
+  display:flex; gap:8px; padding:12px 24px;
   background:var(--bg2); border-bottom:1px solid var(--border);
   overflow-x:auto; scrollbar-width:none;
+  position:sticky; top:68px; z-index:150;
 }
 .tabs::-webkit-scrollbar { display:none }
 .tab-btn {
-  padding:12px 16px;
-  background:transparent; border:none; border-bottom:2px solid transparent;
-  color:var(--text3); cursor:pointer;
-  font-size:.78rem; font-weight:700; white-space:nowrap;
-  transition:var(--t); display:flex; align-items:center; gap:6px;
+  padding:11px 18px;
+  background:var(--bg3); border:1px solid var(--border2); border-radius:12px;
+  color:var(--text2); cursor:pointer;
+  font-size:.98rem; font-weight:700; white-space:nowrap;
+  transition:var(--t); display:flex; align-items:center; gap:8px;
+}
+/* step number badge */
+.tab-btn .step-no {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:24px; height:24px; border-radius:50%;
+  background:var(--bg5); color:var(--text3);
+  font-size:.82rem; font-weight:800; flex-shrink:0;
 }
 .tab-btn .cnt {
-  background:var(--bg4); color:var(--text3);
-  font-size:.6rem; padding:1px 6px; border-radius:99px; font-weight:800;
+  background:var(--bg5); color:var(--text2);
+  font-size:.75rem; padding:2px 8px; border-radius:99px; font-weight:800;
 }
-.tab-btn.active           { color:var(--red); border-bottom-color:var(--red) }
-.tab-btn.active .cnt      { background:var(--red-bg); color:var(--red) }
-.tab-btn:hover:not(.active){ color:var(--text2) }
+.tab-btn.active           { color:#fff; background:var(--red); border-color:var(--red); box-shadow:0 3px 14px rgba(230,57,86,.3) }
+.tab-btn.active .step-no  { background:rgba(255,255,255,.22); color:#fff }
+.tab-btn.active .cnt      { background:rgba(255,255,255,.22); color:#fff }
+.tab-btn:hover:not(.active){ color:var(--text); border-color:var(--border3); transform:translateY(-1px) }
+/* done state — step completed */
+.tab-btn.done .step-no { background:var(--green); color:#fff }
+
+/* ── Tab helper line — "what to do here" ────────── */
+.tab-help {
+  max-width:1240px; margin:0 auto; padding:14px 20px 0;
+  display:flex; align-items:center; gap:10px;
+  color:var(--text2); font-size:.98rem; line-height:1.5;
+}
+.tab-help .th-icon {
+  width:30px; height:30px; flex-shrink:0; border-radius:9px;
+  background:var(--blue-bg); color:var(--blue);
+  display:flex; align-items:center; justify-content:center; font-size:1rem;
+}
+.tab-help b { color:var(--text); font-weight:800 }
 
 /* ── Main / panels ──────────────────────────────── */
-main { max-width:1240px; margin:0 auto; padding:24px 20px 100px }
+main { max-width:1240px; margin:0 auto; padding:20px 20px 110px }
 .tab-panel { display:none; animation:fadeUp .2s ease }
 .tab-panel.active { display:block }
 @keyframes fadeUp {
@@ -250,22 +276,25 @@ main { max-width:1240px; margin:0 auto; padding:24px 20px 100px }
 
 /* ── Section title ──────────────────────────────── */
 .section-title {
-  font-size:.62rem; text-transform:uppercase; letter-spacing:2px;
-  color:var(--text3); margin:28px 0 14px;
+  font-size:1rem; letter-spacing:0;
+  color:var(--text); margin:32px 0 16px;
   display:flex; align-items:center; gap:10px; font-weight:800;
 }
 .section-title:first-child { margin-top:0 }
-.section-title b { color:var(--red); letter-spacing:1px }
-.section-title::after { content:''; flex:1; height:1px; background:var(--border) }
+.section-title b {
+  color:#fff; background:var(--red); letter-spacing:0;
+  padding:3px 11px; border-radius:8px; font-size:.85rem; font-weight:800;
+}
+.section-title::after { content:''; flex:1; height:1px; background:var(--border2) }
 
 /* ════════════════════════════════════════════════
    BUTTONS
    ════════════════════════════════════════════════ */
 .btn {
-  display:inline-flex; align-items:center; gap:5px;
-  padding:7px 13px; border-radius:var(--r-sm);
+  display:inline-flex; align-items:center; gap:6px;
+  padding:9px 16px; border-radius:var(--r-sm);
   border:none; cursor:pointer;
-  font-size:.74rem; font-weight:700;
+  font-size:.9rem; font-weight:700;
   transition:var(--t); text-decoration:none; white-space:nowrap;
 }
 .btn:hover  { opacity:.84; transform:translateY(-1px) }
@@ -327,12 +356,13 @@ body.light .ef:focus { background: rgba(0,0,0,.06); box-shadow: 0 0 0 1.5px rgba
 
 /* Refresh button */
 .btn-refresh {
-  background:var(--bg3); border:1px solid var(--border2);
-  color:var(--text3); padding:5px 12px; border-radius:20px;
-  font-size:.72rem; font-weight:700; cursor:pointer;
-  transition:var(--t); display:flex; align-items:center; gap:5px;
+  background:var(--red); border:1px solid var(--red);
+  color:#fff; padding:9px 18px; border-radius:20px;
+  font-size:.92rem; font-weight:800; cursor:pointer;
+  transition:var(--t); display:flex; align-items:center; gap:6px;
+  box-shadow:0 2px 12px rgba(230,57,86,.3);
 }
-.btn-refresh:hover { border-color:rgba(230,57,86,.4); color:var(--text2) }
+.btn-refresh:hover { opacity:.9; transform:translateY(-1px) }
 .btn-refresh.loading { border-color:var(--gold); color:var(--gold); pointer-events:none }
 @keyframes spin { to{ transform:rotate(360deg) } }
 .spin { display:inline-block; animation:spin .75s linear infinite }
@@ -427,7 +457,7 @@ body.light .ef:focus { background: rgba(0,0,0,.06); box-shadow: 0 0 0 1.5px rgba
 /* ════════════════════════════════════════════════
    RESEARCH CARDS
    ════════════════════════════════════════════════ */
-.cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:16px }
+.cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(370px,1fr)); gap:20px }
 
 .card {
   background:var(--bg2); border:1px solid var(--border);
@@ -450,15 +480,15 @@ body.light .ef:focus { background: rgba(0,0,0,.06); box-shadow: 0 0 0 1.5px rgba
 }
 
 .card-hdr {
-  background:var(--bg3); padding:13px 15px;
-  display:flex; align-items:flex-start; gap:11px;
+  background:var(--bg3); padding:16px 17px;
+  display:flex; align-items:flex-start; gap:12px;
   border-bottom:1px solid var(--border);
 }
 .card-num {
-  width:28px; height:28px; min-width:28px;
+  width:34px; height:34px; min-width:34px;
   background:var(--red); border-radius:50%;
   display:flex; align-items:center; justify-content:center;
-  font-weight:800; font-size:.78rem; margin-top:1px;
+  font-weight:800; font-size:.95rem; margin-top:1px; color:#fff;
   box-shadow:0 2px 8px rgba(230,57,86,.3);
 }
 .card-num.gold {
@@ -466,17 +496,17 @@ body.light .ef:focus { background: rgba(0,0,0,.06); box-shadow: 0 0 0 1.5px rgba
   box-shadow:0 2px 8px rgba(245,158,11,.3);
 }
 .card-hdr-info { flex:1; min-width:0 }
-.card-title { font-weight:700; font-size:.9rem; line-height:1.45; margin-bottom:6px }
-.card-meta  { display:flex; gap:5px; flex-wrap:wrap }
+.card-title { font-weight:800; font-size:1.08rem; line-height:1.5; margin-bottom:8px }
+.card-meta  { display:flex; gap:6px; flex-wrap:wrap }
 .badge {
   display:inline-flex; align-items:center;
-  padding:2px 8px; border-radius:99px;
-  font-size:.6rem; font-weight:700;
+  padding:3px 10px; border-radius:99px;
+  font-size:.74rem; font-weight:700;
 }
 .badge-type   { background:var(--bg5); color:var(--text3); border:1px solid var(--border2) }
 .badge-source { background:var(--blue-bg); color:var(--blue); border:1px solid rgba(96,165,250,.2) }
 
-.card-img { width:100%; height:130px; object-fit:cover; border-bottom:1px solid var(--border); display:block }
+.card-img { width:100%; height:170px; object-fit:cover; border-bottom:1px solid var(--border); display:block }
 .img-hint-bar {
   padding:8px 15px;
   background:rgba(245,158,11,.04); border-bottom:1px solid rgba(245,158,11,.1);
@@ -484,48 +514,48 @@ body.light .ef:focus { background: rgba(0,0,0,.06); box-shadow: 0 0 0 1.5px rgba
   display:flex; align-items:flex-start; gap:6px;
 }
 
-.card-body { padding:14px 15px }
+.card-body { padding:17px 18px }
 
 .stat-chip {
   background:linear-gradient(135deg,rgba(230,57,86,.1),rgba(168,85,247,.05));
   border:1px solid rgba(230,57,86,.18);
   border-radius:var(--r-sm);
-  padding:10px 14px; margin-bottom:12px;
-  text-align:center; font-weight:800; font-size:.9rem; color:var(--red2);
-  line-height:1.4;
+  padding:12px 16px; margin-bottom:14px;
+  text-align:center; font-weight:800; font-size:1.02rem; color:var(--red2);
+  line-height:1.45;
 }
 .wow {
   background:var(--red-bg); border:1px dashed rgba(230,57,86,.22);
   border-radius:var(--r-sm);
-  padding:8px 12px; margin-bottom:12px;
-  font-size:.77rem; color:var(--red2);
-  display:flex; align-items:flex-start; gap:6px; line-height:1.55;
+  padding:10px 14px; margin-bottom:14px;
+  font-size:.92rem; color:var(--red2);
+  display:flex; align-items:flex-start; gap:7px; line-height:1.6;
 }
-.summary { color:var(--text2); font-size:.84rem; line-height:1.82; margin-bottom:12px }
+.summary { color:var(--text2); font-size:.98rem; line-height:1.85; margin-bottom:14px }
 
 .excerpt-block {
   background:rgba(0,0,0,.3); border-right:3px solid var(--border2);
   padding:10px 13px; margin-bottom:12px;
   border-radius:0 var(--r-sm) var(--r-sm) 0;
 }
-.exc-lbl      { font-size:.58rem; text-transform:uppercase; letter-spacing:1.5px; color:var(--text3); margin-bottom:5px; font-weight:800 }
-.exc-text     { font-size:.78rem; color:var(--text2); line-height:1.72; font-style:italic }
-.exc-location { font-size:.63rem; color:var(--text3); margin-top:4px }
-.exc-link     { font-size:.7rem; color:var(--red); text-decoration:none; display:inline-flex; align-items:center; gap:3px; margin-top:6px; font-weight:700 }
-.exc-link:hover { color:var(--red2); text-decoration:underline }
+.exc-lbl      { font-size:.78rem; letter-spacing:0; color:var(--text3); margin-bottom:6px; font-weight:800 }
+.exc-text     { font-size:.92rem; color:var(--text2); line-height:1.75; font-style:italic }
+.exc-location { font-size:.8rem; color:var(--text3); margin-top:5px }
+.exc-link     { font-size:.85rem; color:var(--red2); text-decoration:none; display:inline-flex; align-items:center; gap:4px; margin-top:8px; font-weight:700 }
+.exc-link:hover { color:var(--red); text-decoration:underline }
 
-.screen-lbl { font-size:.6rem; text-transform:uppercase; letter-spacing:1.5px; color:var(--text3); margin-bottom:5px; font-weight:800 }
+.screen-lbl { font-size:.78rem; letter-spacing:0; color:var(--text3); margin-bottom:6px; font-weight:800 }
 .screen-box {
   background:rgba(0,0,0,.4); border:1px solid var(--border2);
   border-radius:var(--r-sm);
-  padding:9px 13px; font-size:.85rem; color:var(--gold);
-  font-weight:700; margin-bottom:8px; line-height:1.5;
+  padding:11px 15px; font-size:1rem; color:var(--gold2);
+  font-weight:700; margin-bottom:10px; line-height:1.55;
 }
 .hook-box {
   background:var(--purple-bg); border:1px solid rgba(168,85,247,.18);
   border-radius:var(--r-sm);
-  padding:8px 12px; font-size:.77rem; color:var(--purple2);
-  margin-bottom:12px; display:flex; align-items:flex-start; gap:6px; line-height:1.55;
+  padding:10px 14px; font-size:.92rem; color:var(--purple2);
+  margin-bottom:14px; display:flex; align-items:flex-start; gap:7px; line-height:1.6;
 }
 
 .card-actions { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px }
@@ -898,13 +928,19 @@ kbd { background:var(--bg4); border:1px solid var(--border3); border-radius:4px;
 <!-- ── Week nav ───────────────────────────────────── -->
 <div class="week-nav" id="weekNav"></div>
 
-<!-- ── Tabs ──────────────────────────────────────── -->
+<!-- ── Tabs (guided steps) ───────────────────────── -->
 <div class="tabs" role="tablist">
-  <button class="tab-btn active" onclick="tab('research',this)" title="[1]">🔬 מחקרים<span class="cnt" id="badge-research">0</span></button>
-  <button class="tab-btn" onclick="tab('community',this)" title="[2]">💬 קהילה</button>
-  <button class="tab-btn" onclick="tab('instagram',this)" title="[3]">📸 אינסטגרם</button>
-  <button class="tab-btn" onclick="tab('poll',this)" title="[4]">📣 פול</button>
-  <button class="tab-btn" onclick="tab('tracking',this)" title="[5]">📋 מעקב</button>
+  <button class="tab-btn active" onclick="tab('research',this)" title="[1]"><span class="step-no">1</span>🔬 מחקרים<span class="cnt" id="badge-research">0</span></button>
+  <button class="tab-btn" onclick="tab('community',this)" title="[2]"><span class="step-no">2</span>💬 קהילה</button>
+  <button class="tab-btn" onclick="tab('instagram',this)" title="[3]"><span class="step-no">3</span>📸 אינסטגרם</button>
+  <button class="tab-btn" onclick="tab('poll',this)" title="[4]"><span class="step-no">4</span>📣 פול</button>
+  <button class="tab-btn" onclick="tab('tracking',this)" title="[5]"><span class="step-no">5</span>📋 מעקב</button>
+</div>
+
+<!-- ── "What to do here" helper ──────────────────── -->
+<div class="tab-help" id="tabHelp">
+  <span class="th-icon">💡</span>
+  <span id="tabHelpText">בחר שלב מהתפריט למעלה כדי להתחיל.</span>
 </div>
 
 <main>
@@ -1123,11 +1159,21 @@ function toast(icon, msg, dur=2200) {
   el._t = setTimeout(()=>el.classList.remove('show'), dur);
 }
 
+const TAB_HELP = {
+  research:  '<b>שלב 1 — מחקרים.</b> כאן 3 המחקרים החמים של השבוע. קרא, ערוך כל טקסט בלחיצה, והעתק את התסריט/קפשן. סמן 👍/👎 כדי שהבוט ילמד מה אתה אוהב.',
+  community: '<b>שלב 2 — קהילה.</b> הודעה מוכנה לקבוצת הווטסאפ + סרטון מוטיבציה + שאלון לדיון. לחץ "שלח לקבוצה" או "העתק". כל טקסט ניתן לעריכה.',
+  instagram: '<b>שלב 3 — אינסטגרם.</b> קפשן והאשטגים מוכנים לכל מחקר. ערוך, העתק, וסמן מה כבר העלית.',
+  poll:      '<b>שלב 4 — פול.</b> שאלת סקר לסטורי + גרסה לווטסאפ. הזוכה בסקר יקבל עדיפות בתוכן של השבוע הבא.',
+  tracking:  '<b>שלב 5 — מעקב.</b> סמן אילו סרטונים צילמת ומה עבד טוב. ככה אתה רואה את ההתקדמות ומה לחזק.'
+};
+
 function tab(name, btn) {
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   gEl('tab-'+name).classList.add('active');
   btn.classList.add('active');
+  const help = gEl('tabHelpText');
+  if (help && TAB_HELP[name]) help.innerHTML = TAB_HELP[name];
 }
 
 function closeModal(id) { gEl(id).classList.remove('open'); }
@@ -1172,6 +1218,9 @@ function init() {
   }
   buildWeekNav();
   renderWeek(0);
+  // הכוונה ראשונית — שלב 1
+  const help = gEl('tabHelpText');
+  if (help) help.innerHTML = TAB_HELP.research;
 }
 
 function buildWeekNav() {
