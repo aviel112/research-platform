@@ -1,6 +1,102 @@
 // Auto-generated — do not edit
-const LAST_REFRESH = '2026-06-13T18:25:12';
+const LAST_REFRESH = '2026-06-14T01:01:12';
 const RESEARCH_DATA = [
+  {
+    "week_date": "2026-06-14",
+    "week_theme": "תזמון, שינה, כוח",
+    "best_video_pick": 2,
+    "trend_alert": "קריאטין לפני האימון — לא אחרי — הופך לטרנד הכי חם השבוע אחרי מחקר חדש שמראה הבדל ביצועים ריאלי בזמן הלקיחה",
+    "researches": [
+      {
+        "id": 1,
+        "article_id": "PubMed_42280432",
+        "title": "קריאטין לפני אימון: 1 תזמון שמשנה הכל",
+        "research_type": "RCT",
+        "source_name": "PubMed",
+        "source_url": "https://pubmed.ncbi.nlm.nih.gov/42280432/",
+        "image_url": "",
+        "image_hint": "יד אוחזת קריאטין ליד שעון לפני אימון",
+        "excerpt": "Acute creatine ingestion before resistance training enhances strength performance more than ingestion during or after training.",
+        "excerpt_location": "intro",
+        "summary": "לקחת קריאטין לפני האימון הניב ביצועי כוח טובים יותר מאשר לקחת אותו תוך כדי או אחרי — זה לא ויכוח שיווקי, זה RCT. אם אתה שותה את זה בשייק אחרי, אתה משאיר ביצועים על השולחן.",
+        "key_stat": "5 קבוצות תזמון נבדקו — לפני האימון ניצחה את כולן בביצועי כוח אקוטיים",
+        "wow_factor": "לא רק כמה קריאטין אתה לוקח — מתי אתה לוקח אותו משנה יותר ממה שחשבת",
+        "viral_angle": "כל אחד שלוקח קריאטין ישתף את זה כי זה ממש שינוי שהוא יכול לעשות הלילה",
+        "screen_text": "קריאטין: לפני, לא אחרי ✅",
+        "video_hook": "קריאטין אחרי אימון — טעות.",
+        "video_script": "אתה שותה קריאטין אחרי אימון כי כולם עושים את זה. מחקר חדש הפך את זה — לפני האימון מנצח בביצועי כוח. בדיקה על 11 גברים מאומנים, 5 תנאי תזמון שונים — לפני ניצח את כולם. תעביר את הכוס לפני. תגיד לי בתגובות מתי אתה לוקח.",
+        "instagram_caption": "קריאטין אחרי אימון — אתה עושה את זה הפוך.\nRCT חדש: לקיחה לפני אימון הניבה ביצועי כוח גבוהים יותר מכל תזמון אחר.\nשינוי של 0 שקל, 0 מאמץ — רק להקדים את הכוס.\nאתה לוקח לפני או אחרי?",
+        "instagram_hashtags": "#קריאטין #תוספי_תזונה #אימון_כוח #ספורט_תזונה #כושר_ישראל #טיפים_אימון #בניית_שריר #תזמון_קריאטין #creatine #creatinetiming #strengthtraining #preworkout #musclebuilding #fitnessnews #gymtips #sportsnutrition #resistancetraining #fitnessisrael #workout #gains"
+      },
+      {
+        "id": 2,
+        "article_id": "Pod_Huberman_Lab_001",
+        "title": "אכילה בלילה הורסת שינה — ו-3 מזונות שמתקנים את זה",
+        "research_type": "פודקאסט",
+        "source_name": "🎙️ Huberman Lab",
+        "source_url": "https://www.hubermanlab.com/episode/eating-for-better-sleep-and-foods-that-improve-metabolic-health-marie-pierre-st-onge",
+        "image_url": "",
+        "image_hint": "שולחן אוכל לילי עם שעון קיר מאחור",
+        "excerpt": "Even moderate sleep loss increases appetite, changes hunger-related hormones, and causes weight gain, even when calories are not increased.",
+        "excerpt_location": "intro",
+        "summary": "פרופסור מקולומביה מסבירה ל-Huberman: אפילו חוסר שינה מתון — לא משנה כמה אתה אוכל — מעלה הורמוני רעב ומוביל לעלייה במשקל. מה שאתה אוכל בערב משפיע ישירות על איכות השינה ועל המטבוליזם שלך למחרת.",
+        "key_stat": "חוסר שינה מתון גורם לעלייה במשקל גם ללא עלייה בקלוריות — לפי מחקר מ-Columbia University",
+        "wow_factor": "אתה לא שמן כי אתה אוכל יותר — אתה אוכל יותר כי אתה לא ישן מספיק",
+        "viral_angle": "כל אחד שמנסה לרזות ולא מצליח ישתף את זה — זה מסביר כישלונות דיאטה בלי אשמה",
+        "screen_text": "שינה גרועה = רעב ביום 📉",
+        "video_hook": "הדיאטה שלך נכשלת בגלל השינה.",
+        "video_script": "אתה עושה דיאטה, מחשב קלוריות, ועדיין לא יורד? פרופסור מקולומביה אמרה להוברמן: חוסר שינה מתון מעלה הורמוני רעב ומוביל לעלייה במשקל — גם בלי לאכול יותר. הגוף שלך בוגד בך בלילה. מה שאתה אוכל בערב קובע את המחרת שלך.",
+        "instagram_caption": "הדיאטה שלך לא נכשלת כי אין לך רצון — היא נכשלת כי אתה לא ישן.\nחוסר שינה מתון = שינוי בהורמוני רעב + עלייה במשקל בלי קלוריות נוספות.\nזה לא דעה, זה Columbia University.\nכמה שעות שינה אתה ממוצע בלילה?",
+        "instagram_hashtags": "#שינה #דיאטה #הורמונים #כושר_ישראל #בריאות #ירידה_במשקל #תזונה #מטבוליזם #sleep #sleepandweight #hubermanlab #metabolichealth #weightloss #hormones #nutritionscience #fitnessisrael #sleephealth #cortisol #fitnesstips #bodyfat"
+      },
+      {
+        "id": 3,
+        "article_id": "ScienceDaily_–_Fitness_004",
+        "title": "90 דקות כוח בשבוע הורידו תמותה ב-30 שנה של מעקב",
+        "research_type": "מחקר",
+        "source_name": "ScienceDaily – Fitness",
+        "source_url": "https://www.sciencedaily.com/releases/2026/06/260611024609.htm",
+        "image_url": "",
+        "image_hint": "אדם מעל 40 מרים משקולות בחדר כושר",
+        "excerpt": "Just 90–120 minutes of strength training a week may deliver some of the biggest long-term health rewards, according to a study tracking more than 147,000 people for 30 years.",
+        "excerpt_location": "intro",
+        "summary": "מחקר על 147,000 איש במשך 30 שנה: 90 עד 120 דקות אימון כוח בשבוע — פחות מ-20 דקות ביום — הורידו משמעותית סיכון למוות ממחלות לב ומחלות נוירולוגיות. לא צריך לחיות בחדר כושר, צריך להיות עקבי.",
+        "key_stat": "147,000 אנשים, 30 שנה מעקב — 90-120 דקות כוח בשבוע = ירידה בולטת בתמותה כללית",
+        "wow_factor": "פחות מ-2 שעות כוח בשבוע עושות יותר לאריכות חיים מרוב הדיאטות שנמכרות לך",
+        "viral_angle": "כולם יבינו שהם כבר עושים מספיק — או שהם מפספסים 20 דקות קריטיות ביום",
+        "screen_text": "90 דקות כוח = 30 שנה בריאות 💪",
+        "video_hook": "20 דקות כוח ביום מאריכות חיים.",
+        "video_script": "לא צריך להיות ספורטאי. 147,000 אנשים, 30 שנה מעקב — המסקנה: 90 עד 120 דקות אימון כוח בשבוע הורידו תמותה ממחלות לב ומחלות מוחיות. זה פחות מ-20 דקות ביום. אתה כבר עושה את זה? כתוב לי בתגובות כמה פעמים בשבוע אתה מתאמן.",
+        "instagram_caption": "20 דקות כוח ביום — זה כל מה שצריך לפי מחקר של 30 שנה.\n147,000 אנשים: 90-120 דקות שבועיות הורידו תמותה ממחלות לב ומחלות מוחיות.\nלא תחרות. לא בודיבילדינג. סתם עקביות.\nכמה פעמים בשבוע אתה מרים?",
+        "instagram_hashtags": "#אימון_כוח #בריאות #כושר_ישראל #אריכות_חיים #חדר_כושר #אימון #כוח #strenghttraining #longevity #strengthtraining #fitness #healthylifestyle #musclehealth #zone2 #resistancetraining #fitnessover40 #gymlife #israelifitness #liftweights #livelonger"
+      }
+    ],
+    "community_message": "עובדה שרוב האנשים לא יודעים: חוסר שינה של שעה אחת בלילה מעלה הורמון רעב ב-24% ומוריד הורמון שובע ב-23% — לפי מחקר Columbia.\nאתה לא חסר רצון. אתה חסר שינה.\nKobe Bryant אמר: 'Rest is a weapon.' הוא לא התכוון לעצלנות — הוא התכוון לביצועים.\nשאלה שחושבת עליה: אם אימון כוח של 90 דקות בשבוע מוריד תמותה בצורה דרמטית — למה אנחנו עדיין מתווכחים אם 'כדאי ללכת לחדר כושר'?",
+    "community_video": {
+      "title": "Why Sleep Is the Most Important Thing for Muscle and Fat Loss — Matthew Walker",
+      "youtube_url": "https://www.youtube.com/watch?v=5MuIMqhT8oU",
+      "intro_text": "מדען השינה הכי מפורסם בעולם מסביר תוך 15 דקות למה שינה היא הספורט שלך"
+    },
+    "community_discussion_poll": {
+      "question": "מה יותר חשוב לבניית שריר — שינה מספקת או תזמון חלבון?",
+      "options": [
+        "שינה — בלי זה הכל מתפרק",
+        "תזמון חלבון — ה-window אחרי אימון קריטי",
+        "שניהם שווים בדיוק"
+      ],
+      "whatsapp_text": "🛌 שאלה שמפצלת את הקהילה: מה יותר חשוב לבניית שריר — שינה מספקת או תזמון חלבון? הצביעו! ⬆️"
+    },
+    "poll": {
+      "question": "קריאטין — מתי אתה לוקח?",
+      "options": [
+        "לפני אימון 💪",
+        "אחרי אימון 🥤",
+        "מתי שנזכר 😅"
+      ],
+      "whatsapp_text": "⏰ מחקר חדש אומר שתזמון קריאטין משנה ביצועים — מתי אתה לוקח? הצביעו!",
+      "instagram_text": "קריאטין: לפני, אחרי, או מתי שנזכר? 👇 RCT חדש שינה את הדעה שלי — הצביעו בפול"
+    }
+  },
   {
     "week_date": "2026-06-13",
     "week_theme": "שינה, כוח וסיביים",
