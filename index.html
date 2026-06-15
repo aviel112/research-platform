@@ -566,6 +566,27 @@ body.light .ef:focus { background: rgba(0,0,0,.06); box-shadow: 0 0 0 1.5px rgba
   margin-bottom:14px; display:flex; align-items:flex-start; gap:7px; line-height:1.6;
 }
 
+/* ── Reel format chip + shot list + CTA ─────────── */
+.reel-format-chip {
+  display:inline-flex; align-items:center; gap:6px;
+  background:linear-gradient(135deg,rgba(245,158,11,.16),rgba(230,57,86,.08));
+  border:1px solid rgba(245,158,11,.4); color:var(--gold2);
+  padding:7px 13px; border-radius:var(--r-sm);
+  font-size:.88rem; font-weight:700; line-height:1.4;
+}
+.reel-format-chip strong { color:var(--gold2) }
+.shot-list { margin:0; padding-right:20px; display:flex; flex-direction:column; gap:8px }
+.shot-list li {
+  color:var(--text2); font-size:.95rem; line-height:1.6;
+  padding-right:4px;
+}
+.shot-list li::marker { color:var(--red2); font-weight:800 }
+.cta-box {
+  background:var(--green-bg); border:1px solid rgba(34,197,94,.3);
+  border-radius:var(--r-sm); padding:11px 14px;
+  font-size:.95rem; color:var(--green2); font-weight:600; line-height:1.6;
+}
+
 .card-actions { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px }
 
 /* Status strip */
@@ -1123,8 +1144,18 @@ kbd { background:var(--bg4); border:1px solid var(--border3); border-radius:4px;
       <button class="modal-close" onclick="closeModal('scriptModal')">✕</button>
     </div>
     <div class="modal-body">
+      <div id="scriptFormat" class="reel-format-chip" style="display:none"></div>
+      <div class="exc-lbl" style="margin-bottom:6px">📝 התסריט — ערוך חופשי</div>
       <div class="script-text ef" id="scriptText" contenteditable="true" style="white-space:pre-wrap;min-height:80px"></div>
-      <button class="modal-copy" onclick="copy(gEl('scriptText').innerText)">📋 העתק תסריט</button>
+      <div id="shotListWrap" style="display:none">
+        <div class="exc-lbl" style="margin:16px 0 8px">🎥 רשימת צילומים — מה לצלם</div>
+        <ol id="shotList" class="shot-list"></ol>
+      </div>
+      <div id="ctaWrap" style="display:none">
+        <div class="exc-lbl" style="margin:16px 0 8px">💬 CTA — מה לבקש בסוף (מייצר תגובות)</div>
+        <div id="scriptCta" class="cta-box"></div>
+      </div>
+      <button class="modal-copy" onclick="copyFullScript()">📋 העתק תסריט מלא</button>
     </div>
   </div>
 </div>
@@ -1334,6 +1365,8 @@ function resCard(r, best) {
     ? `<div class="wow">💥 <span>${esc(r.wow_factor)}</span></div>` : '';
   const hookHtml = r.video_hook
     ? `<div class="hook-box">🎬 Hook: <strong>${esc(r.video_hook)}</strong></div>` : '';
+  const fmtHtml  = r.reel_format
+    ? `<div class="reel-format-chip" style="margin-bottom:12px">🎬 פורמט רילס: <strong>${esc(r.reel_format)}</strong></div>` : '';
   const excHtml  = r.excerpt ? `
     <div class="excerpt-block">
       <div class="exc-lbl">ציטוט ישיר מהמחקר</div>
@@ -1363,6 +1396,7 @@ function resCard(r, best) {
       <div class="screen-lbl">טקסט לגבי הסרטון</div>
       <div class="screen-box">🎬 ${esc(r.screen_text)}</div>
       ${hookHtml}
+      ${fmtHtml}
       <div class="card-actions">
         <button class="btn btn-red"     onclick="openScript(${r.id})">📹 תסריט מלא</button>
         <button class="btn btn-purple"  onclick="goIg(${r.id})">📸 אינסטגרם</button>
@@ -1536,7 +1570,39 @@ function openScript(id) {
   const savedScript = wd ? localStorage.getItem(`av_ed_${wd}_scriptText_${r.id}`) : null;
   scriptEl.innerText = savedScript ?? (r.video_script || '');
   scriptEl.dataset.resId = r.id;
+
+  // פורמט הרילס (מתוך ה-PLAYBOOK)
+  const fmtEl = gEl('scriptFormat');
+  if (r.reel_format) { fmtEl.innerHTML = `🎬 פורמט: <strong>${esc(r.reel_format)}</strong>`; fmtEl.style.display = ''; }
+  else fmtEl.style.display = 'none';
+
+  // רשימת צילומים
+  const shots = Array.isArray(r.shot_list) ? r.shot_list.filter(Boolean) : [];
+  const shotWrap = gEl('shotListWrap');
+  if (shots.length) {
+    gEl('shotList').innerHTML = shots.map(s=>`<li>${esc(s)}</li>`).join('');
+    shotWrap.style.display = '';
+  } else shotWrap.style.display = 'none';
+
+  // CTA
+  const ctaWrap = gEl('ctaWrap');
+  if (r.cta) { gEl('scriptCta').textContent = r.cta; ctaWrap.style.display = ''; }
+  else ctaWrap.style.display = 'none';
+
   gEl('scriptModal').classList.add('open');
+}
+
+// העתקת התסריט המלא — כולל פורמט, צילומים ו-CTA
+function copyFullScript() {
+  const parts = [];
+  const fmt = gEl('scriptFormat');
+  if (fmt.style.display !== 'none') parts.push(fmt.innerText);
+  parts.push(gEl('scriptText').innerText);
+  const shots = [...document.querySelectorAll('#shotList li')].map((li,i)=>`${i+1}. ${li.textContent}`);
+  if (shots.length) parts.push('\n🎥 צילומים:\n' + shots.join('\n'));
+  const cta = gEl('scriptCta').textContent;
+  if (cta) parts.push('\n💬 CTA: ' + cta);
+  copy(parts.join('\n'));
 }
 
 // ══════════════════════════════════════════════════════════
